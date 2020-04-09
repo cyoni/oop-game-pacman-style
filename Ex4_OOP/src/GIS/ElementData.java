@@ -5,7 +5,7 @@ import Geom.Geom_element;
 import Geom.Point3D;
 /** 
  * This class represents an element with data
- * @author Nizan and Yoni
+ * @author Yoni
  **/
 public class ElementData implements GIS_element {
 

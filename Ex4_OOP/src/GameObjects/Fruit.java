@@ -6,32 +6,28 @@ import GIS.Meta_data;
 import Geom.Geom_element;
 import Geom.Point3D;
 import Geom.geom;
+import game.GameBoard;
+import game.Game_Metadata;
 /**
  */
 
 
-public class Fruit extends game_object implements GIS_element{
+public class Fruit extends game_object {
 
-	public Fruit(String picture) {
-		super("fruit.png");
+
+	public Fruit(GameBoard gameBoard, String picture, int id, double lat, double lon, int speed, int radius) {
+		super(gameBoard, "fruit.png", id, lat, lon, speed, radius);
 	}
 
-	@Override
-	public Geom_element getGeom() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public Fruit(String element) {
+		super(element);
 	}
 
-	@Override
-	public Meta_data getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public void translate(Point3D vec) {
-		// TODO Auto-generated method stub
-		
+	public void addItemToList() {
+		game_metadata.getFruits().add(this);
 	}
 
 

@@ -12,6 +12,12 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import FileFormat.CSVReader;
+import FileFormat.MultiCSV;
+import GIS.Map;
+import Geom.Point3D;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -23,12 +29,13 @@ public class Gui_algo extends JPanel implements MouseListener  {
 	 */
 	
 	 JPanel panel;
+	 Map map;
+	 
 	private static final long serialVersionUID = -4673139390645816489L;
 
 	private JFrame frame;
 	
 	public Gui_algo() {
-
 	}
 
 	Image x=null,y = null;
@@ -45,13 +52,16 @@ public class Gui_algo extends JPanel implements MouseListener  {
         G.drawImage(x, 0, 0, this.getWidth(), this.getHeight(), null);
         
         // iterator to draw stuff
-        G.drawImage(y, (int) (500 - (23 / 2)), (int) (500 - (23 / 2)), 23,	23, null);
-
+        Point3D xx = new Point3D(32.102514, 35.207410);
+        Point3D abc = map.coordsToPixel(xx.x(), xx.y());
+        
+        G.drawImage(y, (int) (abc.x()  ), (int) (abc.y() ), 23,	23, null);
+        System.out.println(abc.x() + "," + abc.y());
     }
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		Gui_dialog.alert(e.getX() + "," + e.getY());
 
 	}
 
@@ -91,7 +101,15 @@ public class Gui_algo extends JPanel implements MouseListener  {
 		frame.setSize(1433, 642);
 		frame.add(this);
 
+		map = new Map(frame);
 
+	}
+
+	public void test() {
+
+		String file_path = "C:\\Users\\Yoni\\git\\oop_game_1\\Ex4_OOP\\data\\Ex4_OOP_example6.csv"; 
+		CSVReader csv = new CSVReader(file_path);
+		csv.processFile();
 	}
 
 }
