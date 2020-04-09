@@ -29,7 +29,6 @@ public class Map {
 	public Point3D coordsToPixel(double x, double y) {
 		int height = f.getHeight();
 		int width = f.getWidth();
-		System.out.println("height=" + height + ", wid:" + width);
 		int y1 =  (int)((height*x - height*xTop) / (xBottom-xTop))  ; //(int) ((-f.getHeight()*x+f.getHeight()*xBottom+f.getHeight()*xTop-f.getHeight()*xBottom)/(xTop-xBottom));
 		int x1 =  (int) ((width*y - width*yBottom)/(yTop-yBottom));
 		return new Point3D(x1, y1, 0);

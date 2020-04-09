@@ -3,12 +3,12 @@ package GameObjects;
 
 import Coords.MyCoords;
 import GIS.GIS_element;
+import GIS.Map;
 import GIS.Meta_data;
 import Geom.Geom_element;
 import Geom.Point3D;
 import Geom.geom;
 import game.GameBoard;
-import game.Game_Metadata;
 /**
  *  
  * @author Yoni
@@ -16,22 +16,20 @@ import game.Game_Metadata;
 public class Pacman extends game_object {
 
 
-
-	public Pacman(GameBoard gameBoard, String picture, int id, double lat, double lon, int speed, int radius) {
-		super(gameBoard, picture, id, lat, lon, speed, radius);
-		// TODO Auto-generated constructor stub
-	}
 	
-	public Pacman(String element) {
-		super(element);
+	private int speed;
+
+	public Pacman(GameBoard gameBoard, Map map, int id, double lat, double lon, int speed) {
+		super(gameBoard, map, "pacman.png", id, new Point3D(lat, lon));
+		this.speed = speed;
 	}
 
 
-	@Override
-	public void addItemToList() {
-		game_metadata.getPacmans().add(this);		
+
+
+	public int getSpeed() {
+		return speed;
 	}
 
 
-	
 }

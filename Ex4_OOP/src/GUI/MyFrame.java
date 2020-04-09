@@ -27,7 +27,6 @@ public class MyFrame {
 	
 	public MyFrame() {
 		Gui_algo gui_algo = new Gui_algo(); 
-		gui_algo.setScreen();
 	    gui_algo.test();
 	}
 

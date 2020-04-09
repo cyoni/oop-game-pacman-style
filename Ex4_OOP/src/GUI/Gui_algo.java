@@ -14,9 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import FileFormat.CSVReader;
-import FileFormat.MultiCSV;
+
 import GIS.Map;
+import GameObjects.game_object;
 import Geom.Point3D;
+import game.GameBoard;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,36 +29,52 @@ public class Gui_algo extends JPanel implements MouseListener  {
 	/**
 	 * 
 	 */
-	
+	boolean updateScreen = false;
 	 JPanel panel;
-	 Map map;
+	public Map map;
+	protected GameBoard gameboard;
 	 
 	private static final long serialVersionUID = -4673139390645816489L;
 
 	private JFrame frame;
+	private DrawItems drawItems;
 	
 	public Gui_algo() {
+		setScreen();
+		map = new Map(frame);
+		drawItems = new DrawItems(map, gameboard);
+		updateScreen = true;
 	}
 
 	Image x=null,y = null;
 	
     @Override
-    public void paintComponent(Graphics G) {
-        super.paintComponent(G);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 		try {
 			x = ImageIO.read(new File("Ariel1.png"));
-			y = ImageIO.read(new File("fruit.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        G.drawImage(x, 0, 0, this.getWidth(), this.getHeight(), null);
+		graphics.drawImage(x, 0, 0, this.getWidth(), this.getHeight(), null); // background 
         
+        
+        if (updateScreen) {
+     
+        	drawItems.drawObjects(graphics, gameboard.getFruits());
+        	drawItems.drawObjects(graphics, gameboard.getGhosts());
+        	drawItems.drawObjects(graphics, gameboard.getPacmans());
+        	drawItems.drawBlocks(graphics, gameboard.getBlocks());
+        	
+        }
+       
         // iterator to draw stuff
-        Point3D xx = new Point3D(32.102514, 35.207410);
-        Point3D abc = map.coordsToPixel(xx.x(), xx.y());
+   //     Point3D xx = new Point3D(32.102514, 35.207410);
+    //    Point3D abc = map.coordsToPixel(xx.x(), xx.y());
         
-        G.drawImage(y, (int) (abc.x()  ), (int) (abc.y() ), 23,	23, null);
-        System.out.println(abc.x() + "," + abc.y());
+     //   G.drawImage(y, (int) (abc.x()  ), (int) (abc.y() ), 23,	23, null);
+     //   System.out.println(abc.x() + "," + abc.y());
     }
 
 	@Override
@@ -100,16 +118,20 @@ public class Gui_algo extends JPanel implements MouseListener  {
 		frame.setVisible(true);
 		frame.setSize(1433, 642);
 		frame.add(this);
+		
 
-		map = new Map(frame);
 
 	}
 
 	public void test() {
 
-		String file_path = "C:\\Users\\Yoni\\git\\oop_game_1\\Ex4_OOP\\data\\Ex4_OOP_example6.csv"; 
-		CSVReader csv = new CSVReader(file_path);
+		String file_path = "C:\\Users\\Yoni\\git\\oop_game_1\\Ex4_OOP\\data\\Ex4_OOP_example9.csv"; 
+		CSVReader csv = new CSVReader(this, file_path);
 		csv.processFile();
+	}
+
+	public void setGameBoard(GameBoard gameBoard) {
+		this.gameboard = gameBoard;
 	}
 
 }
