@@ -11,19 +11,20 @@ import game.GameBoard;
 
 public class Fruit extends game_object {
 
+	public static String picture = "fruit.png";
 
-	private int weight; 
+	private double weight; 
 	
 		
-	public Fruit(GameBoard gameBoard, Map map, int id, double lat, double lon, int weight) {
-		super(gameBoard, map, "fruit.png", id, new Point3D(lat, lon));
+	public Fruit(GameBoard gameBoard, Map map, int id, Point3D location, double weight) {
+		super(id, location);
 		this.weight = weight;
 	}
 
 	
 
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 

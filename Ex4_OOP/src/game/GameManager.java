@@ -23,7 +23,7 @@ public class GameManager extends Thread {
 	}
 
 	public void startGame() {
-		// 1) Create a "play" from a file (attached to Ex4)
+	/*	// 1) Create a "play" from a file (attached to Ex4)
 		String file_name = "data/Ex4_OOP_example9.csv";
 		play1 = new Play(file_name);
 		
@@ -55,14 +55,14 @@ public class GameManager extends Thread {
 		start();
 		// 9) print the data & save to the course DB
 		String info = play1.getStatistics();
-		System.out.println(info);
+		System.out.println(info);*/
 	
 	}
 	
 	public void run() {
 		while(play1.isRuning()) {
 			try {
-				sleep(100);
+				sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

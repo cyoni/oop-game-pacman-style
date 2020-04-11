@@ -11,37 +11,29 @@ import GameObjects.game_object;
 import game.GameBoard;
 
 public class CSVReader {
-	private Gui_algo gui_algo;
+
 	private String csvFile;
-	private List<game_object> gameObjects = new ArrayList<>();
-	private Map map;
-	
-	public CSVReader(Gui_algo gui_algo, String file_name) {
+
+	public CSVReader(String file_name) {
 		this.csvFile = file_name;
-		this.gui_algo = gui_algo;
-		map = gui_algo.map;
 	}
 	
 
-	
-/*	public game_object parseLine(String str) {
-         String[] line = str.split(",");
-         System.out.println("Country [code= " + line[4] + " , name=" + line[5] + "]");
-         return null;
-	}*/
-	
-	public void processFile() {
+
+
+	public List<String> processFile() {
 		String line = "";
 		List<String> elements = new ArrayList<>();
-		 try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+		 try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Yoni\\git\\oop_game_1\\Ex4_OOP\\data\\Ex4_OOP_example9.csv"))) {
 			 br.readLine();
 	            while (( line = br.readLine()) != null) {
 	            	elements.add(line);
 	            	System.out.println(line);
 	            	}
-	            	gui_algo.setGameBoard(new GameBoard(map, elements));
+	            	
 	            }
 		 catch(Exception e) {System.out.println(e.getMessage());}
+		 return elements;
 	}
 
 

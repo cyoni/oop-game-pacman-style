@@ -7,16 +7,17 @@ import game.GameBoard;
 
 public class Ghost extends game_object{
 
-
-	private int speed;
-
-	public Ghost(GameBoard gameBoard, Map map, int id, double lat, double lon, int speed) {
-		super(gameBoard, map, "ghost.jpg", id , new Point3D(lat, lon));
+	
+	private double speed;
+	public static String picture = "ghost.png";
+	
+	public Ghost(GameBoard gameBoard, Map map, int id, Point3D location, double speed) {
+		super(id , location);
 		this.speed = speed;
 	}
 
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 

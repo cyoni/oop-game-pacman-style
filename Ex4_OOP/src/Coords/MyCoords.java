@@ -1,5 +1,4 @@
 package Coords;
-
 import Geom.Point3D;
 
 /**
@@ -9,16 +8,12 @@ import Geom.Point3D;
  * @author Yoni
  **/
 
-public class MyCoords implements coords_converter {
+public class MyCoords implements coords_converter { 
+	
 
 	public static final double EARTH_RADIUS = 6371000;
 	
-	/**
-	 * This function gets two parameters: 1. GPS 2. Vector and it converts the vector to degrees and sums it and the GPS and the new GPS coordinate 
-	 * @param gps point
-	 * @param local_vector_in_meter vector
-	 * @return new gps point
-	 **/
+
 	
 	@Override
 	public Point3D add(Point3D gps, Point3D local_vector_in_meter) {
@@ -32,12 +27,20 @@ public class MyCoords implements coords_converter {
 		return new Point3D(_x+gps.x(), _y+gps.y(), z+gps.z());
 	}
 
-	/**
-	 * This function calculates a distance between two GPS coordinates and returns it
-	 * @param gps0 start point
-	 * @param gps1 end point
-	 * @return distance the distance from gps0 to gps1
-	 **/
+	
+	public double distance2D(Point3D gps0, Point3D gps1) {
+		Point3D vector = vector3D(gps0, gps1);
+		return vector.distance2D(new Point3D(0,0,0));	
+	}
+	public Point3D midPoint(Point3D gps0, Point3D gps1, double ratio) {
+		Point3D vector = vector3D(gps0, gps1);
+		Point3D ratioVector = ratioVector(vector, ratio); 
+		return add(gps0, ratioVector);
+	}
+	public Point3D ratioVector(Point3D vector, double ratio) {
+		return new Point3D(ratio*vector.x(), ratio*vector.y(), ratio*vector.z());
+	}
+	
 	
 	@Override
 	public double distance3d(Point3D gps0, Point3D gps1) {
@@ -50,12 +53,7 @@ public class MyCoords implements coords_converter {
 		return Math.sqrt(Math.pow(toMeter1, 2) + Math.pow(toMeter2, 2));
 	}
 
-	/**
-	 * This function returns a vector of two GPS coordinates
-	 * @param gps0 start point
-	 * @param gps1 end point
-	 * @return vector in meter
-	 **/
+
 	
 	@Override
 	public Point3D vector3D(Point3D gps0, Point3D gps1) {
@@ -65,37 +63,20 @@ public class MyCoords implements coords_converter {
 
 		return new Point3D(x, y, z);
 	}
-	/**
-	 * This function calculate an azimuth, elevation and a distance between two GPS coordinates 
-	 * @param gps0 start point
-	 * @param gps1 end point
-	 * @return array of azimuth, elevation, distance
-	 **/
-	@Override
-	public double[] azimuth_elevation_dist(Point3D gps0, Point3D gps1) {
-		double aed[] = new double[3];
-		double distance = distance3d(gps0, gps1);
-		double azimuth;
-		double elevation;
-		double g, p1, p2, x, y;
-		p1 = Math.toRadians(gps0.x());
-		p2 = Math.toRadians(gps1.x());
-		g = Math.toRadians(gps0.y()-gps1.y());
+	
 
-		y = Math.sin(g)*Math.cos(p1);
-		x = (Math.cos(p2)* Math.sin(p1)) - Math.sin(p2)*Math.cos(p1)*Math.cos(g);
-		azimuth = Math.atan2(y, x) + Math.PI;
-
-		elevation = Math.asin ((gps1.z() - gps0.z()) / distance);		
-
-		aed[0] = Math.toDegrees(azimuth);
-		aed[1] = elevation;
-		aed[2] = distance;
-
-		return aed;
+	public double azimuth(Point3D gps0, Point3D gps1) {
+		double lat0Radian = Math.toRadians(gps0.x()); //teta1
+		double lat1Radian = Math.toRadians(gps1.x()); //teta2
+		double diffLon = gps1.y()-gps0.y();
+		double diffLonRadian = Math.toRadians(diffLon);  //delta2
+		
+		double numerator = Math.sin(diffLonRadian) * Math.cos(lat1Radian);
+		double denominator = Math.cos(lat0Radian)*Math.sin(lat1Radian) - Math.sin(lat0Radian)*Math.cos(lat1Radian)*Math.cos(diffLonRadian);
+		return (Math.toDegrees(Math.atan2(numerator,denominator))+360) % 360;
 	}
 	
-	/**
+ /*
 	 * This function checks whether a coordinate is still within its range
 	 * @param gps point
 	 * @return  boolean that represents whether the GPS point is valid
@@ -111,6 +92,40 @@ public class MyCoords implements coords_converter {
 		
 		return isValid;
 	}
+
+
+@Override
+public double[] azimuth_elevation_dist(Point3D gps0, Point3D gps1) {
+	
+	double[] polarVec = new double[3];
+	if (isValid_GPS_Point(gps0)&&isValid_GPS_Point(gps1)) {
+		Point3D vec = vector3D(gps0,gps1);
+		polarVec[2] = distance3d(gps0,gps1);
+		polarVec[0] = Math.toDegrees(Math.atan(Math.abs((vec.y())/(vec.x()))));
+		
+		double y = (Math.sin(gps1.x()-gps0.x())*Math.cos(gps1.y()));
+		double x = (Math.cos(gps0.y())*Math.sin(gps1.y()))-(Math.sin(gps0.y())*Math.cos(gps1.y())*Math.cos(gps1.x()-gps0.x()));
+		polarVec[0] = Math.atan2(y, x);
+		polarVec[0] = Math.toDegrees(polarVec[0]);
+//		if ((x<0)&&(y>=0)) polarVec[0]+= Math.PI;
+//		if ((x<0)&&(y<0)) polarVec[0]-= Math.PI;
+//		if ((x==0)&&(y>0)) polarVec[0]= Math.PI/2;
+//		if ((x==0)&&(y<0)) polarVec[0]= -Math.PI/2;
+//		if ((x==0)&&(y==0)) polarVec[0]= Double.NaN;
+//		System.out.println(polarVec[0]);
+//		polarVec[0]= Math.toDegrees(polarVec[0]);
+//		if ((vec.y()<0)&&(vec.x()>0)) polarVec[0]=180-polarVec[0];
+//		if ((vec.x()<0)&&(vec.y()>0)) polarVec[0]=360-polarVec[0];
+//		if ((vec.y()<0)&&(vec.x()<0)) polarVec[0]=180+polarVec[0];
+		if (polarVec[0]<0) polarVec[0]+=360;
+		if (polarVec[0]>360) polarVec[0]-=360;
+		
+		polarVec[1] = Math.toDegrees(Math.asin(vec.z()/polarVec[2]));
+		
+		return polarVec;
+	}
+	return null;
+}
 
 
 }

@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MyFrame {
 	
 
-
 	/**
 	 * empty constructor
 	**/

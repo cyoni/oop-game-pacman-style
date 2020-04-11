@@ -16,18 +16,18 @@ import game.GameBoard;
 public class Pacman extends game_object {
 
 
-	
-	private int speed;
+	public static String picture = "pacman.png";
+	private double speed;
 
-	public Pacman(GameBoard gameBoard, Map map, int id, double lat, double lon, int speed) {
-		super(gameBoard, map, "pacman.png", id, new Point3D(lat, lon));
+	public Pacman( int id, Point3D location, double speed) {
+		super(id, location);
 		this.speed = speed;
 	}
 
 
 
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 

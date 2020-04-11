@@ -6,32 +6,83 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import Coords.MyCoords;
+
 import Geom.*;
+
 /**
 * this class represents a map that contains functions such as converting pixels to GPS, GPS to pixels 
 * @author Yoni
 **/
 public class Map {
+
 	
-	double  xTop = 32.1046, yTop = 35.212438,  xBottom =  32.101923, yBottom =  35.202403;		
+
+	public  Point3D nw;
+	public  Point3D ne;
+	public  Point3D sw;
+	public  Point3D se;
+	MyCoords mc;
+
 	JFrame f;
-		
+	
+	protected Point3D DownLeftP = new Point3D( 35.202403,32.101923,0);
+	protected Point3D UpRightP = new Point3D( 35.212438,32.105959,0);
 	
 	public Map(JFrame jframe) {
+		//The edges of the map//
+		nw = new Point3D( 32.105394,  35.202532, 0);
+		ne = new Point3D( 32.105444,  35.212496, 0);
+		sw = new Point3D( 32.101899,  35.202447, 0);
+		se = new Point3D( 32.101899,  35.212496, 0);
+		mc=new MyCoords();
 		this.f = jframe; // this point represents the max width and the max height of the screen.
 	}
-
+	public Point3D global2pixel(Point3D Global) {
+		double RatioGlobalX = (Global.x()-DownLeftP.x())/getGlobalDiffX();
+		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
+		double pixelX = f.getWidth()*RatioGlobalX;
+		double pixelY = f.getHeight()*RatioGlobalY;
+		return new Point3D(pixelX,pixelY,0);
+	}
+	public Point3D pixel2global(Point3D pixel) {
+		double RatioPixelX = pixel.x()/f.getWidth();
+		double RatioPixelY = (pixel.y())/f.getHeight();
+		double GlobalX = DownLeftP.x()+(getGlobalDiffX()*RatioPixelX);
+		double GlobalY = UpRightP.y()-(getGlobalDiffY()*RatioPixelY);
+		return new Point3D(GlobalX,GlobalY,0);
+	}
+	/** 
+	 * @return the width of the pic in degree 
+	 */
+	public double getGlobalDiffX() {
+		return UpRightP.x()-DownLeftP.x();
+	}
+	/** 
+	 * @return the hight of the pic in degree 
+	 */
+	public double getGlobalDiffY() {
+		return UpRightP.y()-DownLeftP.y();
+	}
+	
+	
 	/**
 	* this function converts coordinate to pixel
 	* @param 
 	* @return coordinate
 	**/
 	public Point3D coordsToPixel(double x, double y) {
-		int height = f.getHeight();
+		Point3D Global = new Point3D(x,y);
+		double RatioGlobalX = (Global.x()-DownLeftP.x())/getGlobalDiffX();
+		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
+		double pixelX = f.getWidth()*RatioGlobalX;
+		double pixelY = f.getHeight()*RatioGlobalY;
+		return new Point3D(pixelX,pixelY,0);
+		
+/*		int height = f.getHeight();
 		int width = f.getWidth();
 		int y1 =  (int)((height*x - height*xTop) / (xBottom-xTop))  ; //(int) ((-f.getHeight()*x+f.getHeight()*xBottom+f.getHeight()*xTop-f.getHeight()*xBottom)/(xTop-xBottom));
 		int x1 =  (int) ((width*y - width*yBottom)/(yTop-yBottom));
-		return new Point3D(x1, y1, 0);
+		return new Point3D(x1, y1, 0);*/
 	}
 
 	
@@ -41,9 +92,17 @@ public class Map {
 	* @return coordinate
 	**/
 	public Point3D pixelToCoords(double x, double y) {
-		double x1 = (((f.getHeight()*xBottom) + (f.getHeight()-y)*(xTop-xBottom)) / f.getHeight());
-		double y1 = (((f.getWidth()*yBottom) + x*(yTop-yBottom)) / f.getHeight());
-		return new Point3D(x1, y1, 0);
+		Point3D pixel = new Point3D(x,y);
+		double RatioPixelX = pixel.x()/f.getWidth();
+		double RatioPixelY = (pixel.y())/f.getHeight();
+		double GlobalX = DownLeftP.x()+(getGlobalDiffX()*RatioPixelX);
+		double GlobalY = UpRightP.y()-(getGlobalDiffY()*RatioPixelY);
+		return new Point3D(GlobalX,GlobalY,0);
+		
+		
+/*		double x1 = (y*xBottom-y*xTop+f.getHeight()*xTop) / f.getHeight();
+		double y1 = (f.getHeight()*xTop+y*xBottom-y*xTop)/f.getHeight();
+		return new Point3D(x1, y1, 0);*/
 	}
 	
 	
@@ -55,6 +114,9 @@ public class Map {
 	public static double degreeOfPixel(int x, int y, int x2, int y2) {
 		return Math.tan(Math.abs(y-y2)/Math.abs(x-x2));
 	}
+	
+	
+	
 	
 	
 }
