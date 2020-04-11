@@ -29,6 +29,7 @@ import GameObjects.Player;
 import GameObjects.Rectangle;
 import GameObjects.game_object;
 import Geom.Point3D;
+import game.DropingItemsOnScreen;
 import game.GameBoard;
 import game.GameManager;
 
@@ -78,7 +79,7 @@ public class Gui_algo extends JPanel  {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);
-		frame.setResizable(false);
+	//	frame.setResizable(false);
 		frame.add(this);		
 	}
 
@@ -95,6 +96,10 @@ public class Gui_algo extends JPanel  {
 		 updateScreen = true;
 		 refreshScreen.start();
 
+		 // 
+		 DropingItemsOnScreen dropping = new DropingItemsOnScreen();
+		 dropping.startDroppingItems();
+		 
 		
 	}
 

@@ -53,8 +53,7 @@ public class GameBoard {
 			double lon =  Double.parseDouble(data[3]);
 			System.out.println(elements.get(i));
 			if (type.equals("F")) {
-				fruits.add(new Fruit(this, map, id, new Point3D(lat, lon), Double.parseDouble(data[5])));
-				System.out.println("@");}
+				fruits.add(new Fruit(this, map, id, new Point3D(lat, lon), Double.parseDouble(data[5])));}
 			else if (type.equals("G"))
 				ghosts.add(new Ghost(this, map, id, new Point3D(lat, lon), Double.parseDouble(data[5])));
 			//else if (type.equals("B"))

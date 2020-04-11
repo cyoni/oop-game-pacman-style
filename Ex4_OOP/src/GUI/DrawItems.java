@@ -35,7 +35,7 @@ public class DrawItems {
 		for (int i=0; i< list.size(); i++) {
 			game_object obj = list.get(i);
 			Point3D pos = map.coordsToPixel(obj.getLocation().y(), obj.getLocation().x());
-			graphics.drawImage(picture , (int) ( pos.x()), (int) (pos.y()), 23, 23, null);
+			graphics.drawImage(picture , (int) ( pos.x()-20), (int) (pos.y()-40), 23, 23, null);
 	
 			
 		//	graphics.drawImage(picture, (int) (pos.x() - (rP / 2)), (int) (pos.y() - (rP / 2)), rP,	rP, null);
