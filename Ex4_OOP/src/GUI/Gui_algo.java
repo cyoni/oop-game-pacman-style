@@ -37,7 +37,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 
-public class Gui_algo extends JPanel implements MouseListener  {
+public class Gui_algo extends JPanel  {
 
 	/**
 	 * 
@@ -50,9 +50,9 @@ public class Gui_algo extends JPanel implements MouseListener  {
 	Images images = new Images();
 	private static final long serialVersionUID = -4673139390645816489L;
 	private JFrame frame;
-	private DrawItems drawItems;
+	DrawItems drawItems;
 	RefreshScreen refreshScreen;
-	
+	MouseClick mouse_event_listener = new MouseClick(this);
 	
 	public Gui_algo() {
 		setScreen();
@@ -61,42 +61,20 @@ public class Gui_algo extends JPanel implements MouseListener  {
 	
 	}
 
-
-	
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-		graphics.drawImage(images.getBackground(), 0, 0, this.getWidth(), this.getHeight(), null); // background 
-        if (updateScreen) {
-        	drawItems.drawObjects(gameboard.getFruits(), graphics, images.getFruit_image(), this);
-        	drawItems.drawObjects(gameboard.getGhosts(), graphics, images.getGhost_image(), this);
-        	drawItems.drawObjects(gameboard.getPacmans(), graphics, images.getPacman_image(), this);
-        	drawItems.drawPlayer(graphics, images.getPlayer_image(), this);
-        }
+        refreshScreen.refresh(images, graphics);
     }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-
+	
 
 	public void setScreen() {
 		frame = new JFrame("pacman");
 
 	
 		frame.setLayout(new BorderLayout());
-		frame.addMouseListener(this);
+		frame.addMouseListener(mouse_event_listener);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);

@@ -97,7 +97,7 @@ public class MyCoords implements coords_converter {
 @Override
 public double[] azimuth_elevation_dist(Point3D gps0, Point3D gps1) {
 	
-	double[] polarVec = new double[3];
+/*	double[] polarVec = new double[3];
 	if (isValid_GPS_Point(gps0)&&isValid_GPS_Point(gps1)) {
 		Point3D vec = vector3D(gps0,gps1);
 		polarVec[2] = distance3d(gps0,gps1);
@@ -107,16 +107,7 @@ public double[] azimuth_elevation_dist(Point3D gps0, Point3D gps1) {
 		double x = (Math.cos(gps0.y())*Math.sin(gps1.y()))-(Math.sin(gps0.y())*Math.cos(gps1.y())*Math.cos(gps1.x()-gps0.x()));
 		polarVec[0] = Math.atan2(y, x);
 		polarVec[0] = Math.toDegrees(polarVec[0]);
-//		if ((x<0)&&(y>=0)) polarVec[0]+= Math.PI;
-//		if ((x<0)&&(y<0)) polarVec[0]-= Math.PI;
-//		if ((x==0)&&(y>0)) polarVec[0]= Math.PI/2;
-//		if ((x==0)&&(y<0)) polarVec[0]= -Math.PI/2;
-//		if ((x==0)&&(y==0)) polarVec[0]= Double.NaN;
-//		System.out.println(polarVec[0]);
-//		polarVec[0]= Math.toDegrees(polarVec[0]);
-//		if ((vec.y()<0)&&(vec.x()>0)) polarVec[0]=180-polarVec[0];
-//		if ((vec.x()<0)&&(vec.y()>0)) polarVec[0]=360-polarVec[0];
-//		if ((vec.y()<0)&&(vec.x()<0)) polarVec[0]=180+polarVec[0];
+
 		if (polarVec[0]<0) polarVec[0]+=360;
 		if (polarVec[0]>360) polarVec[0]-=360;
 		
@@ -124,7 +115,7 @@ public double[] azimuth_elevation_dist(Point3D gps0, Point3D gps1) {
 		
 		return polarVec;
 	}
-	return null;
+	return null;*/
 }
 
 
