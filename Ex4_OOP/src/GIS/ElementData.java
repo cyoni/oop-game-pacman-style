@@ -2,7 +2,7 @@ package GIS;
 
 import Coords.MyCoords;
 import Geom.Geom_element;
-import Geom.Point3D;
+import Geom.Point2D;
 /** 
  * This class represents an element with data
  * @author Yoni
@@ -10,14 +10,14 @@ import Geom.Point3D;
 public class ElementData implements GIS_element {
 
 	private MetaData md;
-	private Point3D gps;
+	private Point2D gps;
 	
 	/** 
 	 * An Empty Constructor
 	 **/
 	public ElementData() {
 		md = new MetaData();
-		gps = new Point3D(0, 0, 0);
+		gps = new Point2D(0, 0, 0);
 	}
 
 	/** 
@@ -33,7 +33,7 @@ public class ElementData implements GIS_element {
 	public ElementData(String name, String date, String mac, String authMode,
 			double lon, double lat, double alt) {
 		this.md = new MetaData(name, date, mac, authMode);
-		this.gps = new Point3D(lat, lon, alt);
+		this.gps = new Point2D(lat, lon, alt);
 	}
 
 	/** 
@@ -44,9 +44,9 @@ public class ElementData implements GIS_element {
 	 * @param authMode   
 	 * @param cd   
 	 **/
-	public ElementData(String name, String date, String mac, String authMode, Point3D cd) {
+	public ElementData(String name, String date, String mac, String authMode, Point2D cd) {
 		this.md = new MetaData(name, date, mac, authMode);
-		this.gps = new Point3D(cd); // gets an object of coordinates
+		this.gps = new Point2D(cd); // gets an object of coordinates
 	}
 
 	/** 
@@ -58,7 +58,7 @@ public class ElementData implements GIS_element {
 	 **/
 	public ElementData(MetaData md, double lon, double lat, double alt) {
 		this.md = new MetaData(md);
-		this.gps = new Point3D(lat, lon, alt);
+		this.gps = new Point2D(lat, lon, alt);
 	}
 
 	/** 
@@ -74,9 +74,9 @@ public class ElementData implements GIS_element {
 	 * @param md  
 	 * @param gps  
 	 **/
-	public ElementData(MetaData md, Point3D gps) {
+	public ElementData(MetaData md, Point2D gps) {
 		this.md = new MetaData(md);
-		this.gps = new Point3D(gps);
+		this.gps = new Point2D(gps);
 	}
 
 	/** 
@@ -110,7 +110,7 @@ public class ElementData implements GIS_element {
 	 * @param gps  
 	 * @return true if md and gps equal to gps and md of this elementdata
 	 **/
-	public boolean equals(MetaData md, Point3D gps) {
+	public boolean equals(MetaData md, Point2D gps) {
 		return this.gps.equals(gps) && this.md.equals(md);
 	}
 
@@ -119,8 +119,8 @@ public class ElementData implements GIS_element {
 	 * @param vec  
 	 **/
 	@Override
-	public void translate(Point3D vec) {
-		Point3D p = new Point3D(this.gps);
+	public void translate(Point2D vec) {
+		Point2D p = new Point2D(this.gps);
 		gps = new MyCoords().add(p, vec);		
 	}
 

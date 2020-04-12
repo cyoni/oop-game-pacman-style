@@ -16,7 +16,7 @@ import GameObjects.Fruit;
 import GameObjects.Line;
 import GameObjects.Player;
 import GameObjects.game_object;
-import Geom.Point3D;
+import Geom.Point2D;
 import game.GameBoard;
 
 
@@ -34,8 +34,8 @@ public class DrawItems {
 	public void drawObjects(List<game_object> list, Graphics graphics,  BufferedImage picture, Gui_algo gui_algo) {
 		for (int i=0; i< list.size(); i++) {
 			game_object obj = list.get(i);
-			Point3D pos = map.coordsToPixel(obj.getLocation().y(), obj.getLocation().x());
-			graphics.drawImage(picture , (int) ( pos.x()-20), (int) (pos.y()-40), 23, 23, null);
+			
+			graphics.drawImage(picture , (int) ( obj.getLocation().x()-20), (int) (obj.getLocation().y()-40), 23, 23, null);
 	
 			
 		//	graphics.drawImage(picture, (int) (pos.x() - (rP / 2)), (int) (pos.y() - (rP / 2)), rP,	rP, null);
@@ -75,26 +75,12 @@ public class DrawItems {
 			
 		}
 	}*/
-	private void swapX(Point3D a, Point3D b) {
-		double temp = a.x();
-		a.set_x(b.x());
-		b.set_x(temp);
-	}
 
-	private void swapY(Point3D a, Point3D b) {
-		double temp = a.y();
-		a.set_y(b.y());
-		b.set_y(temp);
-	}
 
 	public void drawPlayer(Graphics graphics, BufferedImage picture, Gui_algo gui_algo) {
 		Player player = gameBoard.getPlayer();
-		
-
-		Point3D pos = map.coordsToPixel( player.getLocation().y(),  player.getLocation().x());
-		
-		graphics.drawImage(picture , (int) (pos.x()), (int)pos.y(), 23, 23, null);
-
+		Point2D pos = new Point2D(player.getLocation().y(),  player.getLocation().x());
+		graphics.drawImage(picture , (int) (pos.y()), (int)pos.x(), 23, 23, null);
 	}
 
 	public void drawLinesToRectengales(List<Line> lines, Graphics graphics) {	

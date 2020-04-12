@@ -1,6 +1,6 @@
 package GIS;
 
-import Geom.Point3D;
+import Geom.Point2D;
 
 public class LineIntersect {
 // https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
@@ -8,7 +8,7 @@ public class LineIntersect {
 	
 	// Given three colinear points p, q, r, the function checks if 
 	// point q lies on line segment 'pr' 
-	static boolean onSegment(Point3D p, Point3D q, Point3D r) 
+	static boolean onSegment(Point2D p, Point2D q, Point2D r) 
 	{ 
 	    if (q.x() <= Math.max(p.x(), r.x()) && q.x() >= Math.min(p.x(), r.x()) && 
 	        q.y() <= Math.max(p.y(), r.y()) && q.y() >= Math.min(p.y(), r.y())) 
@@ -22,7 +22,7 @@ public class LineIntersect {
 	// 0 --> p, q and r are colinear 
 	// 1 --> Clockwise 
 	// 2 --> Counterclockwise 
-	 static int orientation(Point3D p, Point3D q, Point3D r) 
+	 static int orientation(Point2D p, Point2D q, Point2D r) 
 	{ 
 	    // See https://www.geeksforgeeks.org/orientation-3-ordered-points/ 
 	    // for details of below formula. 
@@ -35,7 +35,7 @@ public class LineIntersect {
 	  
 	// The main function that returns true if line segment 'p1q1' 
 	// and 'p2q2' intersect. 
-	 public static boolean doIntersect(Point3D p1, Point3D q1, Point3D p2, Point3D q2) 
+	 public static boolean doIntersect(Point2D p1, Point2D q1, Point2D p2, Point2D q2) 
 	{ 
 	    // Find the four orientations needed for general and 
 	    // special cases 

@@ -28,7 +28,7 @@ import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Rectangle;
 import GameObjects.game_object;
-import Geom.Point3D;
+import Geom.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
 import game.GameManager;
@@ -72,14 +72,12 @@ public class Gui_algo extends JPanel  {
 
 	public void setScreen() {
 		frame = new JFrame("pacman");
-
-	
 		frame.setLayout(new BorderLayout());
 		frame.addMouseListener(mouse_event_listener);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);
-	//	frame.setResizable(false);
+		frame.setResizable(false);
 		frame.add(this);		
 	}
 
@@ -87,18 +85,20 @@ public class Gui_algo extends JPanel  {
 
 		CSVReader csv = new CSVReader("..");
 		List<String> elements = csv.processFile();
-		player = new Player(1, new Point3D(32.1040,35.2061), 3);
+		player = new Player(1, map, new Point2D(35.208207,32.10538), 3);
 
-		 gameboard = new GameBoard(map, elements, "..", player);	
+		 gameboard = new GameBoard(map, elements, player);	
 		 drawItems = new DrawItems(map, gameboard);
-    
 
+		 
 		 updateScreen = true;
 		 refreshScreen.start();
-
-		 // 
-		 DropingItemsOnScreen dropping = new DropingItemsOnScreen();
-		 dropping.startDroppingItems();
+		 
+		 GameManager gameManager = new GameManager(gameboard);
+		 gameManager.startGame();
+		 
+		// DropingItemsOnScreen dropping = new DropingItemsOnScreen();
+		// dropping.startDroppingItems();
 		 
 		
 	}

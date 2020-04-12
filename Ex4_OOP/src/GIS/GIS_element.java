@@ -1,7 +1,7 @@
 package GIS;
 
 import Geom.Geom_element;
-import Geom.Point3D;
+import Geom.Point2D;
 
 /**
  * This interface represents a GIS element with geometric representation and meta data such as:
@@ -11,5 +11,5 @@ import Geom.Point3D;
 public interface GIS_element {
 	public Geom_element getGeom();
 	public Meta_data getData();
-	public void translate(Point3D vec);
+	public void translate(Point2D vec);
 }

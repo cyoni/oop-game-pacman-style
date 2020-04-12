@@ -2,7 +2,8 @@ package GameObjects;
 
 
 import GIS.Map;
-import Geom.Point3D;
+import GUI.Gui_dialog;
+import Geom.Point2D;
 import game.GameBoard;
 
 /**
@@ -16,8 +17,8 @@ public class Fruit extends game_object {
 	private double weight; 
 	
 		
-	public Fruit(GameBoard gameBoard, Map map, int id, Point3D location, double weight) {
-		super(id, location);
+	public Fruit(GameBoard gameBoard, Map map, int id, Point2D location, double weight) {
+		super(id, map.global2pixel(location));
 		this.weight = weight;
 	}
 

@@ -6,9 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import javax.imageio.ImageIO;
 
+import Coords.MyCoords;
 import GIS.Map;
 import GUI.Gui_dialog;
 import GameObjects.Rectangle;
@@ -17,23 +19,35 @@ import GameObjects.Ghost;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.game_object;
-import Geom.Point3D;
+import Geom.Point2D;
 
 public class GameBoard {
-	List<Rectangle> rectangles = new ArrayList<>();
-	List<game_object> fruits = new ArrayList<>();
-	List<game_object> pacmans = new ArrayList<>();
-	List<game_object> ghosts = new ArrayList<>();
-	Player player;
-	private String game_scenario;
-	
+	private List<Rectangle> rectangles = new ArrayList<>();
+	private List<game_object> fruits = new ArrayList<>();
+	private List<game_object> pacmans = new ArrayList<>();
+	private List<game_object> ghosts = new ArrayList<>();
+	private Player player;
 	private Map map;
+	private PriorityQueue<game_object> closestFruits;
 
 
-	public GameBoard(Map map, List<String> elements, String game_scenario, Player player) {
+	public GameBoard(Map map, List<String> elements, Player player) {
 		this.player = player;
 		this.map = map;
+		
 		updateGameObjects(elements);
+		initializeClosestFruits();
+		
+	}
+	
+	
+	private void initializeClosestFruits() {
+		closestFruits = new PriorityQueue<>(5, new FruitComperator(this));
+		closestFruits.addAll(fruits);		
+	}
+	
+	public Map getMap() {
+		return map;
 	}
 	
 	public void updateGameObjects(List<String> elements) {
@@ -53,19 +67,20 @@ public class GameBoard {
 			double lon =  Double.parseDouble(data[3]);
 			System.out.println(elements.get(i));
 			if (type.equals("F")) {
-				fruits.add(new Fruit(this, map, id, new Point3D(lat, lon), Double.parseDouble(data[5])));}
+				fruits.add(new Fruit(this, map, id, new Point2D(lon, lat), Double.parseDouble(data[5])));}
 			else if (type.equals("G"))
-				ghosts.add(new Ghost(this, map, id, new Point3D(lat, lon), Double.parseDouble(data[5])));
+				ghosts.add(new Ghost(this, map, id, new Point2D(lon, lat), Double.parseDouble(data[5])));
 			//else if (type.equals("B"))
 		//		rectangles.add(new Rectangle(data));
 			else if (type.equals("P"))
-				pacmans.add(new Pacman(id, new Point3D(lat, lon), Double.parseDouble(data[6])));
-			else if (type.equals("M"))
-				player = new Player(id, new Point3D(lat, lon), Double.parseDouble(data[6]));				
+				pacmans.add(new Pacman(id, map, new Point2D(lon, lat), Double.parseDouble(data[6])));
+		//	else if (type.equals("M"))
+		//		player = new Player(id, map.global2pixel(new Point3D(lat, lon)), Double.parseDouble(data[6]));				
 		}
 
 
 	}
+
 
 	
 	//public List<Rectangle> getRectangles() {return rectangles;}

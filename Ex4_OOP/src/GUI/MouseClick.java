@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 
 import GameObjects.Fruit;
-import Geom.Point3D;
+import Geom.Point2D;
 import game.DropingItemsOnScreen;
 
 public class MouseClick implements MouseListener {
@@ -22,6 +22,8 @@ public class MouseClick implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
+		System.out.println(e.getX() + "," + e.getY());
+		
 		if (e.getButton() == java.awt.event.MouseEvent.BUTTON1) { // left mouse click
 				if (DropingItemsOnScreen.dropping_apples) dropApple(e);
 				
@@ -38,8 +40,8 @@ public class MouseClick implements MouseListener {
 	}
 
 	private void dropApple(MouseEvent e) {
-		Point3D point = new Point3D(e.getX(), e.getY());
-		Point3D insert = new Point3D(gui_algo.map.pixel2global(point).y(),gui_algo.map.pixel2global(point).x());
+		Point2D point = new Point2D(e.getX(), e.getY());
+		Point2D insert = new Point2D(gui_algo.map.pixel2global(point).y(),gui_algo.map.pixel2global(point).x());
 		
 		Fruit fruit = new Fruit(gui_algo.gameboard, gui_algo.map, 999,insert , 9999);
 		gui_algo.gameboard.getFruits().add(fruit);

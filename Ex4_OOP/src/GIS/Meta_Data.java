@@ -1,6 +1,6 @@
 package GIS;
 
-import Geom.Point3D;
+import Geom.Point2D;
 
 public interface Meta_Data {
 	/** returns the Universal Time Clock associated with this data; */
@@ -10,5 +10,5 @@ public interface Meta_Data {
 	/**
 	 * @return the orientation: yaw, pitch and roll associated with this data;
 	 */
-	public Point3D get_Orientation();
+	public Point2D get_Orientation();
 }

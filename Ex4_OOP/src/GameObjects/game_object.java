@@ -3,23 +3,27 @@ package GameObjects;
 
 
 import GIS.Map;
-import Geom.Point3D;
+import Geom.Point2D;
 import game.GameBoard;
 
 public class game_object {
 	public String picture;
 
 	int id = -1;
-	private Point3D location;
+	private Point2D location;
 
-	public game_object(int id, Point3D location) {
+	public game_object(int id, Point2D location) {
 		this.id = id;
 		this.location = location;
 	}
 	
 
-	public Point3D getLocation() {
+	public Point2D getLocation() {
 		return location;
+	}
+	
+	public void setLocation(Point2D newLocation) {
+		location = newLocation;
 	}
 
 	public int getId() {
