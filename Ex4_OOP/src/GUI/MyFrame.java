@@ -22,16 +22,17 @@ public class MyFrame {
 
 	/**
 	 * empty constructor
+	 * @throws Exception 
 	**/
 	
-	public MyFrame() {
+	public MyFrame() throws Exception {
 		Gui_algo gui_algo = new Gui_algo(); 
 	    gui_algo.test();
 	}
 
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new MyFrame();
 	}
 }

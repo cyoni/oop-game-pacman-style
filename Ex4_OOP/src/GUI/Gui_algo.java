@@ -81,7 +81,7 @@ public class Gui_algo extends JPanel  {
 		frame.add(this);		
 	}
 
-	public void test() {
+	public void test() throws Exception {
 
 		CSVReader csv = new CSVReader("..");
 		List<String> elements = csv.processFile();

@@ -12,6 +12,8 @@ public class game_object {
 	int id = -1;
 	private Point2D location;
 
+	private game_object target;
+
 	public game_object(int id, Point2D location) {
 		this.id = id;
 		this.location = location;
@@ -30,5 +32,13 @@ public class game_object {
 		return id;
 	}
 
+
+	public game_object getTarget() {
+		return target;
+	}
+	
+	public void setTarget(game_object target) {
+		this.target = target;
+	}
 
 }

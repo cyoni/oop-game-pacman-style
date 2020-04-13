@@ -23,12 +23,13 @@ import Geom.Point2D;
 
 public class GameBoard {
 	private List<Rectangle> rectangles = new ArrayList<>();
-	private List<game_object> fruits = new ArrayList<>();
 	private List<game_object> pacmans = new ArrayList<>();
 	private List<game_object> ghosts = new ArrayList<>();
 	private Player player;
 	private Map map;
-	private PriorityQueue<game_object> closestFruits;
+	private PriorityQueue<game_object> closestFruits = new PriorityQueue<>(5, new FruitComperator(this));
+	private boolean game_status;
+
 
 
 	public GameBoard(Map map, List<String> elements, Player player) {
@@ -36,15 +37,15 @@ public class GameBoard {
 		this.map = map;
 		
 		updateGameObjects(elements);
-		initializeClosestFruits();
 		
 	}
 	
-	
-	private void initializeClosestFruits() {
-		closestFruits = new PriorityQueue<>(5, new FruitComperator(this));
-		closestFruits.addAll(fruits);		
+
+	public void setGame_status(boolean game_status) {
+		this.game_status = game_status;
 	}
+
+
 	
 	public Map getMap() {
 		return map;
@@ -67,7 +68,7 @@ public class GameBoard {
 			double lon =  Double.parseDouble(data[3]);
 			System.out.println(elements.get(i));
 			if (type.equals("F")) {
-				fruits.add(new Fruit(this, map, id, new Point2D(lon, lat), Double.parseDouble(data[5])));}
+				closestFruits.add(new Fruit(this, map, id, new Point2D(lon, lat), Double.parseDouble(data[5])));}
 			else if (type.equals("G"))
 				ghosts.add(new Ghost(this, map, id, new Point2D(lon, lat), Double.parseDouble(data[5])));
 			//else if (type.equals("B"))
@@ -84,10 +85,17 @@ public class GameBoard {
 
 	
 	//public List<Rectangle> getRectangles() {return rectangles;}
-	public List<game_object> getFruits() {return fruits;}
+	public synchronized PriorityQueue<game_object> getFruits() {return closestFruits;}
 	public List<game_object> getPacmans() {return pacmans;}
 	public List<game_object> getGhosts() {return ghosts;}
-	public Player getPlayer() { return player;}
+	public synchronized Player getPlayer() { return player;}
+
+
+
+
+	public boolean isRunning() {
+		return game_status;
+	}
 	
 
 

@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import javax.swing.JFrame;
 
@@ -34,59 +36,30 @@ public class DrawItems {
 	public void drawObjects(List<game_object> list, Graphics graphics,  BufferedImage picture, Gui_algo gui_algo) {
 		for (int i=0; i< list.size(); i++) {
 			game_object obj = list.get(i);
-			
 			graphics.drawImage(picture , (int) ( obj.getLocation().x()-20), (int) (obj.getLocation().y()-40), 23, 23, null);
-	
-			
-		//	graphics.drawImage(picture, (int) (pos.x() - (rP / 2)), (int) (pos.y() - (rP / 2)), rP,	rP, null);
-			
 		}
 	}
-/*
-	public void drawBlocks( List<Rectangle> list,Graphics graphics) {
-		Graphics2D Graphics = (Graphics2D) graphics;
-		for (int i=0; i< list.size(); i++) {
-			Rectangle obj = list.get(i);
-			Point3D pos1 = obj.getP_up_left();
-			Point3D pos2 = obj.getP_down_right();
-			
-			int width = (int) Math.abs(pos1.x()-pos2.x());
-			int height = (int) Math.abs( pos1.y()-pos2.y());
-			
-			
-			
-			Graphics.fillRect(((int)pos1.x()), (int)pos2.y(), width, height);
-
-			Point3D p1 = map.global2pixel(obj.getP1());// in pixel
-			Point3D p2 = map.global2pixel(obj.getP2());// in pixel
-
-			if (p2.x() < p1.x()) {
-				swapX(p2, p1);
-			}
-			if (p2.y() < p1.y()) {
-				swapY(p2, p1);
-			}
-			int width = (int) (p2.x() - p1.x());
-			int height = (int) (p2.y() - p1.y());
-			graphics.setColor(Color.BLACK);
-			graphics.drawRect((int) p1.x(), (int) p1.y(), width, height);
-			graphics.fillRect((int) p1.x(), (int) p1.y(), width, height);
-			
-			
-		}
-	}*/
 
 
 	public void drawPlayer(Graphics graphics, BufferedImage picture, Gui_algo gui_algo) {
 		Player player = gameBoard.getPlayer();
 		Point2D pos = new Point2D(player.getLocation().y(),  player.getLocation().x());
-		graphics.drawImage(picture , (int) (pos.y()), (int)pos.x(), 23, 23, null);
+		graphics.drawImage(picture , (int) (pos.y()), (int)pos.x(), 23, 23, gui_algo);
 	}
 
 	public void drawLinesToRectengales(List<Line> lines, Graphics graphics) {	
 		
 		for (int i = 0; i < lines.size(); i++) {
 			graphics.drawLine((int)lines.get(i).getP1().x(), (int)lines.get(i).getP1().y(), (int)lines.get(i).getP2().x(), (int)lines.get(i).getP2().y());	
+		}
+	}
+
+	public void drawFruits(PriorityQueue<game_object> queue, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
+		Iterator<game_object> iter = queue.iterator(); 
+
+		while(iter.hasNext()) {
+			game_object obj = iter.next();
+			graphics.drawImage(fruit_image , (int) ( obj.getLocation().x()), (int) (obj.getLocation().y()), 23, 23, null);
 		}
 	}
 
