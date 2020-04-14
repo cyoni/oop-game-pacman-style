@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import Coords.MyCoords;
-import FileFormat.CSVReader;
+import FileFormat.CSVReaderAndWriter;
 import GUI.Gui_dialog;
 import GameObjects.Player;
 import GameObjects.game_object;
@@ -15,7 +15,9 @@ public class GameManager extends Thread {
 
 	GameBoard gameboard;
 	
-	long gameTimer = 50000;
+	long gameTimer = 11000;
+
+	private double rate;
 	
 	public GameManager(GameBoard gameboard) {
 		this.gameboard = gameboard;
@@ -23,7 +25,8 @@ public class GameManager extends Thread {
 	}
 
 	public void startGame() throws Exception {
-		gameboard.setGame_status(true);
+		if (gameboard.getPlayer()==null) throw new Exception("Player is null");
+		gameboard.setGameStatus(true);
 		FruitManager fruitManager = new FruitManager(gameboard);
 		fruitManager.start();
 		
@@ -40,7 +43,7 @@ public class GameManager extends Thread {
 			
 			double m = 0;
 		while(gameboard.isRunning() && gameTimer > 0) {
-			gameTimer=100;
+			gameTimer-=1;
 			//System.out.println(gameTimer);
 			
 			
@@ -61,7 +64,7 @@ public class GameManager extends Thread {
 			// checks if the object is close to the target 
 			
 			if (queue.size() == 0) {
-					gameboard.setGame_status(false);
+					gameboard.setGameStatus(false);
 					throw new Exception("No more fruits");
 				
 			}
@@ -71,12 +74,19 @@ public class GameManager extends Thread {
 				player.setTarget(fruit);
 				target = player.getTarget().getLocation();
 				m = (target.y() - player.getLocation().y()) / (target.x() - player.getLocation().x());
+				
+				if (Math.abs(player.getLocation().x() - player.getTarget().getLocation().x()) < 10) {
+					setRateStep(0.5);
+					}
+				else setRateStep(15);
 
 			}
 			
 			if (player.getTarget() != null) {
 				
-				if (!queue.contains(player.getTarget())) player.setTarget(null);
+				if (!queue.contains(player.getTarget())) {
+					player.setTarget(null);
+				}
 				else {
 					
 					if (fruit != player.getTarget())
@@ -112,17 +122,21 @@ public class GameManager extends Thread {
 	
 
 				if (player.getLocation().x() > player.getTarget().getLocation().x()) { // go down
-					player.setLocation(new Point2D(player.getLocation().x()-3 , y1));	
+					
+					
+					
+					player.setLocation(new Point2D(player.getLocation().x()-getRate() , y1));	
 					System.out.println("going down " + player.getLocation());
 				}
 				else if(player.getLocation().x() < player.getTarget().getLocation().x()) { // go up
-					gameboard.getPlayer().setLocation(new Point2D(player.getLocation().x()+3 , y1));	
+					gameboard.getPlayer().setLocation(new Point2D(player.getLocation().x()+getRate() , y1));	
 					System.out.println("going up " + player.getLocation());
 
 				}
 				else { // degree is 0
 					System.out.println("going no where");
 				}
+				System.out.println("RATE: " + getRate() + "," + gameTimer);
 				
 	
 				}
@@ -137,6 +151,13 @@ public class GameManager extends Thread {
 		catch (InterruptedException e) {}
 
 	}
+
+	protected void setRateStep(double d) {
+		this.rate = d;		
+	}
 	
+	protected double getRate() {
+		return rate;
+	}
 	
 }

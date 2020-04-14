@@ -9,15 +9,16 @@ import game.GameBoard;
 public class game_object {
 	public String picture;
 
-	int id = -1;
+	private int id = -1;
 	private Point2D location;
-
 	private game_object target;
+	public static Map map;
 
 	public game_object(int id, Point2D location) {
 		this.id = id;
 		this.location = location;
 	}
+	
 	
 
 	public Point2D getLocation() {
@@ -32,9 +33,12 @@ public class game_object {
 		return id;
 	}
 
-
 	public game_object getTarget() {
 		return target;
+	}
+	
+	public Point2D getGlobalPoint() {
+		return game_object.map.pixel2global(getLocation());
 	}
 	
 	public void setTarget(game_object target) {

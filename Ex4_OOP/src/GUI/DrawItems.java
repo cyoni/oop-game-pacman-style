@@ -5,9 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import javax.swing.JFrame;
 
@@ -54,11 +56,12 @@ public class DrawItems {
 		}
 	}
 
-	public void drawFruits(PriorityQueue<game_object> queue, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
-		Iterator<game_object> iter = queue.iterator(); 
+	public synchronized void drawFruits(List<game_object> list, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
+	//	Iterator<game_object> iter = list.iterator(); 
 
-		while(iter.hasNext()) {
-			game_object obj = iter.next();
+		//while(iter.hasNext()) {
+		for (int i=0; i<list.size(); i++) {
+			game_object obj = list.get(i);
 			graphics.drawImage(fruit_image , (int) ( obj.getLocation().x()), (int) (obj.getLocation().y()), 23, 23, null);
 		}
 	}

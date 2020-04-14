@@ -1,6 +1,9 @@
 package GUI;
 
 import java.awt.Graphics;
+import java.util.Queue;
+
+import GameObjects.game_object;
 
 public class RefreshScreen extends Thread {
 	
@@ -23,12 +26,12 @@ public class RefreshScreen extends Thread {
 	}
 
 
-	public void refresh(Images images, Graphics graphics) {
-		graphics.drawImage(images.getBackground(), 0, 0, gui_algo.getWidth(), gui_algo.getHeight(), gui_algo); // background 
-		gui_algo.drawItems.drawFruits(gui_algo.gameboard.getFruits(), graphics, images.getFruit_image(), gui_algo); // throws error
-		gui_algo.drawItems.drawObjects(gui_algo.gameboard.getGhosts(), graphics, images.getGhost_image(), gui_algo);
-        gui_algo.drawItems.drawObjects(gui_algo.gameboard.getPacmans(), graphics, images.getPacman_image(), gui_algo);
-        gui_algo.drawItems.drawPlayer(graphics, images.getPlayer_image(), gui_algo);
+	public synchronized void refresh(Images images, Graphics graphics) {
+	
+		//gui_algo.drawItems.drawFruits(gui_algo.gameboard.getFruits(), graphics, images.getFruit_image(), gui_algo); // throws error
+	//	gui_algo.drawItems.drawObjects(gui_algo.gameboard.getGhosts(), graphics, images.getGhost_image(), gui_algo);
+	 //   gui_algo.drawItems.drawObjects(gui_algo.gameboard.getPacmans(), graphics, images.getPacman_image(), gui_algo);
+	 //   gui_algo.drawItems.drawPlayer(graphics, images.getPlayer_image(), gui_algo);
 	}
 
 }

@@ -14,10 +14,13 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import Coords.MyCoords;
-import FileFormat.CSVReader;
+import FileFormat.CSVReaderAndWriter;
 import GIS.Background;
 import GIS.LineIntersect;
 import GIS.Map;
@@ -44,7 +47,7 @@ public class Gui_algo extends JPanel  {
 	 * 
 	 */
 	boolean updateScreen = false;
-	JFrame panel = new JFrame();
+	protected JFrame jframe = new JFrame();
 	public Map map;
 	protected GameBoard gameboard;
 	Player player;
@@ -52,50 +55,75 @@ public class Gui_algo extends JPanel  {
 	private static final long serialVersionUID = -4673139390645816489L;
 	private JFrame frame;
 	DrawItems drawItems;
-	RefreshScreen refreshScreen;
-	MouseClick mouse_event_listener = new MouseClick(this);
-	
+	RefreshScreen refreshScreen = new RefreshScreen(this);
+	MouseClickOnScreen mouse_event_listener = new MouseClickOnScreen(this);
+    private boolean refereshScreen = false;
+
 	public Gui_algo() {
 		setScreen();
 		map = new Map(frame);
-		refreshScreen = new RefreshScreen(this);
-	
+		game_object.map = map;
+		
 	}
 
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        refreshScreen.refresh(images, graphics);
+    	graphics.drawImage(images.getBackground(), 0, 0, getWidth(), getHeight(), this); // background
+   
+    	if (updateScreen) {    	
+	    	List<game_object> fruits = gameboard.getFruits();
+	    	draw(graphics, fruits, images.getFruit_image());
+	    	List<game_object> pacmans = gameboard.getPacmans();
+	    	draw(graphics, pacmans, images.getPacman_image());
+	    	List<game_object> ghosts = gameboard.getGhosts();
+	    	draw(graphics, ghosts, images.getGhost_image());
+	    	
+	    	if (gameboard.getPlayer() != null) {
+	    		List<game_object> list = new ArrayList<>();
+	    		list.add(gameboard.getPlayer());
+	    		draw(graphics, list, images.getPlayer_image());}
+			
+    	}
     }
 
-	
+	private void draw(Graphics graphics, List<game_object> obj, Image picture) {
+		for (int i=0; i<obj.size(); i++) {
+			game_object item = obj.get(i);
+			graphics.drawImage(picture, (int) ( item.getLocation().x()), (int) (item.getLocation().y()), 23, 23, null);
+		}		
+	}
 
 	public void setScreen() {
+		Menu_Gui menu = new Menu_Gui(this);
 		frame = new JFrame("pacman");
 		frame.setLayout(new BorderLayout());
+		frame.setJMenuBar(menu.getMenu());
 		frame.addMouseListener(mouse_event_listener);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);
 		frame.setResizable(false);
-		frame.add(this);		
+		frame.add(this);	
+		frame.setLocationRelativeTo(null);
 	}
-
+	
 	public void test() throws Exception {
 
-		CSVReader csv = new CSVReader("..");
+		CSVReaderAndWriter csv = new CSVReaderAndWriter("..");
 		List<String> elements = csv.processFile();
-		player = new Player(1, map, new Point2D(35.208207,32.10538), 3);
+		//player = new Player(1, map, new Point2D(35.208207,32.10538), 3);
 
-		 gameboard = new GameBoard(map, elements, player);	
-		 drawItems = new DrawItems(map, gameboard);
+		 gameboard = new GameBoard(map);	
+		// drawItems = new DrawItems(map, gameboard);
 
 		 
 		 updateScreen = true;
-		 refreshScreen.start();
+		// refreshScreen.start();
+		// refereshScreen = true;
 		 
-		 GameManager gameManager = new GameManager(gameboard);
-		 gameManager.startGame();
+	//	 GameManager gameManager = new GameManager(gameboard);
+	//	 gameManager.startGame();
 		 
 		// DropingItemsOnScreen dropping = new DropingItemsOnScreen();
 		// dropping.startDroppingItems();
@@ -105,6 +133,13 @@ public class Gui_algo extends JPanel  {
 
 	public void setGameBoard(GameBoard gameBoard) {
 		this.gameboard = gameBoard;
+	}
+
+	public void exportToCSV() throws IOException {
+		CSVReaderAndWriter csvWriter = new CSVReaderAndWriter();
+		String file_name = csvWriter.chooseFolder();
+		csvWriter.writeToCSV(gameboard, file_name);
+		
 	}
 
 }
