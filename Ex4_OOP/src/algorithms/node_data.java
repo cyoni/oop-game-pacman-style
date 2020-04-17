@@ -1,6 +1,5 @@
 package algorithms;
 
-import Geom.Point2D;
 /**
  * This interface represents the set of operations applicable on a 
  * node (vertex) in a (directional) weighted graph.
@@ -39,11 +38,11 @@ public interface node_data {
 	 * which can be used be algorithms 
 	 * @return
 	 */
-	public int getTag();
+	public String getTag();
 	/** 
 	 * Allow setting the "tag" value for temporal marking an node - common 
 	 * practice for marking by algorithms.
 	 * @param t - the new value of the tag
 	 */
-	public void setTag(int t);
+	public void setTag(String tag);
 }

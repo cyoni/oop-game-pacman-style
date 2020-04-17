@@ -3,7 +3,7 @@ package GameObjects;
 
 import GIS.Map;
 import GUI.Gui_dialog;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.GameBoard;
 
 /**
@@ -26,7 +26,7 @@ public class Fruit extends game_object {
 
 	
 	public String toString() {
-		Point2D global_location = getGlobalPoint();
+		Point2D global_location = getLocation();
 		return "F,"	+ getId() + 
 				","	+ global_location.x() + 
 				"," + global_location.y() +
@@ -40,6 +40,11 @@ public class Fruit extends game_object {
 	
 	public double getEatingRadius() {
 		return eatingRadius;
+	}
+
+
+	public static String getTag() {
+		return "fruit";
 	}
 
 

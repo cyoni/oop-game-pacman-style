@@ -1,7 +1,7 @@
 package GameObjects;
 
 import GIS.Map;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.GameBoard;
 
 
@@ -18,7 +18,7 @@ public class Ghost extends game_object implements IHungry{
 	}
 
 	public String toString() {
-		Point2D global_location = getGlobalPoint();
+		Point2D global_location = getLocation();
 		return "G,"	+ getId() + 
 				","	+ global_location.x() + 
 				"," + global_location.y() +

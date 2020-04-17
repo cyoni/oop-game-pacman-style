@@ -19,34 +19,34 @@ public class Graph implements IGraph, Serializable {
 	 */
 	private static final long serialVersionUID = -8995919428111032917L;
 	
-	private Map<Integer, node_data> g;
-	private Map<Integer, List<edge_data>> e;
+	private Map<Integer, node_data> graph_dataStructure;
+	private Map<Integer, List<edge_data>> edge_dataStructure;
 
 	public Graph() {
-		g = new HashMap<>();
-		e = new HashMap<>();
+		graph_dataStructure = new HashMap<>();
+		edge_dataStructure = new HashMap<>();
 	}
 	
 	@Override
 	public node_data getNode(int key) {
-		return g.get(key); 
+		return graph_dataStructure.get(key); 
 	}
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
 		edge_data edge = null;
-		List<edge_data> list = e.get(src);
-		for (edge_data current_edge : list) {
-			if (current_edge.getDest() == dest) edge = current_edge; 
-		}
+		List<edge_data> list = edge_dataStructure.get(src);
+		if (list != null)
+			for (edge_data current_edge : list) {
+				if (current_edge.getDest() == dest) edge = current_edge; 
+			}
 		return edge;
 	}
 
 	@Override
 	public void addNode(node_data n) {
-		if (g.containsKey(n.getKey()))	try {throw new IllegalAccessException("This id " + n.getKey() + " is already occupied.");} catch (IllegalAccessException e) {e.printStackTrace();}
-		System.out.println(n.getKey() + " # was added");
-		g.put(n.getKey(), n);
+		if (graph_dataStructure.containsKey(n.getKey()))	try {throw new IllegalAccessException("This id " + n.getKey() + " is already occupied.");} catch (IllegalAccessException e) {e.printStackTrace();}
+		graph_dataStructure.put(n.getKey(), n);
 	}
 
 	@Override
@@ -54,40 +54,40 @@ public class Graph implements IGraph, Serializable {
 
 		Edge edge_new = new Edge(src, dest, distance);
 		
-		List<edge_data> list = e.get(src);
+		List<edge_data> list = edge_dataStructure.get(src);
 		if (list == null) list = new ArrayList<>();
 		list.add(edge_new);
-		e.put(src, list);
+		edge_dataStructure.put(src, list);
 		System.out.println("E put: " + src + "," + dest);
 		
-		list = e.get(dest);
+		list = edge_dataStructure.get(dest);
 		if (list == null) list = new ArrayList<>();
 		edge_new = new Edge(dest, src, distance);
 		list.add(edge_new);
-		e.put(dest, list);	
+		edge_dataStructure.put(dest, list);	
 	}
 
 	@Override
 	public Collection<node_data> getV() {
-		return (Collection<node_data>) g.values() ;
+		return (Collection<node_data>) graph_dataStructure.values() ;
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		return e.get(node_id);
+		return edge_dataStructure.get(node_id);
 	}
 
 	@Override
 	public node_data removeNode(int key) {
-		List<edge_data> old_node_edges = e.get(key);
-		g.remove(key); // remove the node
-		e.remove(key); //  remove its edges	
+		List<edge_data> old_node_edges = edge_dataStructure.get(key);
+		graph_dataStructure.remove(key); // remove the node
+		edge_dataStructure.remove(key); //  remove its edges	
 		for (edge_data edge : old_node_edges) { // remove the edges that connect with him from his neighbors 
 			int dest = edge.getDest();
-			List<edge_data> l = e.get(dest); 
+			List<edge_data> l = edge_dataStructure.get(dest); 
 			for (int i=0; i< l.size(); i++) {
 				edge_data edge_to_check = l.get(i);
-				if (edge_to_check.getDest() == key)   {e.get(dest).remove(edge_to_check); i--;} 
+				if (edge_to_check.getDest() == key)   {edge_dataStructure.get(dest).remove(edge_to_check); i--;} 
 			}
 		}
 		return null;
@@ -95,28 +95,29 @@ public class Graph implements IGraph, Serializable {
 
 	@Override
 	public edge_data removeEdge(int src, int dest) {
-		e.remove(src);
-		e.remove(dest);
+		edge_dataStructure.remove(src);
+		edge_dataStructure.remove(dest);
 		return null;
 	}
 
 	@Override
 	public int nodeSize() {
-		return g.size();
+		return graph_dataStructure.size();
 	}
 
 	@Override
 	public int edgeSize() {
-		return e.size();
+		return edge_dataStructure.size();
 	}
 	
 	
-	public double[][] getMatrixGraph(){
-		int nodes = nodeSize();
+	public double[][] getMatrixGraph(int nodes){
+		System.out.println(graph_dataStructure.size());
 		double mat[][] = new double[nodes][nodes];
 		for (int i=0;i<mat.length; i++) {
 			for (int j = 0; j < mat.length; j++) {
-				if (i != j) {
+				if (i != j && getEdge(i, j) != null) {
+					System.out.println("getting edge " + i +"," + j);
 				mat[i][j] = getEdge(i, j).getWeight();
 				}
 			}

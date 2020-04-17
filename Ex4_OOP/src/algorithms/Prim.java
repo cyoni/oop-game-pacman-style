@@ -28,16 +28,19 @@ public class Prim {
 		Graph graph_MST = new Graph();
 		System.out.println("Edge \tWeight"); 
 		for (int i = 1; i < mat.length; i++) {
-			System.out.println(parent[i] + " - " + i + "\t" + mat[i][parent[i]]); 
-			
+			double edge_distance = mat[i][parent[i]];
+			if (edge_distance  > 0) {
+			System.out.println(parent[i] + " - " + i + "\t" + edge_distance); 
+				
 			node_data node_src = gameGraph.getNode(parent[i]);
 			node_data node_dest = gameGraph.getNode(i);
-			
+				
 			if (graph_MST.getNode(node_src.getKey()) == null)
 				graph_MST.addNode(node_src);
-			graph_MST.addNode(node_dest);
-			graph_MST.connect(node_src.getKey(), node_dest.getKey(), mat[i][parent[i]]);
-		}
+			if (graph_MST.getNode(node_dest.getKey()) == null)
+				graph_MST.addNode(node_dest);
+			graph_MST.connect(node_src.getKey(), node_dest.getKey(), edge_distance);
+		}}
 		return graph_MST;
 	} 
 
@@ -55,7 +58,7 @@ public class Prim {
 			int u = minKey(key, mstSet); 
 			mstSet[u] = true; 
 			for (int v = 0; v < mat.length; v++) 
-				if (mat[u][v] != 0 && mstSet[v] == false && mat[u][v] < key[v]) {
+				if (mat[u][v] != 0.0 && mstSet[v] == false && mat[u][v] < key[v]) {
 					parent[v] = u; 
 					key[v] = mat[u][v]; 
 				} 

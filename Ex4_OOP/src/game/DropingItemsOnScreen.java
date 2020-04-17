@@ -45,7 +45,7 @@ public class DropingItemsOnScreen extends Thread {
 
 	public void dropApples() {
 		
-		Gui_dialog.alert("Hi. Start dropping apples. Once done, press the right button of the mouse");
+		Gui_dialog.alert("Start dropping fruits. Once done, press the right button of the mouse");
 		while (dropping_apples) {
 			try {
 				sleep(500);

@@ -1,4 +1,4 @@
-package Geom;
+package algorithms;
 
 import java.io.Serializable;
 public class Point2D  

@@ -1,6 +1,6 @@
 package GameObjects;
 
-import Geom.Point2D;
+import algorithms.Point2D;
 /**
  *  
  * @author Yoni
@@ -18,7 +18,7 @@ public class Pacman extends game_object implements IHungry {
 	}
 
 	public String toString() {
-		Point2D global_location = getGlobalPoint();
+		Point2D global_location = getLocation();
 		return "P,"	+ getId() + 
 				","	+ global_location.x() + 
 				"," + global_location.y() +

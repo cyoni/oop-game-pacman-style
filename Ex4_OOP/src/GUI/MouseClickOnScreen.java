@@ -9,8 +9,9 @@ import GameObjects.Fruit;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.game_object;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.DropingItemsOnScreen;
+import game.InitGame;
 
 public class MouseClickOnScreen implements MouseListener {
 	
@@ -38,14 +39,21 @@ public class MouseClickOnScreen implements MouseListener {
 				else if (DropingItemsOnScreen.dropping_pacmans) {DropingItemsOnScreen.dropping_pacmans = false;} 
 				else if (DropingItemsOnScreen.dropping_player) {
 						DropingItemsOnScreen.dropping_player = false;
-						gui_algo.gameboard.startGame();
+			        	InitGame init = new InitGame(gui_algo);
+						init.buildGraphGame();
+						gui_algo.repaint();
 				}
 			} 
 
 	}
 
 	public void dropPlayer(Point2D mouseCoords) {
-		Player player = new Player(game_object.totalObjects++, mouseCoords, 1);
+		int id;
+		if (gui_algo.getGameboard().getPlayer() == null)
+		  id = game_object.totalObjects++;
+		else id = gui_algo.getGameboard().getPlayer().getId();
+		
+		Player player = new Player(id, mouseCoords, 1);
 		gui_algo.gameboard.setPlayer(player);
 		System.out.println("Player is set " + player.getLocation());
 		gui_algo.repaint();

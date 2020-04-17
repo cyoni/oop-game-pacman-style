@@ -3,8 +3,6 @@ package algorithms;
 import java.io.Serializable;
 import java.util.List;
 
-import Geom.Point2D;
-
 
 
 public class Node implements node_data, Serializable {
@@ -18,7 +16,7 @@ public class Node implements node_data, Serializable {
 	private Point2D location;
 	private String info;
 	private int key;
-
+	private String tag;
 	
 	public Node(int key, Point2D location) {
 		this.location = location;
@@ -53,15 +51,13 @@ public class Node implements node_data, Serializable {
 	}
 
 	@Override
-	public int getTag() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getTag() {
+		return tag;
 	}
 
 	@Override
-	public void setTag(int t) {
-		// TODO Auto-generated method stub
-		
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 }

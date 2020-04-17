@@ -1,6 +1,6 @@
 package GameObjects;
 
-import Geom.Point2D;
+import algorithms.Point2D;
 import algorithms.node_data;
 
 public class Line {

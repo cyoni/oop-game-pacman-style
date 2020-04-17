@@ -16,7 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import GameObjects.Fruit;
 import GameObjects.game_object;
-import Geom.Point2D;
+import algorithms.Point2D;
 
 
 /**

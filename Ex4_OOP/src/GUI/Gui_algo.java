@@ -33,7 +33,7 @@ import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Rectangle;
 import GameObjects.game_object;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
 import game.ObjectMovement;
@@ -60,8 +60,8 @@ public class Gui_algo extends JPanel  {
 	RefreshScreen refreshScreen = new RefreshScreen(this);
 	MouseClickOnScreen mouse_event_listener = new MouseClickOnScreen(this);
 	protected InitGame initGame = new InitGame(this);
-	private List<Point2D[]> linesToDraw = new ArrayList<>();
-
+	Menu_Gui menu = new Menu_Gui(this);
+	
 	public Gui_algo() {
 		setScreen();
 		map = new Map(frame);
@@ -73,7 +73,7 @@ public class Gui_algo extends JPanel  {
         super.paintComponent(graphics);
     	graphics.drawImage(images.getBackground(), 0, 0, Screen.WIDTH, Screen.HEIGHT, this); // background
    
-    	if (gameboard != null) {    	
+    	if (gameboard != null) {
 	    	List<game_object> fruits = gameboard.getFruits();
 	    	draw(graphics, fruits, images.getFruit_image());
 	    	List<game_object> pacmans = gameboard.getPacmans();
@@ -84,30 +84,48 @@ public class Gui_algo extends JPanel  {
 	    	if (gameboard.getPlayer() != null) {
 	    		List<game_object> list = new ArrayList<>();
 	    		list.add(gameboard.getPlayer());
-	    		draw(graphics, list, images.getPlayer_image());}
+	    		draw(graphics, list, images.getPlayer_image());
+	    	}
+	    	
+	    	if (menu.getIsShow_Game_Graph_Selected()) {
+	    		System.out.println("Size graph: " + gameboard.getGraph_Game().size());
+	    	}
+	    	if (menu.getIsShow_MST_Graph_Selected()) {
+	    		System.out.println("Size MST: " + gameboard.getMST_Game().size());
+	    	}
+	    	
+	    	
     	}
-    	System.out.println(linesToDraw.size());
+    	//System.out.println(linesToDraw.size());
     }
-    
-    public void drawLine(Point2D p1, Point2D p2) {
-    	Point2D arr[] = {p1, p2};
-    	linesToDraw.add(arr);
-    }
-    
+
     
     public void paint(Graphics g) {
         super.paint(g); 
         Graphics2D g2 = (Graphics2D) g;
         
-        for (int i=0; i<linesToDraw.size(); i++) {
-            Point2D[] currentLine = linesToDraw.get(i);
-            Line2D lin = new Line2D.Double(currentLine[0].x(), currentLine[0].y(), currentLine[1].x(), currentLine[1].y());
-            g2.setColor(Color.yellow);
-            
-            g2.draw(lin);
-            
-        }
-      }
+        if (menu.getIsShow_Game_Graph_Selected()) {
+        	List<Line> lines = gameboard.getGraph_Game();
+	        for (int i=0; i < lines.size(); i++) {
+	            Line currentLine = lines.get(i);
+	            Line2D lin = new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(), currentLine.getP2().x(), currentLine.getP2().y());
+	            g2.setColor(Color.yellow);
+	            g2.draw(lin);
+	        }
+        } 
+        
+	    if (menu.getIsShow_MST_Graph_Selected()) {
+	    	List<Line> lines = gameboard.getMST_Game();
+		    for (int i=0; i<lines.size(); i++) {
+		        Line currentLine = lines.get(i);
+		        System.out.println(currentLine.getP1().x() + "," + currentLine.getP1().y());
+		        Line2D lin = new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(), currentLine.getP2().x(), currentLine.getP2().y());
+		        g2.setColor(Color.GREEN);
+		        g2.draw(lin);
+	        }
+	    }
+	    
+    }
 
 	private void draw(Graphics graphics, List<game_object> obj, Image picture) {
 		for (int i=0; i<obj.size(); i++) {
@@ -124,14 +142,13 @@ public class Gui_algo extends JPanel  {
 	}
 
 	public void setScreen() {
-		Menu_Gui menu = new Menu_Gui(this);
 		frame = new JFrame("Pacman");
 		frame.setLayout(new BorderLayout());
-		frame.setJMenuBar(menu.getMenu());
 		frame.addMouseListener(mouse_event_listener);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);
+		frame.setJMenuBar(menu.getMenu());
 		frame.setResizable(false);
 		frame.add(this);	
 		frame.setLocationRelativeTo(null);
