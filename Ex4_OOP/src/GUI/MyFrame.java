@@ -5,11 +5,18 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import GameObjects.Fruit;
+import GameObjects.game_object;
+import Geom.Point2D;
 
 
 /**

@@ -1,23 +1,16 @@
 package GameObjects;
 
-
-import Coords.MyCoords;
-import GIS.GIS_element;
-import GIS.Map;
-import Geom.Geom_element;
 import Geom.Point2D;
-import Geom.geom;
-import game.GameBoard;
 /**
  *  
  * @author Yoni
  */
-public class Pacman extends game_object {
+public class Pacman extends game_object implements IHungry {
 
 
 	public static String picture = "pacman.png";
-	public static int id = 0;
 	private double speed;
+	private game_object target;
 
 	public Pacman(int id, Point2D location, double speed) {
 		super(id, location);
@@ -35,6 +28,15 @@ public class Pacman extends game_object {
 	public double getSpeed() {
 		return speed;
 	}
+	
+	@Override
+	public game_object getTarget() {
+		return target;
+	}
 
+	@Override
+	public void setTarget(game_object target) {
+		this.target = target;
+	}
 
 }

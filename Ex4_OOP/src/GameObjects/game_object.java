@@ -9,9 +9,9 @@ import game.GameBoard;
 public class game_object {
 	public String picture;
 
-	private int id = -1;
+	public static int totalObjects = 0;
+	private int id;
 	private Point2D location;
-	private game_object target;
 	public static Map map;
 
 	public game_object(int id, Point2D location) {
@@ -19,10 +19,12 @@ public class game_object {
 		this.location = location;
 	}
 	
-	
-
 	public Point2D getLocation() {
 		return location;
+	}
+	
+	public static void resetTotalObjects() {
+		totalObjects = 0;
 	}
 	
 	public void setLocation(Point2D newLocation) {
@@ -32,17 +34,11 @@ public class game_object {
 	public int getId() {
 		return id;
 	}
-
-	public game_object getTarget() {
-		return target;
-	}
 	
 	public Point2D getGlobalPoint() {
 		return game_object.map.pixel2global(getLocation());
 	}
 	
-	public void setTarget(game_object target) {
-		this.target = target;
-	}
+
 
 }

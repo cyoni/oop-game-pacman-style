@@ -1,18 +1,23 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import FileFormat.CSVReaderAndWriter;
 import game.DropingItemsOnScreen;
+import game.InitGame;
 
 public class Menu_Gui {
 	
-    private JMenuItem loadFile, exportToCSV, exit, dropItems, startGame;
+    private JMenuItem loadFile, exportToCSV, exit, dropItems, startGame, cleanBoard;
     private JMenuBar menubar; // Window menu bar
 	private Gui_algo gui_algo;
 	
@@ -34,6 +39,7 @@ public class Menu_Gui {
 	        
 	    dropItems = new JMenuItem("Drop items...");
 	    startGame = new JMenuItem("Start Game");
+	    cleanBoard = new JMenuItem("Clean Board");
 	        
 	    // add menu items to menu 
 	    menu_File.add(loadFile); 
@@ -44,6 +50,7 @@ public class Menu_Gui {
 	    menu_Game.add(dropItems);
 	    menu_Game.addSeparator();
 	    menu_Game.add(startGame);
+	    menu_Game.add(cleanBoard);
 
 	    // add menu to menu bar 
 	    menubar.add(menu_File); 
@@ -53,18 +60,23 @@ public class Menu_Gui {
 
     private void startMouseListener() {
     	
-    	
+        cleanBoard.addActionListener((ActionEvent e) -> { 
+        	gui_algo.gameboard.cleanBoard();
+        });
+        
         startGame.addActionListener((ActionEvent e) -> { 
-        	
+        	gui_algo.gameboard.startGame();
         });
     	
         dropItems.addActionListener((ActionEvent e) -> { 
         	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
+        	dropping.selectToDropAll();
         	dropping.startDroppingItems();
         });
     	
         loadFile.addActionListener((ActionEvent e) -> { 
-        	
+        	gui_algo.getGameboard().cleanBoard();
+        	loadFileAndRead();
         });
     	
         exportToCSV.addActionListener((ActionEvent e) -> { 
@@ -81,6 +93,14 @@ public class Menu_Gui {
         });
     }
 	
+	private void loadFileAndRead() {
+		CSVReaderAndWriter reader = new CSVReaderAndWriter();
+		String path = reader.chooseFolder();
+		List<String> elements = reader.processFile(path);
+		
+		gui_algo.initGame.initGameboard(elements);
+	}
+
 	public JMenuBar getMenu() {
 		return menubar;
 	}

@@ -1,5 +1,7 @@
 package FileFormat;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -35,10 +37,10 @@ public class CSVReaderAndWriter {
 
 
 
-	public List<String> processFile() {
+	public List<String> processFile(String path) {
 		String line = "";
 		List<String> elements = new ArrayList<>();
-		 try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Yoni\\git\\oop_game_1\\Ex4_OOP\\data\\Ex4_OOP_example9.csv"))) {
+		 try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 			 br.readLine();
 	            while (( line = br.readLine()) != null) {
 	            	elements.add(line);
@@ -53,20 +55,14 @@ public class CSVReaderAndWriter {
 	
 	
 	public String chooseFolder() {
-		// parent component of the dialog
-		JFrame parentFrame = new JFrame();
-		JFileChooser fileChooser = new JFileChooser();
-		String file_name = "";
-		fileChooser.setDialogTitle("Specify a file to save");   
-		 
-		int userSelection = fileChooser.showSaveDialog(parentFrame);
-		 
-		if (userSelection == JFileChooser.APPROVE_OPTION) {
-		    File fileToSave = fileChooser.getSelectedFile();
-		    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-		    file_name = fileToSave.getAbsolutePath();
-		    if (!file_name.endsWith(".csv")) file_name+=".csv";
-		}
+ 	    FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
+	    dialog.setMode(FileDialog.LOAD);
+	    dialog.setVisible(true);
+	    String file_name = dialog.getDirectory() + dialog.getFile();
+	    System.out.println(file_name + " chosen.");	
+	    
+		 if (!file_name.endsWith(".csv")) file_name+=".csv";
+		
 		return file_name;
 	}
 

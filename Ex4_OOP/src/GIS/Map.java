@@ -6,7 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import Coords.MyCoords;
-
+import GUI.Screen;
 import Geom.*;
 
 /**
@@ -41,13 +41,13 @@ public class Map {
 		
 		double RatioGlobalX = (Global.x()-DownLeftP.x())/getGlobalDiffX();
 		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
-		double pixelX = f.getWidth()*RatioGlobalX;
-		double pixelY = f.getHeight()*RatioGlobalY;
+		double pixelX = Screen.WIDTH*RatioGlobalX;
+		double pixelY = Screen.HEIGHT*RatioGlobalY;
 		return new Point2D(pixelX,pixelY,0);
 	}
 	public Point2D pixel2global(Point2D pixel) {
-		double RatioPixelX = pixel.x()/f.getWidth();
-		double RatioPixelY = (pixel.y())/f.getHeight();
+		double RatioPixelX = pixel.x()/Screen.WIDTH;
+		double RatioPixelY = (pixel.y())/Screen.HEIGHT;
 		double GlobalX = DownLeftP.x()+(getGlobalDiffX()*RatioPixelX);
 		double GlobalY = UpRightP.y()-(getGlobalDiffY()*RatioPixelY);
 		return new Point2D(GlobalX,GlobalY,0);
@@ -75,13 +75,13 @@ public class Map {
 		Point2D Global = new Point2D(x,y);
 		double RatioGlobalX = (Global.x()-DownLeftP.x())/getGlobalDiffX();
 		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
-		double pixelX = f.getWidth()*RatioGlobalX;
-		double pixelY = f.getHeight()*RatioGlobalY;
+		double pixelX = Screen.WIDTH*RatioGlobalX;
+		double pixelY = Screen.HEIGHT*RatioGlobalY;
 		return new Point2D(pixelX,pixelY,0);
 		
-/*		int height = f.getHeight();
-		int width = f.getWidth();
-		int y1 =  (int)((height*x - height*xTop) / (xBottom-xTop))  ; //(int) ((-f.getHeight()*x+f.getHeight()*xBottom+f.getHeight()*xTop-f.getHeight()*xBottom)/(xTop-xBottom));
+/*		int height = Screen.HEIGHT;
+		int width = Screen.WIDTH;
+		int y1 =  (int)((height*x - height*xTop) / (xBottom-xTop))  ; //(int) ((-Screen.HEIGHT*x+Screen.HEIGHT*xBottom+Screen.HEIGHT*xTop-Screen.HEIGHT*xBottom)/(xTop-xBottom));
 		int x1 =  (int) ((width*y - width*yBottom)/(yTop-yBottom));
 		return new Point3D(x1, y1, 0);*/
 	}
@@ -94,15 +94,15 @@ public class Map {
 	**/
 	public Point2D pixelToCoords(double x, double y) {
 		Point2D pixel = new Point2D(x,y);
-		double RatioPixelX = pixel.x()/f.getWidth();
-		double RatioPixelY = (pixel.y())/f.getHeight();
+		double RatioPixelX = pixel.x()/Screen.WIDTH;
+		double RatioPixelY = (pixel.y())/Screen.HEIGHT;
 		double GlobalX = DownLeftP.x()+(getGlobalDiffX()*RatioPixelX);
 		double GlobalY = UpRightP.y()-(getGlobalDiffY()*RatioPixelY);
 		return new Point2D(GlobalX,GlobalY,0);
 		
 		
-/*		double x1 = (y*xBottom-y*xTop+f.getHeight()*xTop) / f.getHeight();
-		double y1 = (f.getHeight()*xTop+y*xBottom-y*xTop)/f.getHeight();
+/*		double x1 = (y*xBottom-y*xTop+Screen.HEIGHT*xTop) / Screen.HEIGHT;
+		double y1 = (Screen.HEIGHT*xTop+y*xBottom-y*xTop)/Screen.HEIGHT;
 		return new Point3D(x1, y1, 0);*/
 	}
 	

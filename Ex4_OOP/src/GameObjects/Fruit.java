@@ -13,7 +13,6 @@ import game.GameBoard;
 public class Fruit extends game_object {
 
 	public static String picture = "fruit.png";
-	public static int id = 0;
 	
 	private double weight;
 	private double eatingRadius; 

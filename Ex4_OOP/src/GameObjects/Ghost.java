@@ -5,10 +5,11 @@ import Geom.Point2D;
 import game.GameBoard;
 
 
-public class Ghost extends game_object{
+public class Ghost extends game_object implements IHungry{
 
 	
 	private double speed;
+	private game_object target;
 	public static String picture = "ghost.png";
 	
 	public Ghost(int id, Point2D location, double speed) {
@@ -27,6 +28,17 @@ public class Ghost extends game_object{
 
 	public double getSpeed() {
 		return speed;
+	}
+
+
+	@Override
+	public game_object getTarget() {
+		return target;
+	}
+
+	@Override
+	public void setTarget(game_object target) {
+		this.target = target;
 	}
 
 

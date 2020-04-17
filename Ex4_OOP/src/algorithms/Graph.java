@@ -38,14 +38,14 @@ public class Graph implements IGraph, Serializable {
 		List<edge_data> list = e.get(src);
 		for (edge_data current_edge : list) {
 			if (current_edge.getDest() == dest) edge = current_edge; 
-			
 		}
 		return edge;
 	}
 
 	@Override
 	public void addNode(node_data n) {
-		if (g.containsKey(n.getKey()))	try {throw new IllegalAccessException("This id " + n.getKey() + " is already occupied.");} catch (IllegalAccessException e) {e.printStackTrace();} 
+		if (g.containsKey(n.getKey()))	try {throw new IllegalAccessException("This id " + n.getKey() + " is already occupied.");} catch (IllegalAccessException e) {e.printStackTrace();}
+		System.out.println(n.getKey() + " # was added");
 		g.put(n.getKey(), n);
 	}
 
@@ -58,10 +58,11 @@ public class Graph implements IGraph, Serializable {
 		if (list == null) list = new ArrayList<>();
 		list.add(edge_new);
 		e.put(src, list);
-
+		System.out.println("E put: " + src + "," + dest);
+		
 		list = e.get(dest);
 		if (list == null) list = new ArrayList<>();
-		edge_new = new Edge(dest, src, w);
+		edge_new = new Edge(dest, src, distance);
 		list.add(edge_new);
 		e.put(dest, list);	
 	}
@@ -107,6 +108,20 @@ public class Graph implements IGraph, Serializable {
 	@Override
 	public int edgeSize() {
 		return e.size();
+	}
+	
+	
+	public double[][] getMatrixGraph(){
+		int nodes = nodeSize();
+		double mat[][] = new double[nodes][nodes];
+		for (int i=0;i<mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				if (i != j) {
+				mat[i][j] = getEdge(i, j).getWeight();
+				}
+			}
+		}
+		return mat;
 	}
 	
 

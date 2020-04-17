@@ -8,7 +8,7 @@ import Geom.Point2D;
  * @author Yoni
  **/
 
-public class MyCoords implements coords_converter { 
+public class MyCoords{ 
 	
 
 	public static final double EARTH_RADIUS = 6371000;
@@ -28,52 +28,15 @@ public class MyCoords implements coords_converter {
 		return dis;	
 	}
 
-
-
-
-	@Override
-	public Point2D add(Point2D gps, Point2D local_vector_in_meter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-	@Override
-	public double distance3d(Point2D gps0, Point2D gps1) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
-
-	@Override
-	public Point2D vector3D(Point2D gps0, Point2D gps1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-	@Override
-	public double[] azimuth_elevation_dist(Point2D gps0, Point2D gps1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-	@Override
-	public boolean isValid_GPS_Point(Point2D p) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-
+    private static final double r2d = 180.0D / 3.141592653589793D;
+    private static final double d2r = 3.141592653589793D / 180.0D;
+    private static final double d2km = 111189.57696D * r2d;
+    
+    public static double meters(double lt1, double ln1, double lt2, double ln2) {
+        final double x = lt1 * d2r;
+        final double y = lt2 * d2r;
+        return Math.acos( Math.sin(x) * Math.sin(y) + Math.cos(x) * Math.cos(y) * Math.cos(d2r * (ln1 - ln2))) * d2km;
+    }
 
 
 }

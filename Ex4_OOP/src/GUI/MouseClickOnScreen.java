@@ -24,45 +24,46 @@ public class MouseClickOnScreen implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 		System.out.println(e.getX() + "," + e.getY());
 		
+		Point2D mouseCoords = gui_algo.map.pixel2global(new Point2D(e.getX() , e.getY()));
 		if (e.getButton() == java.awt.event.MouseEvent.BUTTON1) { // left mouse click
-				if (DropingItemsOnScreen.dropping_apples) dropApple(e);	
-				else if (DropingItemsOnScreen.dropping_pacmans) dropPacman(e); 
-				else if (DropingItemsOnScreen.dropping_player) dropPlayer(e); 
+				if (DropingItemsOnScreen.dropping_apples) dropApple(mouseCoords);	
+				else if (DropingItemsOnScreen.dropping_pacmans) dropPacman(mouseCoords); 
+				else if (DropingItemsOnScreen.dropping_player) dropPlayer(mouseCoords); 
 		}
 		else 
 			if (e.getButton() == java.awt.event.MouseEvent.BUTTON3) { // right mouse click
 				if (DropingItemsOnScreen.dropping_apples) {DropingItemsOnScreen.dropping_apples = false;}
-				if (DropingItemsOnScreen.dropping_pacmans) {DropingItemsOnScreen.dropping_pacmans = false;} 
-				
+				else if (DropingItemsOnScreen.dropping_pacmans) {DropingItemsOnScreen.dropping_pacmans = false;} 
+				else if (DropingItemsOnScreen.dropping_player) {
+						DropingItemsOnScreen.dropping_player = false;
+						gui_algo.gameboard.startGame();
+				}
 			} 
 
 	}
 
-	private void dropPlayer(MouseEvent e) {
-		Point2D point = new Point2D(e.getX()-20, e.getY()-70);
-		Player player = new Player(1, point, 1);
+	public void dropPlayer(Point2D mouseCoords) {
+		Player player = new Player(game_object.totalObjects++, mouseCoords, 1);
 		gui_algo.gameboard.setPlayer(player);
 		System.out.println("Player is set " + player.getLocation());
 		gui_algo.repaint();
 	}
 	
-	private void dropPacman(MouseEvent e) {
-		Point2D point = new Point2D(e.getX()-20, e.getY()-70);
-		Pacman pacman = new Pacman(Pacman.id++, point, 1);
+	private void dropPacman(Point2D mouseCoords) {
+		Pacman pacman = new Pacman(game_object.totalObjects++, mouseCoords, 1);
 		gui_algo.gameboard.getPacmans().add(pacman);
-		System.out.println(Pacman.id + " pacman/s was/were added " + pacman.getLocation());
+		System.out.println(game_object.totalObjects + " pacman/s was/were dropped " + pacman.getLocation());
 		gui_algo.repaint();
 	}
 
 
-	private void dropApple(MouseEvent e) {
-		Point2D point = new Point2D(e.getX()-15, e.getY()-70);
-		Fruit fruit = new Fruit(Fruit.id++, point , 9999);
+	private void dropApple(Point2D mouseCoords) {
+		Fruit fruit = new Fruit(game_object.totalObjects++, mouseCoords , 9999);
+		System.out.println("got " + fruit.getId());
 		gui_algo.gameboard.getFruits().add(fruit);
-		System.out.println(Fruit.id + " apple/s was/were added " + fruit.getLocation());
+		System.out.println(game_object.totalObjects + " apple/s was/were dropped " + fruit.getLocation());
 		gui_algo.repaint();
 	}
 

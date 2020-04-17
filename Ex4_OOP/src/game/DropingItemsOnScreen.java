@@ -15,21 +15,25 @@ public class DropingItemsOnScreen extends Thread {
 	}
 	
 	public synchronized void run() {
-		
-		Gui_dialog.alert("Hi, drop apples. Once done, press the right button of the mouse");
-		dropping_apples = true;
-		
-		while (dropping_apples) {
+		if (dropping_apples) dropApples();
+		if (dropping_pacmans) dropPacmans();
+		if (dropping_player) dropPlayer();
+	}
+	
+	private void dropPlayer() {
+		Gui_dialog.alert("Choose your stating point.");
+		dropping_player = true;
+		while(dropping_player) {
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
-		
-		Gui_dialog.alert("Great. Now drop pacmans.");
-		dropping_pacmans = true;
-		
+		}		
+	}
+
+	private void dropPacmans() {
+		Gui_dialog.alert("Now drop pacmans.");
 		while (dropping_pacmans) {
 			try {
 				sleep(500);
@@ -37,18 +41,24 @@ public class DropingItemsOnScreen extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void dropApples() {
 		
-		Gui_dialog.alert("Good. Now choose your stating point.");
-		dropping_player = true;
-		while(dropping_player) {
+		Gui_dialog.alert("Hi. Start dropping apples. Once done, press the right button of the mouse");
+		while (dropping_apples) {
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		Gui_dialog.alert("Hit OK to start the game");
+	}
+
+	public void selectToDropAll() {
+		dropping_apples = true;
+		dropping_pacmans = true;
+		dropping_player = true;
 	}
 
 }

@@ -8,10 +8,11 @@ import game.GameBoard;
 /**
 
  */
-public class Player extends game_object {
+public class Player extends game_object implements IHungry{
 
 	public static String picture = "player.jpg";
 	private double degree = 30;
+	private game_object target;
 
 	public Player(int id, Point2D location, double d) {
 		super(id, location);
@@ -30,6 +31,16 @@ public class Player extends game_object {
 		
 	public void setDegree(double degree) {
 		this.degree = degree;
+	}
+	
+	@Override
+	public game_object getTarget() {
+		return target;
+	}
+
+	@Override
+	public void setTarget(game_object target) {
+		this.target = target;
 	}
 
 

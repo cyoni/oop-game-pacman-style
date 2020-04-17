@@ -36,10 +36,10 @@ public class DrawItems {
 	}
 
 	public void drawObjects(List<game_object> list, Graphics graphics,  BufferedImage picture, Gui_algo gui_algo) {
-		for (int i=0; i< list.size(); i++) {
+	/*	for (int i=0; i< list.size(); i++) {
 			game_object obj = list.get(i);
-			graphics.drawImage(picture , (int) ( obj.getLocation().x()-20), (int) (obj.getLocation().y()-40), 23, 23, null);
-		}
+			graphics.drawImage(picture , (int) ( obj.getLocation().x()), (int) (obj.getLocation().y()), 23, 23, null);
+		}*/
 	}
 
 
@@ -57,13 +57,11 @@ public class DrawItems {
 	}
 
 	public synchronized void drawFruits(List<game_object> list, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
-	//	Iterator<game_object> iter = list.iterator(); 
-
-		//while(iter.hasNext()) {
+/*		System.out.println("##");
 		for (int i=0; i<list.size(); i++) {
 			game_object obj = list.get(i);
 			graphics.drawImage(fruit_image , (int) ( obj.getLocation().x()), (int) (obj.getLocation().y()), 23, 23, null);
-		}
+		}*/
 	}
 
 
