@@ -5,8 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import GIS.Map;
-
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.GameBoard;
 
 

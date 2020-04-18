@@ -3,7 +3,7 @@ package GameObjects;
 
 
 import GIS.Map;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.GameBoard;
 
 public class game_object {
@@ -12,6 +12,8 @@ public class game_object {
 	public static int totalObjects = 0;
 	private int id;
 	private Point2D location;
+
+	private int objectSize;
 	public static Map map;
 
 	public game_object(int id, Point2D location) {
@@ -35,10 +37,14 @@ public class game_object {
 		return id;
 	}
 	
-	public Point2D getGlobalPoint() {
-		return game_object.map.pixel2global(getLocation());
+	public void setObjectSize(int size) {
+		objectSize = size;
 	}
 	
+	public int getObjectSize() {
+		return objectSize;
+	}
+		
 
 
 }
