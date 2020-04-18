@@ -5,38 +5,27 @@ import algorithms.Point2D;
  *  
  * @author Yoni
  */
-public class Pacman extends game_object implements IHungry {
-
+public class Pacman extends MoveableObject {
 
 	public static String picture = "pacman.png";
-	private double speed;
-	private game_object target;
 
-	public Pacman(int id, Point2D location, double speed) {
-		super(id, location);
-		this.speed = speed;
+	public Pacman(int id, Point2D location, double velocity, double eatingRadius) {
+		super(id , location, velocity);
+		setEatingRadius(eatingRadius);
+		setObjectSize(23);
 	}
 
 	public String toString() {
 		Point2D global_location = getLocation();
 		return "P,"	+ getId() + 
-				","	+ global_location.x() + 
-				"," + global_location.y() +
-				"," + getSpeed();
+				","	+ global_location.y() + 
+				"," + global_location.x() +
+				"," + getVelocity() +
+				"," + getEatingRadius();
 	}
 	
-	public double getSpeed() {
-		return speed;
-	}
-	
-	@Override
-	public game_object getTarget() {
-		return target;
-	}
-
-	@Override
-	public void setTarget(game_object target) {
-		this.target = target;
+	public static String getTag() {
+		return "pacman";
 	}
 
 }

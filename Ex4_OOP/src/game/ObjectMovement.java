@@ -9,7 +9,7 @@ import FileFormat.CSVReaderAndWriter;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GameObjects.Player;
-import GameObjects.game_object;
+import GameObjects.Game_object;
 import algorithms.Point2D;
 
 public class ObjectMovement extends Thread {

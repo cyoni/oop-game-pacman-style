@@ -3,9 +3,9 @@ package game;
 import java.util.Comparator;
 
 import Coords.MyCoords;
-import GameObjects.game_object;
+import GameObjects.Game_object;
 
-public class FruitComperator implements Comparator<game_object> {
+public class FruitComperator implements Comparator<Game_object> {
 	
 	 private GameBoard gameboard;
 
@@ -14,7 +14,7 @@ public class FruitComperator implements Comparator<game_object> {
 	}
 
 	@Override
-	public int compare(game_object f1, game_object f2) {
+	public int compare(Game_object f1, Game_object f2) {
 		MyCoords mc = new MyCoords();
 
 		double distance_player_to_fruit1 = mc.distance2D(f1.getLocation(), gameboard.getPlayer().getLocation());

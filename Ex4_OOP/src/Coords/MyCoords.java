@@ -1,5 +1,5 @@
 package Coords;
-import Geom.Point2D;
+import algorithms.Point2D;
 
 /**
  * This class represents a basic coordinate system with some functions that calculate distances, sums GPS coordinate with a vector

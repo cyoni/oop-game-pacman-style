@@ -1,6 +1,6 @@
 package GIS;
 
-import Geom.Point2D;
+import algorithms.Point2D;
 
 public interface Meta_Data {
 	/** returns the Universal Time Clock associated with this data; */

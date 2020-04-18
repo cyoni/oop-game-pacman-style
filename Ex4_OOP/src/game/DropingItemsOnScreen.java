@@ -33,7 +33,7 @@ public class DropingItemsOnScreen extends Thread {
 	}
 
 	private void dropPacmans() {
-		Gui_dialog.alert("Now drop pacmans.");
+		Gui_dialog.alert("Drop pacmans.");
 		while (dropping_pacmans) {
 			try {
 				sleep(500);
@@ -59,6 +59,12 @@ public class DropingItemsOnScreen extends Thread {
 		dropping_apples = true;
 		dropping_pacmans = true;
 		dropping_player = true;
+	}
+
+	public static void selectNone() {
+		dropping_apples = false;
+		dropping_pacmans = false;
+		dropping_player = false;
 	}
 
 }

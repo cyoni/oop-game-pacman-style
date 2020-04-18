@@ -15,7 +15,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import GameObjects.Fruit;
-import GameObjects.game_object;
+import GameObjects.Game_object;
 import algorithms.Point2D;
 
 

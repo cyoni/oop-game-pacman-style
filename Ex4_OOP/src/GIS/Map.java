@@ -1,13 +1,10 @@
 package GIS;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-
 import Coords.MyCoords;
 import GUI.Screen;
-import Geom.*;
+import algorithms.Point2D;
 
 /**
 * this class represents a map that contains functions such as converting pixels to GPS, GPS to pixels 
@@ -17,13 +14,13 @@ public class Map {
 
 	
 
-	public  Point2D nw;
-	public  Point2D ne;
-	public  Point2D sw;
-	public  Point2D se;
+	public Point2D nw;
+	public Point2D ne;
+	public Point2D sw;
+	public Point2D se;
 	MyCoords mc;
 
-	JFrame f;
+	//JFrame f;
 	
 	protected Point2D DownLeftP = new Point2D( 35.202403,32.101923,0);
 	protected Point2D UpRightP = new Point2D( 35.212438,32.105959,0);
@@ -35,7 +32,7 @@ public class Map {
 		sw = new Point2D( 32.101899,  35.202447, 0);
 		se = new Point2D( 32.101899,  35.212496, 0);
 		mc=new MyCoords();
-		this.f = jframe; // this point represents the max width and the max height of the screen.
+	//	this.f = jframe; // this point represents the max width and the max height of the screen.
 	}
 	public Point2D global2pixel(Point2D Global) {
 		
@@ -43,9 +40,11 @@ public class Map {
 		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
 		double pixelX = Screen.WIDTH*RatioGlobalX;
 		double pixelY = Screen.HEIGHT*RatioGlobalY;
+		
 		return new Point2D(pixelX,pixelY,0);
 	}
 	public Point2D pixel2global(Point2D pixel) {
+
 		double RatioPixelX = pixel.x()/Screen.WIDTH;
 		double RatioPixelY = (pixel.y())/Screen.HEIGHT;
 		double GlobalX = DownLeftP.x()+(getGlobalDiffX()*RatioPixelX);
@@ -104,20 +103,6 @@ public class Map {
 /*		double x1 = (y*xBottom-y*xTop+Screen.HEIGHT*xTop) / Screen.HEIGHT;
 		double y1 = (Screen.HEIGHT*xTop+y*xBottom-y*xTop)/Screen.HEIGHT;
 		return new Point3D(x1, y1, 0);*/
-	}
-	
-	
-	/**
-	* this function returns degree between two pixels
-	* @param distance
-	* @return
-	**/
-	public static double degreeOfPixel(int x, int y, int x2, int y2) {
-		return Math.tan(Math.abs(y-y2)/Math.abs(x-x2));
-	}
-	
-	
-	
-	
+	}	
 	
 }

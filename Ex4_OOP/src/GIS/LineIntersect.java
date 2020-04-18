@@ -1,6 +1,6 @@
 package GIS;
 
-import Geom.Point2D;
+import algorithms.Point2D;
 
 public class LineIntersect {
 // https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/

@@ -2,45 +2,34 @@ package GameObjects;
 
 import GIS.Map;
 import GUI.Gui_dialog;
-import Geom.Point2D;
+import algorithms.Point2D;
 import game.GameBoard;
 
 /**
 
  */
-public class Player extends game_object implements IHungry{
+public class Player extends MoveableObject{
 
-	public static String picture = "player.jpg";
-	private double degree = 30;
-	private game_object target;
+	public static String picture = "player.png";
 
-	public Player(int id, Point2D location, double d) {
-		super(id, location);
+	public Player(int id, Point2D location, double velocity, double eatingRadius) {
+		super(id , location, velocity);
+		setEatingRadius(eatingRadius);
+		setObjectSize(30);
 	}
 
-	public double getDegree() {
-		return degree;
-	}
 	
 	public String toString() {
-		Point2D global_location = getGlobalPoint();
+		Point2D global_location = getLocation();
 		return "M,"	+ getId() + 
-				","	+ global_location.x() + 
-				"," + global_location.y();
+				","	+ global_location.y() + 
+				"," + global_location.x() + 
+				"," + velocity + 
+				"," + eatingRadius;
 	}
 		
-	public void setDegree(double degree) {
-		this.degree = degree;
-	}
-	
-	@Override
-	public game_object getTarget() {
-		return target;
-	}
-
-	@Override
-	public void setTarget(game_object target) {
-		this.target = target;
+	public static String getTag() {
+		return "player";
 	}
 
 

@@ -46,7 +46,7 @@ public class Menu_Gui {
 	    JMenu menu_Graph = new JMenu("Graph"); menu_File.setMnemonic(KeyEvent.VK_R);  
         
 	    loadFile = new JMenuItem("Load a file...", KeyEvent.VK_O);
-	    saveToCSV = new JMenuItem("Save to CSV...", KeyEvent.VK_S); 
+	    saveToCSV = new JMenuItem("Save...", KeyEvent.VK_S); 
 	    exit = new JMenuItem("Exit", KeyEvent.VK_E);
 	        
 	    dropItems = new JMenuItem("Drop items...");
@@ -102,7 +102,6 @@ public class Menu_Gui {
         });
     	
         loadFile.addActionListener((ActionEvent e) -> { 
-        	gui_algo.getGameboard().cleanBoard();
         	loadFileAndRead();
         });
     	
@@ -121,9 +120,8 @@ public class Menu_Gui {
 	
 	private void loadFileAndRead() {
 		CSVReaderAndWriter reader = new CSVReaderAndWriter();
-		String path = reader.chooseFolder();
+		String path = reader.chooseFile();
 		List<String> elements = reader.processFile(path);
-		
 		gui_algo.initGame.initGameboard(elements);
 	}
 

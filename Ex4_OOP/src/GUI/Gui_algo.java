@@ -28,11 +28,12 @@ import GIS.LineIntersect;
 import GIS.Map;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
-import GameObjects.Line;
+import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Rectangle;
-import GameObjects.game_object;
+import GameObjects.Game_object;
+import algorithms.Line;
 import algorithms.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
@@ -42,21 +43,22 @@ import game.InitGame;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-
+/**
+ *  
+ * @author Yoni
+ *
+ */
 public class Gui_algo extends JPanel  {
 
-	/**
-	 * 
-	 */
 	boolean updateScreen = false;
 	protected JFrame jframe = new JFrame();
 	public Map map;
 	public GameBoard gameboard = new GameBoard(this);
-	Player player;
+	//MoveableObject player;
 	Images images = new Images();
 	private static final long serialVersionUID = -4673139390645816489L;
 	private JFrame frame;
-	DrawItems drawItems;
+	//DrawItems drawItems;
 	RefreshScreen refreshScreen = new RefreshScreen(this);
 	MouseClickOnScreen mouse_event_listener = new MouseClickOnScreen(this);
 	protected InitGame initGame = new InitGame(this);
@@ -65,47 +67,37 @@ public class Gui_algo extends JPanel  {
 	public Gui_algo() {
 		setScreen();
 		map = new Map(frame);
-		game_object.map = map;
+		//Game_object.map = map;
 	}
 
     @Override
-    public void paintComponent(Graphics graphics) {
+    public synchronized void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-    	graphics.drawImage(images.getBackground(), 0, 0, Screen.WIDTH, Screen.HEIGHT, this); // background
+    	graphics.drawImage(images.getBackground(), 0, 0, Screen.WIDTH, Screen.HEIGHT, this); // set background
    
     	if (gameboard != null) {
-	    	List<game_object> fruits = gameboard.getFruits();
+	    	List<Game_object> fruits = gameboard.getFruits();
 	    	draw(graphics, fruits, images.getFruit_image());
-	    	List<game_object> pacmans = gameboard.getPacmans();
+	    	List<Game_object> pacmans = gameboard.getPacmans();
 	    	draw(graphics, pacmans, images.getPacman_image());
-	    	List<game_object> ghosts = gameboard.getGhosts();
+	    	List<Game_object> ghosts = gameboard.getGhosts();
 	    	draw(graphics, ghosts, images.getGhost_image());
 	    	
 	    	if (gameboard.getPlayer() != null) {
-	    		List<game_object> list = new ArrayList<>();
+	    		List<Game_object> list = new ArrayList<>();
 	    		list.add(gameboard.getPlayer());
 	    		draw(graphics, list, images.getPlayer_image());
 	    	}
-	    	
-	    	if (menu.getIsShow_Game_Graph_Selected()) {
-	    		System.out.println("Size graph: " + gameboard.getGraph_Game().size());
-	    	}
-	    	if (menu.getIsShow_MST_Graph_Selected()) {
-	    		System.out.println("Size MST: " + gameboard.getMST_Game().size());
-	    	}
-	    	
-	    	
     	}
-    	//System.out.println(linesToDraw.size());
     }
 
     
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         super.paint(g); 
         Graphics2D g2 = (Graphics2D) g;
         
         if (menu.getIsShow_Game_Graph_Selected()) {
-        	List<Line> lines = gameboard.getGraph_Game();
+        	List<Line> lines = gameboard.getLinesOfGameGraph();
 	        for (int i=0; i < lines.size(); i++) {
 	            Line currentLine = lines.get(i);
 	            Line2D lin = new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(), currentLine.getP2().x(), currentLine.getP2().y());
@@ -118,7 +110,6 @@ public class Gui_algo extends JPanel  {
 	    	List<Line> lines = gameboard.getMST_Game();
 		    for (int i=0; i<lines.size(); i++) {
 		        Line currentLine = lines.get(i);
-		        System.out.println(currentLine.getP1().x() + "," + currentLine.getP1().y());
 		        Line2D lin = new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(), currentLine.getP2().x(), currentLine.getP2().y());
 		        g2.setColor(Color.GREEN);
 		        g2.draw(lin);
@@ -127,13 +118,11 @@ public class Gui_algo extends JPanel  {
 	    
     }
 
-	private void draw(Graphics graphics, List<game_object> obj, Image picture) {
+	private void draw(Graphics graphics, List<Game_object> obj, Image picture) {
 		for (int i=0; i<obj.size(); i++) {
-			game_object item = obj.get(i);
-			
+			Game_object item = obj.get(i);
 			Point2D point = map.global2pixel(item.getLocation());
-
-			graphics.drawImage(picture, (int) (point.x()-10), (int) (point.y()-20), 23, 23, null);
+			graphics.drawImage(picture, (int) (point.x()), (int) (point.y()), item.getObjectSize(), item.getObjectSize(), null);
 		}		
 	}
 	
@@ -166,7 +155,7 @@ public class Gui_algo extends JPanel  {
 
 	public void exportToCSV() throws IOException {
 		CSVReaderAndWriter csvWriter = new CSVReaderAndWriter();
-		String file_name = csvWriter.chooseFolder();
+		String file_name = csvWriter.chooseFile();
 		csvWriter.writeToCSV(gameboard, file_name);
 		
 	}

@@ -1,7 +1,4 @@
-package GameObjects;
-
-import algorithms.Point2D;
-import algorithms.node_data;
+package algorithms;
 
 public class Line {
 	  private static final double r2d = 180.0D / 3.141592653589793D;
@@ -14,6 +11,12 @@ public class Line {
 	public Line(Point2D p1, Point2D p2) {
 		this.p1 = p1;
 		this.p2 = p2;
+		p1.setX(p1.x()+10);
+		p1.setY(p1.y()+20);
+		
+		p2.setX(p2.x()+10);
+		p2.setY(p2.y()+20);
+		
 	}
 
 	public Point2D getP1() {
@@ -24,6 +27,7 @@ public class Line {
 		return p2;
 	}
 
+	@Deprecated
 	public static double distance2D(Point2D p1, Point2D p2) {
 		double x1, x2, y1, y2;
 		x1 = p1.x();

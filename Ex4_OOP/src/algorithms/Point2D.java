@@ -8,23 +8,22 @@ public class Point2D
 	 */
 	private double x,y,z;
 
-	public Point2D(double x,double y, double i) 
-	{
+	public Point2D(double x,double y, double i){
 		this.x=x;
 		this.y=y;
 	}
-	public Point2D(double x,double y) 
-	{
+	public Point2D(double x,double y) {
 		this.x=x;
 		this.y=y;
 	}
 
-	public Point2D(Point2D p) 
-	{
+	public Point2D(Point2D p) {
 		this.x=p.x();
 		this.y=p.y();
-		
 	}
+	
+	public void setX(double x) {this.x = x;}
+	public void setY(double y) {this.y = y;}
 	
 	
 	public String toString() {

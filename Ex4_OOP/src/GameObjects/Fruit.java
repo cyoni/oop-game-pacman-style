@@ -7,41 +7,36 @@ import algorithms.Point2D;
 import game.GameBoard;
 
 /**
+ *  This class represents a fruit.
+ * @author Yoni
+ *
  */
-
-
-public class Fruit extends game_object {
+public class Fruit extends Game_object {
 
 	public static String picture = "fruit.png";
 	
 	private double weight;
-	private double eatingRadius; 
 	
 		
 	public Fruit(int id, Point2D location, double weight) {
 		super(id, location);
 		this.weight = weight;
-		this.eatingRadius = -3;
+		setObjectSize((int) (weight+10));
 	}
 
 	
 	public String toString() {
 		Point2D global_location = getLocation();
 		return "F,"	+ getId() + 
-				","	+ global_location.x() + 
-				"," + global_location.y() +
+				","	+ global_location.y() + 
+				"," + global_location.x() +
 				"," + getWeight() + 
-				"," + getEatingRadius();
+				"," ;
 	}
 	
 	public double getWeight() {
 		return weight;
 	}
-	
-	public double getEatingRadius() {
-		return eatingRadius;
-	}
-
 
 	public static String getTag() {
 		return "fruit";

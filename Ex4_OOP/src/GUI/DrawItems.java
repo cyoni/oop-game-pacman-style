@@ -17,10 +17,10 @@ import GIS.Map;
 
 import GameObjects.Rectangle;
 import GameObjects.Fruit;
-import GameObjects.Line;
 import GameObjects.Player;
-import GameObjects.game_object;
-import Geom.Point2D;
+import GameObjects.Game_object;
+import algorithms.Line;
+import algorithms.Point2D;
 import game.GameBoard;
 
 
@@ -35,7 +35,7 @@ public class DrawItems {
 		this.map = map;
 	}
 
-	public void drawObjects(List<game_object> list, Graphics graphics,  BufferedImage picture, Gui_algo gui_algo) {
+	public void drawObjects(List<Game_object> list, Graphics graphics,  BufferedImage picture, Gui_algo gui_algo) {
 	/*	for (int i=0; i< list.size(); i++) {
 			game_object obj = list.get(i);
 			graphics.drawImage(picture , (int) ( obj.getLocation().x()), (int) (obj.getLocation().y()), 23, 23, null);
@@ -56,7 +56,7 @@ public class DrawItems {
 		}
 	}
 
-	public synchronized void drawFruits(List<game_object> list, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
+	public synchronized void drawFruits(List<Game_object> list, Graphics graphics, BufferedImage fruit_image, Gui_algo gui_algo) {
 /*		System.out.println("##");
 		for (int i=0; i<list.size(); i++) {
 			game_object obj = list.get(i);
