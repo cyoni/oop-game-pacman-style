@@ -37,7 +37,6 @@ import algorithms.Line;
 import algorithms.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
-import game.ObjectMovement;
 import game.InitGame;
 
 import javax.imageio.ImageIO;

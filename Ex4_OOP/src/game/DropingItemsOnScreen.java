@@ -2,28 +2,34 @@ package game;
 
 import GUI.Gui_dialog;
 import GUI.MouseClickOnScreen;
+import GameObjects.Fruit;
+import GameObjects.Game_object;
+import GameObjects.Pacman;
+import GameObjects.Player;
+import algorithms.NumberGenerator;
+import algorithms.Point2D;
 
 public class DropingItemsOnScreen extends Thread {
 
-	public static boolean dropping_apples = false;
-	public static boolean dropping_pacmans = false;
-	public static boolean dropping_player = false;
+	public static boolean global_dropping_apples = false;
+	public static boolean global_dropping_pacmans = false;
+	public static boolean global_dropping_player = false;
 
 	
-	public void startDroppingItems() {
+	public void startThreadDroppingItems() {
 		start();
 	}
 	
 	public synchronized void run() {
-		if (dropping_apples) dropApples();
-		if (dropping_pacmans) dropPacmans();
-		if (dropping_player) dropPlayer();
+		if (global_dropping_apples) startDroppingApples();
+		if (global_dropping_pacmans) startDroppingPacmans();
+		if (global_dropping_player) startDroppingPlayer();
 	}
 	
-	private void dropPlayer() {
+	private void startDroppingPlayer() {
 		Gui_dialog.alert("Choose your stating point.");
-		dropping_player = true;
-		while(dropping_player) {
+		global_dropping_player = true;
+		while(global_dropping_player) {
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
@@ -32,9 +38,9 @@ public class DropingItemsOnScreen extends Thread {
 		}		
 	}
 
-	private void dropPacmans() {
+	private void startDroppingPacmans() {
 		Gui_dialog.alert("Drop pacmans.");
-		while (dropping_pacmans) {
+		while (global_dropping_pacmans) {
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
@@ -43,10 +49,10 @@ public class DropingItemsOnScreen extends Thread {
 		}
 	}
 
-	public void dropApples() {
+	public void startDroppingApples() {
 		
 		Gui_dialog.alert("Start dropping fruits. Once done, press the right button of the mouse");
-		while (dropping_apples) {
+		while (global_dropping_apples) {
 			try {
 				sleep(500);
 			} catch (InterruptedException e) {
@@ -56,15 +62,42 @@ public class DropingItemsOnScreen extends Thread {
 	}
 
 	public void selectToDropAll() {
-		dropping_apples = true;
-		dropping_pacmans = true;
-		dropping_player = true;
+		global_dropping_apples = true;
+		global_dropping_pacmans = true;
+		global_dropping_player = true;
 	}
 
 	public static void selectNone() {
-		dropping_apples = false;
-		dropping_pacmans = false;
-		dropping_player = false;
+		global_dropping_apples = false;
+		global_dropping_pacmans = false;
+		global_dropping_player = false;
+	}
+	
+	public static void dropApple(GameBoard gameBoard, Point2D mouseCoords) {
+		int randomWeight =  NumberGenerator.getRandomNumber(10, 50);
+		Fruit fruit = new Fruit(Game_object.totalObjects++, mouseCoords, randomWeight);
+		gameBoard.getFruits().add(fruit);
+		System.out.println(Game_object.totalObjects + "# id of the apple " + fruit.getLocation());
+		gameBoard.getGuiAlgo().repaint();
+	}
+	
+	public static void dropPlayer(GameBoard gameBoard, Point2D mouseCoords) {
+		int id;
+		if (gameBoard.getPlayer() == null)
+		  id = Game_object.totalObjects++;
+		else id = gameBoard.getPlayer().getId();
+		
+		Player player = new Player(id, mouseCoords, 1, 2);
+		gameBoard.setPlayer(player);
+		System.out.println("Player is set " + player.getLocation());
+		gameBoard.getGuiAlgo().repaint();
+	}
+	
+	public static void dropPacman(GameBoard gameBoard, Point2D mouseCoords) {
+		Pacman pacman = new Pacman(Game_object.totalObjects++, mouseCoords, 1, 2);
+		gameBoard.getPacmans().add(pacman);
+		System.out.println(Game_object.totalObjects + " #id of pacman " + pacman.getLocation());
+		gameBoard.getGuiAlgo().repaint();
 	}
 
 }

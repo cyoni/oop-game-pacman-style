@@ -21,7 +21,7 @@ public class Fruit extends Game_object {
 	public Fruit(int id, Point2D location, double weight) {
 		super(id, location);
 		this.weight = weight;
-		setObjectSize((int) (weight+10));
+		setObjectSize(30);
 	}
 
 	

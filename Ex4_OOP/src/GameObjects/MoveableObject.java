@@ -8,6 +8,7 @@ public class MoveableObject extends Game_object implements IMoveable{
 	private double degree = 0; // default
 	private double score = 0;
 	protected double eatingRadius = 10;
+	private int eaten_fruits = 0;
 	
 	public MoveableObject(int id, Point2D location, double velocity) {
 		super(id, location);
@@ -31,7 +32,7 @@ public class MoveableObject extends Game_object implements IMoveable{
 	}
 	
 	public void setEatingRadius(double rad) {
-		eatingRadius = rad;
+		eatingRadius = rad*10;
 	}
 	
 	public double getEatingRadius() {
@@ -46,6 +47,16 @@ public class MoveableObject extends Game_object implements IMoveable{
 	@Override
 	public void setVelocity(double vel) {
 		this.velocity = vel;
+	}
+
+	@Override
+	public void increaseEatenFruits() {
+		eaten_fruits++;
+	}
+
+	@Override
+	public int getNumEatenFruits() {
+		return eaten_fruits;
 	}
 
 }

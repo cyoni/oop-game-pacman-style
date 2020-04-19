@@ -4,29 +4,30 @@ import GUI.Gui_algo;
 import GUI.Screen;
 import GameObjects.MoveableObject;
 import algorithms.Point2D;
+import game.GameBoard;
 
 public class MovementThread extends Thread {
 	
-	private Gui_algo gui_algo;
+	private GameBoard gameBoard;
 	private MoveableObject moveableObject;
 
-	public MovementThread(Gui_algo gui_algo, MoveableObject hungryObject) {
-		this.gui_algo = gui_algo;
+	public MovementThread(GameBoard gameBoard, MoveableObject hungryObject) {
+		this.gameBoard = gameBoard;
 		this.moveableObject = hungryObject;
 	}
 	
 	public synchronized void run() {
-		while (gui_algo.getGameboard().isRunning()) {
+		while (gameBoard.isRunning()) {
 			try {sleep(10);} catch (InterruptedException e) {}
 			Point2D global_location = moveableObject.getLocation();
-			Point2D local_location = gui_algo.map.global2pixel(global_location);
+			Point2D local_location = gameBoard.getMap().global2pixel(global_location);
 			double degree_to_radian = Math.toRadians(moveableObject.getDegree());
 			double x = local_location.x() + moveableObject.getVelocity() * Math.cos(degree_to_radian);
 			double y = local_location.y() - moveableObject.getVelocity() * Math.sin(degree_to_radian);
 			correctObjectIfItsOutOfBounds(x, y);
-			Point2D new_location = gui_algo.map.pixel2global(new Point2D(x, y));
+			Point2D new_location = gameBoard.getMap().pixel2global(new Point2D(x, y));
 			moveableObject.setLocation(new_location);
-			gui_algo.repaint();
+			gameBoard.getGuiAlgo().repaint();
 		}
 	}
 

@@ -21,7 +21,7 @@ public class Pacman extends MoveableObject {
 				","	+ global_location.y() + 
 				"," + global_location.x() +
 				"," + getVelocity() +
-				"," + getEatingRadius();
+				"," + getEatingRadius()/10;
 	}
 	
 	public static String getTag() {

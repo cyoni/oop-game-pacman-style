@@ -32,7 +32,6 @@ public class Menu_Gui {
 	private boolean show_game_graph;
 	private boolean showMSTPath;
 	
-	
 	public Menu_Gui(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
 		setMenu();
@@ -96,9 +95,10 @@ public class Menu_Gui {
         });
     	
         dropItems.addActionListener((ActionEvent e) -> { 
+        	gui_algo.gameboard.cleanBoard();
         	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
         	dropping.selectToDropAll();
-        	dropping.startDroppingItems();
+        	dropping.startThreadDroppingItems();
         });
     	
         loadFile.addActionListener((ActionEvent e) -> { 

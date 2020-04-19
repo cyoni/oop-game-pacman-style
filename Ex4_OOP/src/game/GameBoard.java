@@ -20,6 +20,7 @@ import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GUI.MouseClickOnScreen;
 import GameObjects.Rectangle;
+import Threads_Game.ManagePacmanThread;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
 import GameObjects.MoveableObject;
@@ -36,24 +37,36 @@ import algorithms.node_data;
 
 public class GameBoard {
 	protected List<Game_object> pacmans = new ArrayList<>();
-	private List<Game_object> ghosts = new ArrayList<>();
+	protected List<Game_object> ghosts = new ArrayList<>();
 	protected List<Game_object> fruits = new ArrayList<>();
 	protected List<MoveableObject> moveableObjects = new ArrayList<>();
 	protected MoveableObject player;
 	private Gui_algo gui_algo;
-	private boolean game_status;
+	protected boolean game_running;
 	protected Graph graph = new Graph();
 	protected List<Line> graph_Game = new ArrayList<>();
 	public List<Line> MST_graph = new ArrayList<>();
+	private List<ManagePacmanThread> managePacmanThread = new ArrayList<>();
+	GameBoard_algo gameboard_algo = new GameBoard_algo(this);;
 	
 	private boolean autoGame = false; 
 	
 	public GameBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
 	}
+	
+	public GameBoard() {}
 
 	public List<Line> getLinesOfGameGraph() {
 		return graph_Game;
+	}
+	
+	public List<ManagePacmanThread> getPacmanThreads() {
+		return managePacmanThread;
+	}
+	
+	public void addPacmanThread(ManagePacmanThread thread) {
+		managePacmanThread.add(thread);
 	}
 	
 	public List<Line> getMST_Game() {
@@ -69,9 +82,20 @@ public class GameBoard {
 	}
 
 	public void setGameStatus(boolean game_status) {
-		this.game_status = game_status;
+		this.game_running = game_status;
+	}
+	
+	public Gui_algo getGuiAlgo() {
+		return gui_algo;
 	}
 
+	public String getGameStat() {
+		return gameboard_algo.getGameStat();
+	}
+	
+	public void cleanBoard() {
+		gameboard_algo.cleanBoard();
+	}
 	
 	public Map getMap() {
 		return gui_algo.map;
@@ -83,7 +107,7 @@ public class GameBoard {
 	public synchronized MoveableObject getPlayer() { return player;}
 
 	public boolean isRunning() {
-		return game_status;
+		return game_running;
 	}
 
 	public void setPlayer(Player player) {
@@ -103,19 +127,6 @@ public class GameBoard {
 	}
 
 
-	public void cleanBoard() {
-		Game_object.resetTotalObjects();
-		DropingItemsOnScreen.selectNone();
-		graph_Game.clear();
-		MST_graph.clear();
-		fruits.clear();
-		ghosts.clear();
-		pacmans.clear();
-		player = null;
-		gui_algo.removeAll();
-		gui_algo.repaint();
-	}
-
 
 	public void setGameGraph(Graph gameGraph) {
 		this.graph = gameGraph;
@@ -131,6 +142,10 @@ public class GameBoard {
 
 	public List<MoveableObject> getMoveableObjects() {
 		return moveableObjects;
+	}
+
+	public void stopGame() {
+		game_running = false;
 	}
 
 }

@@ -25,7 +25,7 @@ public class Player extends MoveableObject{
 				","	+ global_location.y() + 
 				"," + global_location.x() + 
 				"," + velocity + 
-				"," + eatingRadius;
+				"," + eatingRadius/10;
 	}
 		
 	public static String getTag() {

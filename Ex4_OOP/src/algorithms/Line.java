@@ -1,5 +1,8 @@
 package algorithms;
 
+import GameObjects.Game_object;
+import game.GameBoard;
+
 public class Line {
 	  private static final double r2d = 180.0D / 3.141592653589793D;
 	  private static final double d2r = 3.141592653589793D / 180.0D;
@@ -40,6 +43,17 @@ public class Line {
 		return dis;	
 	}
 	
+	// temporary location!
+	public synchronized static double getMouseDegree(GameBoard gameboard, Point2D global_pos_eater, Point2D global_pos_target) {
+		Point2D local_pos_eater = gameboard.getMap().global2pixel(global_pos_eater);
+		Point2D local_pos_target_object = gameboard.getMap().global2pixel(global_pos_target);
+		double radian = Math.atan2(local_pos_eater.y()-local_pos_target_object.y(), local_pos_eater.x()-local_pos_target_object.x());
+		double degree = Math.toDegrees(radian);
+		degree = degree + 360;
+		degree = 540 - degree;
+		System.out.println(degree  + "*");
+		return degree;
+}
 
 	public static double distance(Point2D p1, Point2D p2) {
 		 double lt1 = p1.x();

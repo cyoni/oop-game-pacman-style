@@ -8,7 +8,9 @@ package GameObjects;
  */
 
 public interface IMoveable {
-
+	
+	public void increaseEatenFruits();
+	public int getNumEatenFruits();
 	public void setDegree(double deg);
 	public double getDegree();
 	public void setVelocity(double vel);

@@ -18,7 +18,7 @@ public class Ghost extends MoveableObject{
 				","	+ global_location.x() + 
 				"," + global_location.y() +
 				"," + velocity + 
-				"," + eatingRadius;
+				"," + eatingRadius/10;
 	}
 
 }

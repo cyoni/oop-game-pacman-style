@@ -12,6 +12,8 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import Threads_Game.Eat_Thread;
+import Threads_Game.ManageGhostThread;
+import Threads_Game.ManagePacmanThread;
 import Threads_Game.MovementThread;
 import GameObjects.Game_object;
 import algorithms.DFS;
@@ -121,36 +123,49 @@ public class InitGame{
 	}
 
 	public void startGame() {
+		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();
 		if (gui_algo.getGameboard().getFruits().size() == 0) {
-			Gui_dialog.alert("Please drop some apples to start.");
+			thread_drop.selectToDropAll();
+			thread_drop.startThreadDroppingItems();
 			return;
 		} else if (gui_algo.getGameboard().getPlayer() == null) {
-			DropingItemsOnScreen.dropping_player = true;
-			DropingItemsOnScreen drop = new DropingItemsOnScreen();
-			drop.startDroppingItems();
+			DropingItemsOnScreen.global_dropping_player = true;
+			thread_drop.startThreadDroppingItems();
 			return;
 		} else if (gui_algo.getGameboard().getGraph().nodeSize() == 0) {
 			buildGraphGame();
 		}
 		
-		System.out.println("\nSTART");
+		System.out.println("\nGAME STARTED");
 		gui_algo.getGameboard().setGameStatus(true);
 		
 		/////////////////
 		
 		
-		Eat_Thread eat_thread = new Eat_Thread(gui_algo);
+		Eat_Thread eat_thread = new Eat_Thread(gui_algo.getGameboard()); // the thread that displaying the fruits on the screen
 		eat_thread.start();
+		
 		startMenualVersion();
 		
 		
 	}
 	
 	private void startMenualVersion() {
-		MovementThread movementThread = new MovementThread(gui_algo, gui_algo.getGameboard().getPlayer());
+		MovementThread movementThread = new MovementThread(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer());
 		movementThread.start();
+		initializeAndStartPacmansThreads();
+		//init ghosts
 	}
 
+	private void initializeAndStartPacmansThreads() {
+		gui_algo.getGameboard().getPacmanThreads().clear();
+		for (int i=0; i<gui_algo.getGameboard().getPacmans().size(); i++) {
+			Game_object current_pacman = gui_algo.getGameboard().getPacmans().get(i);
+			ManagePacmanThread thread = new ManagePacmanThread(gui_algo.getGameboard(), (Pacman)current_pacman);
+			gui_algo.getGameboard().addPacmanThread(thread);
+			thread.start();
+		}
+	}
 
 	public void initGameboard(List<String> elements) {
 		if (!elements.isEmpty()) {

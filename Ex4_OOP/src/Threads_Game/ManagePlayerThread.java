@@ -14,11 +14,7 @@ public class ManagePlayerThread extends Thread{
 		while (gui_algo.getGameboard().isRunning()) {
 			try {sleep(100);} catch (InterruptedException e) {}
 			
-			
-			
-			
-			
-			
+
 			
 		}
 	}
