@@ -166,8 +166,8 @@ public class InitGame{
 	}
 
 	private void initializeAndStartPacmansThreads() {
-		gui_algo.getGameboard().getGameAlgo().initializeAndStartPacmansThreads();
 		gui_algo.getGameboard().getPacmanThreads().clear();
+		gui_algo.getGameboard().getGameAlgo().initializeAndStartPacmansThreads();
 
 	}
 
