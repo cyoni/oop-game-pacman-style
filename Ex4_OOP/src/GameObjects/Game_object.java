@@ -5,13 +5,13 @@ import algorithms.Point2D;
 
 public class Game_object {
 	public String picture;
-	public static int totalObjects = 0;
-	private int id;
+	public static int GLOBAL_ID = 0;
+	private int local_id;
 	private Point2D location;
 	private int objectSize;
 
 	public Game_object(int id, Point2D location) {
-		this.id = id;
+		this.local_id = id;
 		this.location = location;
 	}
 	
@@ -24,7 +24,7 @@ public class Game_object {
 	}
 
 	public int getId() {
-		return id;
+		return local_id;
 	}
 	
 	public void setObjectSize(int size) {
@@ -36,7 +36,7 @@ public class Game_object {
 	}
 		
 	public static void resetTotalObjects() {
-		totalObjects = 0;
+		GLOBAL_ID = 0;
 	}
 
 }

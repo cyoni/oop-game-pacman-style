@@ -48,11 +48,11 @@ public class ManagePacmanThread extends Thread {
 	
 	public synchronized void getNotifiedOfDeadFruits(Fruit deadFruit) {
 		closestFruits_to_this_pacman.remove(deadFruit);
-		if (is_thread_asleep() && was_my_target_eaten(deadFruit)){
+		//if (is_thread_asleep() && was_my_target_eaten(deadFruit)){
 			thread_sleeping = false;
 			System.out.println("Thread " + getId() + " woke up.");
 			notify(); // wake up!
-		}
+		//}
 	}
 	
 	private boolean was_my_target_eaten(Fruit deadFruit) {

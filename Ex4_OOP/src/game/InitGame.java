@@ -2,6 +2,7 @@ package game;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Queue;
 
 import GUI.Gui_algo;
@@ -38,6 +39,74 @@ public class InitGame{
 		if (gui_algo.getGameboard().getPlayer() == null) return;
 		
 		Graph gameGraph = new Graph();
+		addNodesToGameGraph(gameGraph);
+		connectEdges(gameGraph);
+		gui_algo.gameboard.setGameGraph(gameGraph);
+		
+		// Prim
+		Graph primGraph = new Graph();
+		addFruitsToPrimGraph(gameGraph, primGraph);
+		connectEdges(primGraph);
+		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
+		printDistanceMatrix(mat);
+		
+		Prim prim = new Prim(gameGraph, mat);
+		Graph graph_MST = prim.getMST();
+		
+		// DFS
+		getPathByDFS(graph_MST, gameGraph);
+	}
+
+	private void printDistanceMatrix(double[][] mat) {
+		for (int i = 0; i < mat.length; i++) {
+			for (int j = 0; j < mat.length; j++) {
+				System.out.print(mat[i][j] + "\t");
+			}
+			System.out.println();
+		}		
+	}
+
+
+	private void getPathByDFS(Graph graph_MST, Graph gameGraph) {
+		DFS dfs = new DFS(graph_MST);
+		dfs.startDFS(gui_algo.gameboard.getPlayer().getId());
+		Queue<Integer> path = dfs.getPath();
+		
+		while(path.size() > 1) {
+			Point2D p1 = gameGraph.getNode(path.poll()).getLocation();
+			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
+			gui_algo.getGameboard().MST_graph.add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
+		}		
+	}
+
+
+	private void addFruitsToPrimGraph(Graph gameGraph, Graph primGraph) {
+		 for (Entry<Integer, node_data> nodes : gameGraph.getGraph().entrySet()) {
+			 node_data current_node = nodes.getValue();
+				if (current_node.getTag().equals(Fruit.getTag())) 
+					primGraph.addNode(current_node);
+		 }
+		primGraph.addNode(new Node( gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));	
+	}
+
+	private void connectEdges(Graph graph) {
+		List<node_data> nodes = graph.getNodes();
+		for (int i=0; i<nodes.size(); i++) {
+			node_data currentNode = nodes.get(i);
+			for (int j = (i+1); j < nodes.size()-1; j++) {
+				node_data j_node = nodes.get(j);
+				
+				Point2D p1 = currentNode.getLocation(); 
+				Point2D p2 = j_node.getLocation();
+
+				graph.connect(currentNode.getKey(), j_node.getKey(), Line.distance(p1, p2));	
+				gui_algo.gameboard.getLinesOfGameGraph().add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
+			}
+		}
+	}
+
+
+	private void addNodesToGameGraph(Graph gameGraph) {
 		node_data node = new Node(gui_algo.getGameboard().player.getId(), gui_algo.getGameboard().player.getLocation());
 		node.setTag(Player.getTag());
 		gameGraph.addNode(node);
@@ -46,6 +115,7 @@ public class InitGame{
 		for (int i=0; i < gui_algo.getGameboard().fruits.size(); i++) {
 			node = new Node(gui_algo.getGameboard().fruits.get(i).getId(), gui_algo.getGameboard().fruits.get(i).getLocation());
 			node.setTag(Fruit.getTag());
+			System.out.println("adding node " + node.getKey());
 			gameGraph.addNode(node);
 		}
 		for (int i=0; i < gui_algo.getGameboard().pacmans.size(); i++) {
@@ -53,77 +123,15 @@ public class InitGame{
 			node = new Node(gui_algo.getGameboard().pacmans.get(i).getId(), gui_algo.getGameboard().pacmans.get(i).getLocation());
 			node.setTag(Pacman.getTag());
 			gameGraph.addNode(node);
-		}
-
-		
-		List<node_data> nodes = gameGraph.getNodes();
-		for (int i=0; i<nodes.size(); i++) {
-			node_data currentNode = nodes.get(i);
-			for (int j = (i+1); j < nodes.size(); j++) {
-				
-				Point2D p1 = currentNode.getLocation(); 
-				Point2D p2 = gameGraph.getNode(j).getLocation();
-
-				gameGraph.connect(currentNode.getKey(), gameGraph.getNode(j).getKey(), Line.distance(p1, p2));	
-				gui_algo.gameboard.getLinesOfGameGraph().add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
-			}
-		}
-				
-		gui_algo.gameboard.setGameGraph(gameGraph);
-		
-		//// Prim
-
-		Graph primGraph = new Graph();
-		for (int i=0; i< gameGraph.nodeSize(); i++) {
-			if (gameGraph.getNode(i).getTag().equals(Fruit.getTag())) {
-				
-				primGraph.addNode(gameGraph.getNode(i));
-				}
-		}
-		primGraph.addNode(new Node( gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));
-		
-		
-		nodes = primGraph.getNodes();
-		for (int i=0; i<nodes.size(); i++) {
-			node_data currentNode = nodes.get(i);
-			for (int j = (i+1); j < nodes.size(); j++) {
-				if (primGraph.getNode(j) != null) {
-					Point2D p1 = currentNode.getLocation(); 
-					Point2D p2 = primGraph.getNode(j).getLocation();
-									
-					primGraph.connect(currentNode.getKey(), primGraph.getNode(j).getKey(), Line.distance(p1, p2));
-				}
-			}
-		}
-		
-	
-		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
-
-		for (int i = 0; i < mat.length; i++) {
-			for (int j = 0; j < mat.length; j++) {
-				System.out.print(mat[i][j] + "\t");
-			}
-			System.out.println();
-		}
-		
-		Prim prim = new Prim(gameGraph, mat);
-		Graph graph_MST = prim.getMST();
-		
-		// DFS
-
-		DFS dfs = new DFS(gameGraph.nodeSize(), graph_MST);
-		dfs.startDFS(gui_algo.gameboard.getPlayer().getId());
-		Queue<Integer> path = dfs.getPath();
-		
-		while(path.size() > 1) {
-			Point2D p1 = gameGraph.getNode(path.poll()).getLocation();
-			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
-			gui_algo.getGameboard().MST_graph.add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
-		}
+			System.out.println("adding node " + node.getKey());
+		}		
 	}
+
 
 	public void startGame() {
 		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();
+		if (gui_algo.getGameboard().doesCleanNeeded()) gui_algo.getGameboard().cleanBoard();
+		
 		if (gui_algo.getGameboard().getFruits().size() == 0) {
 			thread_drop.selectToDropAll();
 			thread_drop.startThreadDroppingItems();
@@ -137,7 +145,7 @@ public class InitGame{
 		}
 		
 		System.out.println("\nGAME STARTED");
-		gui_algo.getGameboard().setGameStatus(true);
+		gui_algo.getGameboard().startGame();;
 		
 		/////////////////
 		
@@ -146,8 +154,6 @@ public class InitGame{
 		eat_thread.start();
 		
 		startMenualVersion();
-		
-		
 	}
 	
 	private void startMenualVersion() {
@@ -181,15 +187,15 @@ public class InitGame{
 				System.out.println(elements.get(i));
 				
 				if (type.equals("F")) {
-					gameboard.addFruit(new Fruit(Game_object.totalObjects++, new Point2D(lon, lat), velocity_or_weight));}
+					gameboard.addFruit(new Fruit(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight));}
 				//else if (type.equals("G"))
 				//	gameboard.addGhost(new Ghost(id, new Point2D(lat, lon), Double.parseDouble(data[5])));
 				else if (type.equals("P")) {
 					double eatingRadius = Double.parseDouble(data[5]);
-					gameboard.addPacman(new Pacman(Game_object.totalObjects++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
+					gameboard.addPacman(new Pacman(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				} else if (type.equals("M")) {
 					double eatingRadius = Double.parseDouble(data[5]);
-					gameboard.setPlayer(new Player(Game_object.totalObjects++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
+					gameboard.setPlayer(new Player(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				}
 			}
 			gui_algo.setGameBoard(gameboard);

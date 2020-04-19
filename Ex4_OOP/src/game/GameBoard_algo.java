@@ -1,7 +1,19 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import GUI.Gui_algo;
+import GUI.Gui_dialog;
+import GameObjects.Fruit;
 import GameObjects.Game_object;
+import GameObjects.Ghost;
 import GameObjects.MoveableObject;
+import GameObjects.Pacman;
+import GameObjects.Player;
+import Threads_Game.ManagePacmanThread;
+import algorithms.Graph;
+import algorithms.Line;
 
 public class GameBoard_algo {
 	
@@ -11,17 +23,28 @@ public class GameBoard_algo {
 		this.gameboard = gameboard;
 	}
 
-	public void cleanBoard() {
+	
+	public void initializeDataStructure() {
+		gameboard.pacmans = new ArrayList<>();
+		gameboard.ghosts = new ArrayList<>();
+		gameboard.fruits = new ArrayList<>();
+		gameboard.moveableObjects = new ArrayList<>();
+		gameboard.player = null;
 		gameboard.game_running = false;
+		gameboard.graph = new Graph();
+		gameboard.graph_Game = new ArrayList<>();
+		gameboard.MST_graph = new ArrayList<>();
+		gameboard.managePacmanThread = new ArrayList<>();
+		gameboard.autoGame = false;
+		gameboard.cleanObjectsFromPreviousGame = false;
+	}
+	
+	public void cleanBoard() {
+		initializeDataStructure();
+		
 		Game_object.resetTotalObjects();
 		DropingItemsOnScreen.selectNone();
-		gameboard.graph_Game.clear();
-		gameboard.MST_graph.clear();
-		gameboard.fruits.clear();
-		gameboard.ghosts.clear();
-		gameboard.pacmans.clear();
-		gameboard.player = null;
-		gameboard.getGuiAlgo().removeAll();
+
 		gameboard.getGuiAlgo().repaint();
 	}
 
@@ -34,5 +57,57 @@ public class GameBoard_algo {
 		return result;
 	}
 
+	public void removeItem(Game_object object_to_remove) {
+		if (object_to_remove instanceof Fruit) 
+			gameboard.fruits.remove(object_to_remove);
+		 else if (object_to_remove instanceof Ghost) 
+			gameboard.ghosts.remove(object_to_remove);
+		 else if (object_to_remove instanceof Pacman) 
+				gameboard.pacmans.remove(object_to_remove);
+		 else if (object_to_remove instanceof Player) 
+				gameboard.player = null;
+		gameboard.getGuiAlgo().repaint();
+	}
+
+	
+	public void alterSpeed(MoveableObject object) {
+		String str = Gui_dialog.getInputDialog("Enter a new velocity...", object.getVelocity()+"");
+		try {
+			double newVelocity = Double.valueOf(str);
+			object.setVelocity(newVelocity);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
+	}
+
+	public void alterWeight(Fruit object) {
+		String str = Gui_dialog.getInputDialog("Enter a new velocity...", object.getWeight() +"");
+		try {
+			double newWeight = Double.valueOf(str);
+			object.setWeight(newWeight);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
+		
+	}
+
+	public void alterEatingRadius(MoveableObject object) {
+
+		String str = Gui_dialog.getInputDialog("Enter a new eating radius...", object.getEatingRadius()/10 +"");
+		try {
+			double newRadius = Double.valueOf(str);
+			object.setEatingRadius(newRadius);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
+		
+	}
+	
 	
 }

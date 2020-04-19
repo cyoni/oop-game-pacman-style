@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import GameObjects.Game_object;
+
 
 public class DFS 
 { 
@@ -16,9 +18,9 @@ public class DFS
 	private Queue<Integer> path = new LinkedList();
 	private int V;
 
-	public DFS(int total_nodes, Graph graph_MST) 
+	public DFS(Graph graph_MST) 
 	{ 
-		this.V = total_nodes;
+		this.V = (Game_object.GLOBAL_ID+1);
 		this.graph_MST = graph_MST;
 		setArrayofAdj();
 	} 

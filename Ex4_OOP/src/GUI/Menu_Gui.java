@@ -95,7 +95,7 @@ public class Menu_Gui {
         });
     	
         dropItems.addActionListener((ActionEvent e) -> { 
-        	gui_algo.gameboard.cleanBoard();
+        	if (gui_algo.getGameboard().doesCleanNeeded()) gui_algo.getGameboard().cleanBoard();
         	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
         	dropping.selectToDropAll();
         	dropping.startThreadDroppingItems();
@@ -129,7 +129,7 @@ public class Menu_Gui {
 		return menuBar;
 	}
 	
-	public boolean getIsShow_Game_Graph_Selected() { return show_game_graph;}
-	public boolean getIsShow_MST_Graph_Selected() { return showMSTPath;}
+	public boolean getIsShow_Game_Graph_Selected() {return show_game_graph;}
+	public boolean getIsShow_MST_Graph_Selected() {return showMSTPath;}
 
 }

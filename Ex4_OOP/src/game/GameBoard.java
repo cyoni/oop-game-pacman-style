@@ -36,23 +36,24 @@ import algorithms.Prim;
 import algorithms.node_data;
 
 public class GameBoard {
-	protected List<Game_object> pacmans = new ArrayList<>();
-	protected List<Game_object> ghosts = new ArrayList<>();
-	protected List<Game_object> fruits = new ArrayList<>();
-	protected List<MoveableObject> moveableObjects = new ArrayList<>();
+	protected List<Game_object> pacmans;
+	protected List<Game_object> ghosts;
+	protected List<Game_object> fruits;
+	protected List<MoveableObject> moveableObjects;
 	protected MoveableObject player;
 	private Gui_algo gui_algo;
 	protected boolean game_running;
-	protected Graph graph = new Graph();
-	protected List<Line> graph_Game = new ArrayList<>();
-	public List<Line> MST_graph = new ArrayList<>();
-	private List<ManagePacmanThread> managePacmanThread = new ArrayList<>();
-	GameBoard_algo gameboard_algo = new GameBoard_algo(this);;
-	
-	private boolean autoGame = false; 
+	protected Graph graph;
+	protected List<Line> graph_Game;
+	public List<Line> MST_graph;
+	protected List<ManagePacmanThread> managePacmanThread;
+	protected boolean autoGame; 
+	private GameBoard_algo gameboard_algo = new GameBoard_algo(this);
+	protected boolean cleanObjectsFromPreviousGame;
 	
 	public GameBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
+		gameboard_algo.initializeDataStructure();
 	}
 	
 	public GameBoard() {}
@@ -80,10 +81,6 @@ public class GameBoard {
 	public void addMoveableObject(MoveableObject obj) {
 		moveableObjects.add(obj);
 	}
-
-	public void setGameStatus(boolean game_status) {
-		this.game_running = game_status;
-	}
 	
 	public Gui_algo getGuiAlgo() {
 		return gui_algo;
@@ -97,15 +94,14 @@ public class GameBoard {
 		gameboard_algo.cleanBoard();
 	}
 	
+	public boolean doesCleanNeeded() {
+		return cleanObjectsFromPreviousGame;
+	}
+	
 	public Map getMap() {
 		return gui_algo.map;
 	}
 	
-	public List<Game_object> getPacmans() {return pacmans;}
-	public List<Game_object> getGhosts() {return ghosts;}
-	public synchronized List<Game_object> getFruits() {return fruits;}
-	public synchronized MoveableObject getPlayer() { return player;}
-
 	public boolean isRunning() {
 		return game_running;
 	}
@@ -127,7 +123,6 @@ public class GameBoard {
 	}
 
 
-
 	public void setGameGraph(Graph gameGraph) {
 		this.graph = gameGraph;
 	}
@@ -145,7 +140,25 @@ public class GameBoard {
 	}
 
 	public void stopGame() {
+		cleanObjectsFromPreviousGame = true;
 		game_running = false;
 	}
+	
+	public void startGame() {
+		game_running = true;
+	}
+
+	public void removeItem(Game_object object_to_remove) {
+		gameboard_algo.removeItem(object_to_remove);
+	}
+
+	public GameBoard_algo getGameAlgo() {
+		return gameboard_algo;
+	}
+	
+	public List<Game_object> getPacmans() {return pacmans;}
+	public List<Game_object> getGhosts() {return ghosts;}
+	public synchronized List<Game_object> getFruits() {return fruits;}
+	public synchronized MoveableObject getPlayer() { return player;}
 
 }

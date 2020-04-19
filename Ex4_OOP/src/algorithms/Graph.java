@@ -66,8 +66,16 @@ public class Graph implements IGraph, Serializable {
 		list.add(edge_new);
 		edge_dataStructure.put(dest, list);	
 	}
+	
+	public List<node_data> getNodes() {
+		List<node_data> nodes = new ArrayList<>();
+		for (Entry<Integer, node_data> current_node : graph_dataStructure.entrySet())
+			nodes.add(current_node.getValue());
+		return nodes;
+	}
 
 	@Override
+	@Deprecated
 	public Collection<node_data> getV() {
 		return (Collection<node_data>) graph_dataStructure.values() ;
 	}
@@ -123,6 +131,10 @@ public class Graph implements IGraph, Serializable {
 			}
 		}
 		return mat;
+	}
+
+	public Map<Integer, node_data> getGraph() {
+		return graph_dataStructure;
 	}
 	
 

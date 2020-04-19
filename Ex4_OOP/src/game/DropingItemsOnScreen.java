@@ -26,6 +26,10 @@ public class DropingItemsOnScreen extends Thread {
 		if (global_dropping_player) startDroppingPlayer();
 	}
 	
+	public static boolean isDropping() {
+		return global_dropping_apples || global_dropping_pacmans || global_dropping_player;
+	}
+	
 	private void startDroppingPlayer() {
 		Gui_dialog.alert("Choose your stating point.");
 		global_dropping_player = true;
@@ -51,7 +55,7 @@ public class DropingItemsOnScreen extends Thread {
 
 	public void startDroppingApples() {
 		
-		Gui_dialog.alert("Start dropping fruits. Once done, press the right button of the mouse");
+		Gui_dialog.alert("Start dropping fruits. Once done, press the wheel button.");
 		while (global_dropping_apples) {
 			try {
 				sleep(500);
@@ -75,16 +79,16 @@ public class DropingItemsOnScreen extends Thread {
 	
 	public static void dropApple(GameBoard gameBoard, Point2D mouseCoords) {
 		int randomWeight =  NumberGenerator.getRandomNumber(10, 50);
-		Fruit fruit = new Fruit(Game_object.totalObjects++, mouseCoords, randomWeight);
+		Fruit fruit = new Fruit(Game_object.GLOBAL_ID++, mouseCoords, randomWeight);
 		gameBoard.getFruits().add(fruit);
-		System.out.println(Game_object.totalObjects + "# id of the apple " + fruit.getLocation());
+		System.out.println(Game_object.GLOBAL_ID + "# id of the apple " + fruit.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 	
 	public static void dropPlayer(GameBoard gameBoard, Point2D mouseCoords) {
 		int id;
 		if (gameBoard.getPlayer() == null)
-		  id = Game_object.totalObjects++;
+		  id = Game_object.GLOBAL_ID++;
 		else id = gameBoard.getPlayer().getId();
 		
 		Player player = new Player(id, mouseCoords, 1, 2);
@@ -94,9 +98,9 @@ public class DropingItemsOnScreen extends Thread {
 	}
 	
 	public static void dropPacman(GameBoard gameBoard, Point2D mouseCoords) {
-		Pacman pacman = new Pacman(Game_object.totalObjects++, mouseCoords, 1, 2);
+		Pacman pacman = new Pacman(Game_object.GLOBAL_ID++, mouseCoords, 1, 2);
 		gameBoard.getPacmans().add(pacman);
-		System.out.println(Game_object.totalObjects + " #id of pacman " + pacman.getLocation());
+		System.out.println(Game_object.GLOBAL_ID + " #id of pacman " + pacman.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 

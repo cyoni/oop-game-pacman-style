@@ -13,6 +13,9 @@ public class Gui_dialog {
 		return JOptionPane.showInputDialog(content);
 	}
 	
+	public static String getInputDialog(String content, String initialText) {
+		return JOptionPane.showInputDialog(content, initialText);
+	}
 	
 	/*
 	 * This method alerts a message to the user.
