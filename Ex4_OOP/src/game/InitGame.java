@@ -35,6 +35,8 @@ public class InitGame{
 	
 	
 	public void buildGraphGame() {
+		if (gui_algo.getGameboard().getPlayer() == null) return;
+		
 		Graph gameGraph = new Graph();
 		node_data node = new Node(gui_algo.getGameboard().player.getId(), gui_algo.getGameboard().player.getLocation());
 		node.setTag(Player.getTag());
@@ -53,12 +55,12 @@ public class InitGame{
 			gameGraph.addNode(node);
 		}
 
-		int num_nodes = gameGraph.nodeSize(); 
 		
-		Iterator<node_data> nodesIterator = gameGraph.getV().iterator();
-		while (nodesIterator.hasNext()) {
-			node_data currentNode = nodesIterator.next();
-			for (int j=currentNode.getKey()+1; j<num_nodes; j++) {
+		List<node_data> nodes = gameGraph.getNodes();
+		for (int i=0; i<nodes.size(); i++) {
+			node_data currentNode = nodes.get(i);
+			for (int j = (i+1); j < nodes.size(); j++) {
+				
 				Point2D p1 = currentNode.getLocation(); 
 				Point2D p2 = gameGraph.getNode(j).getLocation();
 
@@ -66,28 +68,25 @@ public class InitGame{
 				gui_algo.gameboard.getLinesOfGameGraph().add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
 			}
 		}
-		
+				
 		gui_algo.gameboard.setGameGraph(gameGraph);
 		
 		//// Prim
-		System.out.println("---------");
 
 		Graph primGraph = new Graph();
 		for (int i=0; i< gameGraph.nodeSize(); i++) {
 			if (gameGraph.getNode(i).getTag().equals(Fruit.getTag())) {
 				
 				primGraph.addNode(gameGraph.getNode(i));
-				System.out.println("adding " + gameGraph.getNode(i).getKey());
 				}
 		}
-		System.out.println("adding.. " + gui_algo.getGameboard().getPlayer().getId());
 		primGraph.addNode(new Node( gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));
 		
 		
-		nodesIterator = primGraph.getV().iterator();
-		while (nodesIterator.hasNext()) {
-			node_data currentNode = nodesIterator.next();
-			for (int j=currentNode.getKey()+1; j < gameGraph.nodeSize(); j++) {
+		nodes = primGraph.getNodes();
+		for (int i=0; i<nodes.size(); i++) {
+			node_data currentNode = nodes.get(i);
+			for (int j = (i+1); j < nodes.size(); j++) {
 				if (primGraph.getNode(j) != null) {
 					Point2D p1 = currentNode.getLocation(); 
 					Point2D p2 = primGraph.getNode(j).getLocation();
@@ -96,7 +95,8 @@ public class InitGame{
 				}
 			}
 		}
-				
+		
+	
 		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
 
 		for (int i = 0; i < mat.length; i++) {
