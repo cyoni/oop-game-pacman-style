@@ -46,7 +46,9 @@ public class InitGame{
 		// Prim
 		Graph primGraph = new Graph();
 		addFruitsToPrimGraph(gameGraph, primGraph);
+				
 		connectEdges(primGraph);
+		
 		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
 		printDistanceMatrix(mat);
 		
@@ -69,9 +71,11 @@ public class InitGame{
 
 	private void getPathByDFS(Graph graph_MST, Graph gameGraph) {
 		DFS dfs = new DFS(graph_MST);
-		dfs.startDFS(gui_algo.gameboard.getPlayer().getId());
-		Queue<Integer> path = dfs.getPath();
+		int firstNodeToStartFrom = gui_algo.gameboard.getPlayer().getId();
+		dfs.startDFS(firstNodeToStartFrom);
 		
+		Queue<Integer> path = dfs.getPath();
+
 		while(path.size() > 1) {
 			Point2D p1 = gameGraph.getNode(path.poll()).getLocation();
 			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
@@ -86,14 +90,14 @@ public class InitGame{
 				if (current_node.getTag().equals(Fruit.getTag())) 
 					primGraph.addNode(current_node);
 		 }
-		primGraph.addNode(new Node( gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));	
+		primGraph.addNode(new Node(gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));	
 	}
 
 	private void connectEdges(Graph graph) {
 		List<node_data> nodes = graph.getNodes();
 		for (int i=0; i<nodes.size(); i++) {
 			node_data currentNode = nodes.get(i);
-			for (int j = (i+1); j < nodes.size()-1; j++) {
+			for (int j =i+1; j < nodes.size(); j++) {
 				node_data j_node = nodes.get(j);
 				
 				Point2D p1 = currentNode.getLocation(); 
@@ -115,7 +119,6 @@ public class InitGame{
 		for (int i=0; i < gui_algo.getGameboard().fruits.size(); i++) {
 			node = new Node(gui_algo.getGameboard().fruits.get(i).getId(), gui_algo.getGameboard().fruits.get(i).getLocation());
 			node.setTag(Fruit.getTag());
-			System.out.println("adding node " + node.getKey());
 			gameGraph.addNode(node);
 		}
 		for (int i=0; i < gui_algo.getGameboard().pacmans.size(); i++) {
@@ -123,7 +126,6 @@ public class InitGame{
 			node = new Node(gui_algo.getGameboard().pacmans.get(i).getId(), gui_algo.getGameboard().pacmans.get(i).getLocation());
 			node.setTag(Pacman.getTag());
 			gameGraph.addNode(node);
-			System.out.println("adding node " + node.getKey());
 		}		
 	}
 

@@ -36,16 +36,13 @@ public class DFS
 		for (int i = 0; i < adj.length; i++) {
 			Collection<edge_data> edges_of_node = graph_MST.getE(i);
 			if (edges_of_node != null) {
-			Iterator<edge_data> Iter = edges_of_node.iterator();
-			
-			while (Iter.hasNext()) {
-				edge_data current_edge = Iter.next();
-				addEdge(i, current_edge.getDest());
+				Iterator<edge_data> Iter = edges_of_node.iterator();
+				while (Iter.hasNext()) {
+					edge_data current_edge = Iter.next();
+					addEdge(i, current_edge.getDest());
+				}
 			}
-			}
-		}
-		
-		
+		}		
 	}
 
 	private void addEdge(int src, int dest)	{ 
@@ -56,15 +53,12 @@ public class DFS
 		return path;
 	}
 	
-	private void DFSUtil(int v,boolean visited[]) 
-	{ 
+	private void DFSUtil(int v, boolean visited[]) { 
 		visited[v] = true; 
 		System.out.print(v+" "); 
 		path.add(v);
-
 		Iterator<Integer> i = adj[v].listIterator(); 
-		while (i.hasNext()) 
-		{ 
+		while (i.hasNext()) { 
 			int n = i.next(); 
 			if (!visited[n]) 
 				DFSUtil(n, visited); 
