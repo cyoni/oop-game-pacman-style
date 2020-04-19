@@ -108,6 +108,13 @@ public class GameBoard_algo {
 		}
 		
 	}
-	
+	public void initializeAndStartPacmansThreads() {
+		for (int i=0; i<gameboard.getPacmans().size(); i++) {
+			Game_object current_pacman = gameboard.getPacmans().get(i);
+			ManagePacmanThread thread = new ManagePacmanThread(gameboard, (Pacman)current_pacman);
+			gameboard.addPacmanThread(thread);
+			thread.start();
+		}		
+	}
 	
 }

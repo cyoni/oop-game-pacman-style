@@ -34,7 +34,7 @@ public class MyFrame {
 	
 	public MyFrame() throws Exception {
 		Gui_algo gui_algo = new Gui_algo(); 
-	    gui_algo.test();
+		gui_algo.startBackgroundAnimation();
 	}
 
 

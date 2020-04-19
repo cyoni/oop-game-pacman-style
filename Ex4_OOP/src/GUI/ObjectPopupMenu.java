@@ -9,9 +9,9 @@ import GameObjects.Game_object;
 import GameObjects.MoveableObject;
 import game.GameBoard;
 
-
+ 
 public class ObjectPopupMenu {
-	
+	// FIXME popup duplicates itself
    private JPopupMenu popup;
    private JMenuItem removeItem, alterWeight, alterPosition, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman;
    private Game_object objectThatIsBeingPressed;

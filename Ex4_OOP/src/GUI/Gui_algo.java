@@ -32,6 +32,7 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Rectangle;
+import Threads_Game.ManagePacmanThread;
 import GameObjects.Game_object;
 import algorithms.Line;
 import algorithms.Point2D;
@@ -158,5 +159,13 @@ public class Gui_algo extends JPanel  {
 		csvWriter.writeToCSV(gameboard, file_name);
 		
 	}
+
+	public void startBackgroundAnimation() {
+		AnimatedBackground animation = new AnimatedBackground(this);
+		animation.start();
+		
+	}
+
+
 
 }

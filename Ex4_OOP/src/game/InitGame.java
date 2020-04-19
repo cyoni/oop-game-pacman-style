@@ -164,13 +164,9 @@ public class InitGame{
 	}
 
 	private void initializeAndStartPacmansThreads() {
+		gui_algo.getGameboard().getGameAlgo().initializeAndStartPacmansThreads();
 		gui_algo.getGameboard().getPacmanThreads().clear();
-		for (int i=0; i<gui_algo.getGameboard().getPacmans().size(); i++) {
-			Game_object current_pacman = gui_algo.getGameboard().getPacmans().get(i);
-			ManagePacmanThread thread = new ManagePacmanThread(gui_algo.getGameboard(), (Pacman)current_pacman);
-			gui_algo.getGameboard().addPacmanThread(thread);
-			thread.start();
-		}
+
 	}
 
 	public void initGameboard(List<String> elements) {

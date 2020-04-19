@@ -36,7 +36,9 @@ public class MouseClickOnScreen implements MouseListener {
 		Point2D localCoords =  new Point2D(pixelX, pixelY);
 		//System.out.println(pixelX + "," + pixelY);
 		
-		if (game_Running() && ManualVersionIsOn())
+		if (game_Running() && gui_algo.getGameboard().getGraph().nodeSize()==0) {
+			gui_algo.getGameboard().cleanBoard();}
+		else if (game_Running() && ManualVersionIsOn())
 			getAndSetDegreeOfPlayer(localCoords);
 		else if (game_Running() == false && isAnObjectBeingPressed(localCoords, e))
 			showPopupMenu(e);
