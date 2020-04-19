@@ -23,6 +23,7 @@ public class ManagePacmanThread extends Thread {
 		closestFruits_to_this_pacman.addAll(gameboard.getFruits());
 		
 		MovementThread threadMovement = new MovementThread(gameboard, pacman);
+		System.out.println("Thread " + getId() + " joined.");
 		threadMovement.start();
 	}
 	
