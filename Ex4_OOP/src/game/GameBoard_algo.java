@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,6 +128,25 @@ public class GameBoard_algo {
 			gameboard.addGhostThread(thread);
 			thread.start();
 		}		
+	}
+	
+	public void flushIfNeeded() {
+		if (gameboard.isCleanOfOldGameNeeded() || 
+				gameboard.isAnimationOnProgress() || gameboard.getGraph().nodeSize() > 0) 
+			gameboard.cleanBoard();		
+	}
+
+
+	public void alterPosition(Game_object object, MouseEvent mouseEvent) {
+		Gui_dialog.alert(mouseEvent.getX() + "," + mouseEvent.getY());
+/*		try {
+			double newRadius = Double.valueOf(str);
+			object.setLocation(newRadius);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}*/
 	}
 	
 }

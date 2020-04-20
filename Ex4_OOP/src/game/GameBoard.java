@@ -96,7 +96,7 @@ public class GameBoard {
 		gameboard_algo.cleanBoard();
 	}
 	
-	public boolean doesCleanNeeded() {
+	public boolean isCleanOfOldGameNeeded() {
 		return cleanObjectsFromPreviousGame;
 	}
 	
@@ -145,7 +145,7 @@ public class GameBoard {
 		cleanObjectsFromPreviousGame = true;
 		game_running = false;
 	}
-	
+		
 	public void startGame() {
 		game_running = true;
 	}
@@ -169,6 +169,10 @@ public class GameBoard {
 
 	public List<ManageGhostThread> getGhostsThreads() {
 		return manageGhostThread;
+	}
+
+	public boolean isAnimationOnProgress() {
+		return isRunning() && gui_algo.getGameboard().getGraph().nodeSize()==0;
 	}
 
 }

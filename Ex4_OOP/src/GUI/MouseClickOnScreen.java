@@ -36,22 +36,22 @@ public class MouseClickOnScreen implements MouseListener {
 		Point2D localCoords =  new Point2D(pixelX, pixelY);
 		//System.out.println(pixelX + "," + pixelY);
 		
-		if (game_Running() && gui_algo.getGameboard().getGraph().nodeSize()==0) {
-			gui_algo.getGameboard().cleanBoard();}
+		if (gui_algo.getGameboard().isAnimationOnProgress()) 
+			gui_algo.getGameboard().cleanBoard();
+	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e)==false) 
+			showGlobalMenu(e);
 		else if (game_Running() && ManualVersionIsOn())
 			getAndSetDegreeOfPlayer(localCoords);
 		else if (game_Running() == false && isAnObjectBeingPressed(localCoords, e))
 			showPopupMenu(e);
 	    else if (game_Running() == false && isDroppingObjectsOnScreen())
 			dropItems(localCoords, e);
-		else if (isRightButtonMousePressed(e))
-			showGlobalMenu(e);
+
 			
-		
 	}
 
 	private void showGlobalMenu(MouseEvent e) {
-		popup.setsomething();
+		popup.setMenuAnyPressExceptObject();
 		popup.showPopup(e);
 	}
 
@@ -76,13 +76,8 @@ public class MouseClickOnScreen implements MouseListener {
 		if (gui_algo.getGameboard().getPlayer() != null)
 			moveable.add(gui_algo.getGameboard().getPlayer());
 
-		//for (int i=0;i<gui_algo.getGameboard().getGhosts().size(); i++)
-		//	moveable.add((MoveableObject) gui_algo.getGameboard().gans().get(i));
-		//
-		//popup.setObjectThatIsBeingPressed(something);
-		//popup.setMenuOfThe other();
-		//
-		//TODO
+		for (int i=0;i<gui_algo.getGameboard().getGhosts().size(); i++)
+			moveable.add((MoveableObject) gui_algo.getGameboard().getGhosts().get(i));
 		
 		for (Game_object moveable_object : moveable) {
 		double distance = Line.distance(globalPoint, moveable_object.getLocation());
@@ -112,7 +107,6 @@ public class MouseClickOnScreen implements MouseListener {
 		return gui_algo.getGameboard().isRunning();
 	}
 
-
 	private void dropItems(Point2D localCoords, MouseEvent e) {
 		if (!gui_algo.getGameboard().isRunning()) {
 			
@@ -130,9 +124,6 @@ public class MouseClickOnScreen implements MouseListener {
 				else if (DropingItemsOnScreen.global_dropping_ghosts) {DropingItemsOnScreen.global_dropping_ghosts = false;} 
 				else if (DropingItemsOnScreen.global_dropping_player) {
 						DropingItemsOnScreen.global_dropping_player = false;
-			        	InitGame init = new InitGame(gui_algo);
-						init.buildGraphGame();
-						gui_algo.repaint();
 					 }
 		   } 
 	  }

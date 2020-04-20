@@ -6,7 +6,7 @@ public class MoveableObject extends Game_object implements IMoveable{
 
 	protected double velocity = 1; // default
 	private double degree = 0; // default
-	private double score = 0;
+	protected double score = 0;
 	protected double eatingRadius = 10;
 	private int eaten_fruits = 0;
 	
@@ -15,7 +15,7 @@ public class MoveableObject extends Game_object implements IMoveable{
 		this.velocity = velocity;
 	}
 	
-	public void setScore(double score) {
+	public void addToScore(double score) {
 		this.score = score;
 	}	
 	

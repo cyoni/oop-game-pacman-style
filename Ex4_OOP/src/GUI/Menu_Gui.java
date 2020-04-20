@@ -66,7 +66,6 @@ public class Menu_Gui {
 	    menu_Game.add(startGame);
 	    menu_Game.add(cleanBoard);
 
-	    
 	    menu_Graph.add(buildGraph);
 	    menu_Graph.addSeparator();
 	    menu_Graph.add(gameGraph);
@@ -103,10 +102,8 @@ public class Menu_Gui {
         });
     	
         dropItems.addActionListener((ActionEvent e) -> { 
-        	if (gui_algo.getGameboard().doesCleanNeeded()) gui_algo.getGameboard().cleanBoard();
-        	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
-        	dropping.selectToDropAll();
-        	dropping.startThreadDroppingItems();
+        	InitGame init = new InitGame(gui_algo);
+        	init.initDroppingObjects();
         });
     	
         loadFile.addActionListener((ActionEvent e) -> { 
@@ -126,6 +123,8 @@ public class Menu_Gui {
         });
     }
 	
+
+
 	private void loadFileAndRead() {
 		CSVReaderAndWriter reader = new CSVReaderAndWriter();
 		String path = reader.chooseFile();

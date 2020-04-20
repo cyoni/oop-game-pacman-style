@@ -138,9 +138,9 @@ public class InitGame{
 
 
 	public void startGame() {
-		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();
-		if (gui_algo.getGameboard().doesCleanNeeded()) gui_algo.getGameboard().cleanBoard();
+		gui_algo.getGameboard().getGameAlgo().flushIfNeeded();
 		
+		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();		
 		if (gui_algo.getGameboard().getFruits().size() == 0) {
 			thread_drop.selectToDropAll();
 			thread_drop.startThreadDroppingItems();
@@ -155,9 +155,6 @@ public class InitGame{
 		
 		System.out.println("\nGAME STARTED");
 		gui_algo.getGameboard().startGame();;
-		
-		/////////////////
-		
 		
 		Eat_Thread eat_thread = new Eat_Thread(gui_algo.getGameboard()); // the thread that displaying the fruits on the screen
 		eat_thread.start();
@@ -210,6 +207,14 @@ public class InitGame{
 
 			gui_algo.setGameBoard(gameboard);
 		}
+	}
+
+	
+	public void initDroppingObjects() {
+    	gui_algo.getGameboard().getGameAlgo().flushIfNeeded();
+    	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
+    	dropping.selectToDropAll();
+    	dropping.startThreadDroppingItems();		
 	}
 	
 }
