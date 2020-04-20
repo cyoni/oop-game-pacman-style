@@ -4,6 +4,7 @@ import GUI.Gui_dialog;
 import GUI.MouseClickOnScreen;
 import GameObjects.Fruit;
 import GameObjects.Game_object;
+import GameObjects.Ghost;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import algorithms.NumberGenerator;
@@ -14,6 +15,7 @@ public class DropingItemsOnScreen extends Thread {
 	public static boolean global_dropping_apples = false;
 	public static boolean global_dropping_pacmans = false;
 	public static boolean global_dropping_player = false;
+	public static boolean global_dropping_ghosts = false;
 
 	
 	public void startThreadDroppingItems() {
@@ -23,9 +25,22 @@ public class DropingItemsOnScreen extends Thread {
 	public synchronized void run() {
 		if (global_dropping_apples) startDroppingApples();
 		if (global_dropping_pacmans) startDroppingPacmans();
+		if (global_dropping_ghosts) startDroppingGhosts();
 		if (global_dropping_player) startDroppingPlayer();
 	}
 	
+	private void startDroppingGhosts() {
+		Gui_dialog.alert("Drop ghosts");
+		global_dropping_ghosts = true;
+		while(global_dropping_ghosts) {
+			try {
+				sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}			
+	}
+
 	public static boolean isDropping() {
 		return global_dropping_apples || global_dropping_pacmans || global_dropping_player;
 	}
@@ -69,12 +84,14 @@ public class DropingItemsOnScreen extends Thread {
 		global_dropping_apples = true;
 		global_dropping_pacmans = true;
 		global_dropping_player = true;
+		global_dropping_ghosts = true;
 	}
 
 	public static void selectNone() {
 		global_dropping_apples = false;
 		global_dropping_pacmans = false;
 		global_dropping_player = false;
+		global_dropping_ghosts = false;
 	}
 	
 	public static void dropApple(GameBoard gameBoard, Point2D mouseCoords) {
@@ -101,6 +118,13 @@ public class DropingItemsOnScreen extends Thread {
 		Pacman pacman = new Pacman(Game_object.GLOBAL_ID++, mouseCoords, 1, 2);
 		gameBoard.getPacmans().add(pacman);
 		System.out.println(Game_object.GLOBAL_ID + " #id of pacman " + pacman.getLocation());
+		gameBoard.getGuiAlgo().repaint();
+	}
+	
+	public static void dropGhost(GameBoard gameBoard, Point2D mouseCoords) {
+		Ghost ghost = new Ghost(Game_object.GLOBAL_ID++, mouseCoords, 1, 2);
+		gameBoard.getGhosts().add(ghost);
+		System.out.println(Game_object.GLOBAL_ID + " #id of ghost " + ghost.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 

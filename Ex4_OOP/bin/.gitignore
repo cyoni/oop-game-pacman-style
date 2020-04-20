@@ -1,7 +1,5 @@
-/game/
 /GUI/
+/game/
+/Threads_Game/
 /GameObjects/
-/Coords/
-/GIS/
-/Geom/
-/FileFormat/
+/algorithms/

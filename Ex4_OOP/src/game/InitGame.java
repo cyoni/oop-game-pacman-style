@@ -126,7 +126,14 @@ public class InitGame{
 			node = new Node(gui_algo.getGameboard().pacmans.get(i).getId(), gui_algo.getGameboard().pacmans.get(i).getLocation());
 			node.setTag(Pacman.getTag());
 			gameGraph.addNode(node);
-		}		
+		}	
+		
+		for (int i=0; i < gui_algo.getGameboard().ghosts.size(); i++) {
+			gui_algo.getGameboard().getMoveableObjects().add((MoveableObject) gui_algo.getGameboard().getGhosts().get(i));
+			node = new Node(gui_algo.getGameboard().getGhosts().get(i).getId(), gui_algo.getGameboard().ghosts.get(i).getLocation());
+			node.setTag(Ghost.getTag());
+			gameGraph.addNode(node);
+		}
 	}
 
 
@@ -162,13 +169,17 @@ public class InitGame{
 		MovementThread movementThread = new MovementThread(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer());
 		movementThread.start();
 		initializeAndStartPacmansThreads();
-		//init ghosts
+		initializeAndStartGhosts();
 	}
 
 	private void initializeAndStartPacmansThreads() {
 		gui_algo.getGameboard().getPacmanThreads().clear();
 		gui_algo.getGameboard().getGameAlgo().initializeAndStartPacmansThreads();
-
+	}
+	
+	private void initializeAndStartGhosts() {
+		gui_algo.getGameboard().getGhostsThreads().clear();
+		gui_algo.getGameboard().getGameAlgo().initializeAndStartGhosts();
 	}
 
 	public void initGameboard(List<String> elements) {
@@ -196,6 +207,7 @@ public class InitGame{
 					gameboard.setPlayer(new Player(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				}
 			}
+
 			gui_algo.setGameBoard(gameboard);
 		}
 	}

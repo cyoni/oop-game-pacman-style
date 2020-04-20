@@ -21,4 +21,8 @@ public class Ghost extends MoveableObject{
 				"," + eatingRadius/10;
 	}
 
+	public static String getTag() {
+		return "ghost";
+	}
+
 }

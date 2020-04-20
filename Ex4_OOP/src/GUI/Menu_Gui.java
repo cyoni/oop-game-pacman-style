@@ -24,7 +24,7 @@ import game.InitGame;
 
 public class Menu_Gui {
 	
-    private JMenuItem loadFile, saveToCSV, exit, dropItems, startGame, cleanBoard;
+    private JMenuItem loadFile, saveToCSV, exit, dropItems, startGame, cleanBoard,buildGraph;
     private JMenuBar menuBar; // Window menu bar
 	private Gui_algo gui_algo;
 	private JCheckBoxMenuItem  gameGraph;
@@ -52,6 +52,7 @@ public class Menu_Gui {
 	    startGame = new JMenuItem("Start Game", KeyEvent.VK_G);
 	    cleanBoard = new JMenuItem("Clean Board");
 	    
+	    buildGraph = new JMenuItem("Build Graph", KeyEvent.VK_H);
 	    gameGraph = new JCheckBoxMenuItem("Show Game Graph");
 	    mstPath = new JCheckBoxMenuItem("Show MST Path");
 
@@ -65,6 +66,9 @@ public class Menu_Gui {
 	    menu_Game.add(startGame);
 	    menu_Game.add(cleanBoard);
 
+	    
+	    menu_Graph.add(buildGraph);
+	    menu_Graph.addSeparator();
 	    menu_Graph.add(gameGraph);
 	    menu_Graph.add(mstPath);
 
@@ -74,7 +78,11 @@ public class Menu_Gui {
 	}
 
     private void startMouseListener() {
-    	
+    
+    	buildGraph.addActionListener((ActionEvent e) -> { 
+    		gui_algo.buildGraph();
+        });
+        
     	gameGraph.addActionListener((ActionEvent e) -> { 
         	show_game_graph = gameGraph.isSelected();
         	gui_algo.repaint();

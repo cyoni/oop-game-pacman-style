@@ -58,7 +58,6 @@ public class Graph implements IGraph, Serializable {
 		if (list == null) list = new ArrayList<>();
 		list.add(edge_new);
 		edge_dataStructure.put(src, list);
-		System.out.println("E put: " + src + "," + dest);
 		
 		list = edge_dataStructure.get(dest);
 		if (list == null) list = new ArrayList<>();
@@ -125,7 +124,6 @@ public class Graph implements IGraph, Serializable {
 		for (int i=0;i<mat.length; i++) {
 			for (int j = 0; j < mat.length; j++) {
 				if (i != j && getEdge(i, j) != null) {
-					System.out.println("getting edge " + i +"," + j);
 				mat[i][j] = getEdge(i, j).getWeight();
 				}
 			}

@@ -54,11 +54,9 @@ public class Gui_algo extends JPanel  {
 	protected JFrame jframe = new JFrame();
 	public Map map;
 	public GameBoard gameboard = new GameBoard(this);
-	//MoveableObject player;
 	Images images = new Images();
 	private static final long serialVersionUID = -4673139390645816489L;
 	private JFrame frame;
-	//DrawItems drawItems;
 	RefreshScreen refreshScreen = new RefreshScreen(this);
 	MouseClickOnScreen mouse_event_listener = new MouseClickOnScreen(this);
 	protected InitGame initGame = new InitGame(this);
@@ -67,7 +65,6 @@ public class Gui_algo extends JPanel  {
 	public Gui_algo() {
 		setScreen();
 		map = new Map(frame);
-		//Game_object.map = map;
 	}
 
     @Override
@@ -114,8 +111,7 @@ public class Gui_algo extends JPanel  {
 		        g2.setColor(Color.GREEN);
 		        g2.draw(lin);
 	        }
-	    }
-	    
+	    } 
     }
 
 	private void draw(Graphics graphics, List<Game_object> obj, Image picture) {
@@ -143,10 +139,6 @@ public class Gui_algo extends JPanel  {
 		frame.setLocationRelativeTo(null);
 	}
 	
-	public void test() throws Exception {
-
-
-	}
 
 	public void setGameBoard(GameBoard gameBoard) {
 		this.gameboard = gameBoard;
@@ -164,6 +156,11 @@ public class Gui_algo extends JPanel  {
 		AnimatedBackground animation = new AnimatedBackground(this);
 		animation.start();
 		
+	}
+
+	public void buildGraph() {
+		initGame.buildGraphGame();
+		repaint();
 	}
 
 

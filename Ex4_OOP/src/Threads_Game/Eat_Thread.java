@@ -24,10 +24,26 @@ public class Eat_Thread extends Thread {
 	
 	
 	public synchronized void run() {
+		System.out.println("Thread " + getId() + " joined.");
 		while (gameboard.isRunning()) {
 			try {sleep(200);} catch (InterruptedException e) {}
 			
 			for (MoveableObject currentMoveable_object : moveable_objects) {
+				
+				if (currentMoveable_object instanceof Player) {
+					for (int i=0; i<gameboard.getPacmans().size(); i++) {
+						Pacman current_pacman = (Pacman) gameboard.getPacmans().get(i);
+						double distance = Line.distance(currentMoveable_object.getLocation(), current_pacman.getLocation());
+						if (distance <= currentMoveable_object.getEatingRadius()) {
+							currentMoveable_object.increaseEatenFruits();
+							System.out.println("Pacman " + current_pacman.getId() + " was eaten.");
+							gameboard.getPacmans().remove(current_pacman);
+							i--;
+						}
+					}
+				}
+				
+				
 				for (int i=0; i<fruits.size(); i++) {
 					Fruit current_fruit = (Fruit) fruits.get(i);
 					double distance = Line.distance(currentMoveable_object.getLocation(), current_fruit.getLocation());
@@ -42,6 +58,7 @@ public class Eat_Thread extends Thread {
 				if (fruits.size() == 0) gameboard.stopGame();
 			}			
 		}
+		System.out.println("Thread " + getId() + " (eat_thread) terminated.");
 	}
 
 

@@ -120,12 +120,14 @@ public class MouseClickOnScreen implements MouseListener {
 		if (isLeftButtonPressed(e)) { 
 				if (DropingItemsOnScreen.global_dropping_apples) DropingItemsOnScreen.dropApple(gui_algo.getGameboard(), mouseCoords);	
 				else if (DropingItemsOnScreen.global_dropping_pacmans) DropingItemsOnScreen.dropPacman(gui_algo.getGameboard(), mouseCoords); 
+				else if (DropingItemsOnScreen.global_dropping_ghosts) DropingItemsOnScreen.dropGhost(gui_algo.getGameboard(), mouseCoords); 
 				else if (DropingItemsOnScreen.global_dropping_player) DropingItemsOnScreen.dropPlayer(gui_algo.getGameboard(), mouseCoords); 
 		}
 		else 
 			if (isWheelButtonPressed(e)) {
 				if (DropingItemsOnScreen.global_dropping_apples) {DropingItemsOnScreen.global_dropping_apples = false;}
 				else if (DropingItemsOnScreen.global_dropping_pacmans) {DropingItemsOnScreen.global_dropping_pacmans = false;} 
+				else if (DropingItemsOnScreen.global_dropping_ghosts) {DropingItemsOnScreen.global_dropping_ghosts = false;} 
 				else if (DropingItemsOnScreen.global_dropping_player) {
 						DropingItemsOnScreen.global_dropping_player = false;
 			        	InitGame init = new InitGame(gui_algo);

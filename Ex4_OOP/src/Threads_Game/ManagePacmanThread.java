@@ -23,12 +23,12 @@ public class ManagePacmanThread extends Thread {
 		closestFruits_to_this_pacman.addAll(gameboard.getFruits());
 		
 		MovementThread threadMovement = new MovementThread(gameboard, pacman);
-		System.out.println("Thread " + getId() + " joined.");
+		System.out.println("Thread " + getId() + " (pacman) joined.");
 		threadMovement.start();
 	}
 	
 	public synchronized void run() {
-		while (gameboard.isRunning()) {
+		while (gameboard.isRunning() && gameboard.getPacmans().contains(pacman)) {
 			try {
 				sleep(200);
 				if (closestFruits_to_this_pacman.size() > 0) {
@@ -44,21 +44,21 @@ public class ManagePacmanThread extends Thread {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Thread " + getId() + " terminated.");
+		System.out.println("Thread " + getId() + " (pacman) terminated.");
 	}
 	
 	public synchronized void getNotifiedOfDeadFruits(Fruit deadFruit) {
 		closestFruits_to_this_pacman.remove(deadFruit);
-		//if (is_thread_asleep() && was_my_target_eaten(deadFruit)){
+		if (is_thread_asleep() && was_my_target_eaten()){
 			thread_sleeping = false;
 			System.out.println("Thread " + getId() + " woke up.");
 			notify(); // wake up!
-		//}
+		}
 	}
 	
-	private boolean was_my_target_eaten(Fruit deadFruit) {
+	private boolean was_my_target_eaten() {
 		Fruit my_target = (Fruit)closestFruits_to_this_pacman.peek();
-		return my_target.getId() == deadFruit.getId();
+		return my_target==null || gameboard.getFruits().contains(my_target);
 	}
 
 	private boolean is_thread_asleep() {

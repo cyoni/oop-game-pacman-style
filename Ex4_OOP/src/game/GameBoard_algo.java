@@ -11,6 +11,7 @@ import GameObjects.Ghost;
 import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
+import Threads_Game.ManageGhostThread;
 import Threads_Game.ManagePacmanThread;
 import algorithms.Graph;
 import algorithms.Line;
@@ -29,6 +30,7 @@ public class GameBoard_algo {
 		gameboard.ghosts = new ArrayList<>();
 		gameboard.fruits = new ArrayList<>();
 		gameboard.moveableObjects = new ArrayList<>();
+		gameboard.manageGhostThread = new ArrayList<>();
 		gameboard.player = null;
 		gameboard.game_running = false;
 		gameboard.graph = new Graph();
@@ -113,6 +115,16 @@ public class GameBoard_algo {
 			Game_object current_pacman = gameboard.getPacmans().get(i);
 			ManagePacmanThread thread = new ManagePacmanThread(gameboard, (Pacman)current_pacman);
 			gameboard.addPacmanThread(thread);
+			thread.start();
+		}		
+	}
+
+
+	public void initializeAndStartGhosts() {
+		for (int i=0; i<gameboard.getGhosts().size(); i++) {
+			Game_object current_ghost = gameboard.getGhosts().get(i);
+			ManageGhostThread thread = new ManageGhostThread(gameboard, (Ghost)current_ghost);
+			gameboard.addGhostThread(thread);
 			thread.start();
 		}		
 	}

@@ -20,6 +20,7 @@ import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GUI.MouseClickOnScreen;
 import GameObjects.Rectangle;
+import Threads_Game.ManageGhostThread;
 import Threads_Game.ManagePacmanThread;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
@@ -45,8 +46,9 @@ public class GameBoard {
 	protected boolean game_running;
 	protected Graph graph;
 	protected List<Line> graph_Game;
-	public List<Line> MST_graph;
+	protected List<Line> MST_graph;
 	protected List<ManagePacmanThread> managePacmanThread;
+	protected List<ManageGhostThread> manageGhostThread;
 	protected boolean autoGame; 
 	private GameBoard_algo gameboard_algo = new GameBoard_algo(this);
 	protected boolean cleanObjectsFromPreviousGame;
@@ -160,5 +162,13 @@ public class GameBoard {
 	public List<Game_object> getGhosts() {return ghosts;}
 	public synchronized List<Game_object> getFruits() {return fruits;}
 	public synchronized MoveableObject getPlayer() { return player;}
+
+	public void addGhostThread(ManageGhostThread thread) {
+		manageGhostThread.add(thread);
+	}
+
+	public List<ManageGhostThread> getGhostsThreads() {
+		return manageGhostThread;
+	}
 
 }
