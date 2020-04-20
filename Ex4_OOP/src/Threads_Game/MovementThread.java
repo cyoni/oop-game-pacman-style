@@ -32,7 +32,7 @@ public class MovementThread extends Thread {
 	}
 
 	private void correctObjectIfItsOutOfBounds(double x, double y) {
-		if ( y < 5 ||   y > (Screen.HEIGHT-35) ) {
+		if ( y < 5 || y > (Screen.HEIGHT-35) ) {
 			moveableObject.setDegree((-1)*moveableObject.getDegree());
 		}
 		if (x > (Screen.WIDTH-40) || (x < 10)) {
