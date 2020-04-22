@@ -31,10 +31,10 @@ public class Eat_Thread extends Thread {
 				if (currentMoveable_object instanceof Player) {
 					for (int i=0; i<gameboard.getPacmans().size(); i++) {
 						Pacman current_pacman = (Pacman) gameboard.getPacmans().get(i);
-						if (checkIfThisObjectIsCloseEnoughToFruit(currentMoveable_object, current_pacman))
-							i--;
+						checkIfThisObjectIsCloseEnoughToFruit(currentMoveable_object, current_pacman);
 					}
 				}
+				
 				checkIfAMoveableObjectIsCloseToFruit_And_RemoveIt(currentMoveable_object);
 				if (fruits.size() == 0) gameboard.stopGame();
 			}			

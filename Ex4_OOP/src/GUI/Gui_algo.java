@@ -39,6 +39,7 @@ import algorithms.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
 import game.InitGame;
+import mouse.MouseClickOnScreen;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -59,6 +60,7 @@ public class Gui_algo extends JPanel  {
 	private JFrame frame;
 	RefreshScreen refreshScreen = new RefreshScreen(this);
 	MouseClickOnScreen mouse_event_listener = new MouseClickOnScreen(this);
+	
 	protected InitGame initGame = new InitGame(this);
 	Menu_Gui menu = new Menu_Gui(this);
 	
@@ -130,6 +132,7 @@ public class Gui_algo extends JPanel  {
 		frame = new JFrame("Pacman");
 		frame.setLayout(new BorderLayout());
 		frame.addMouseListener(mouse_event_listener);
+		frame.addMouseMotionListener(mouse_event_listener);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(1200,600);

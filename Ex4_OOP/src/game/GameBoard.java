@@ -18,7 +18,6 @@ import Coords.MyCoords;
 import GIS.Map;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
-import GUI.MouseClickOnScreen;
 import GameObjects.Rectangle;
 import Threads_Game.ManageGhostThread;
 import Threads_Game.ManagePacmanThread;
@@ -35,8 +34,9 @@ import algorithms.Node;
 import algorithms.Point2D;
 import algorithms.Prim;
 import algorithms.node_data;
+import mouse.MouseClickOnScreen;
 
-public class GameBoard {
+public class GameBoard extends GameBoard_algo {
 	protected List<Game_object> pacmans;
 	protected List<Game_object> ghosts;
 	protected List<Game_object> fruits;
@@ -50,15 +50,15 @@ public class GameBoard {
 	protected List<ManagePacmanThread> managePacmanThread;
 	protected List<ManageGhostThread> manageGhostThread;
 	protected boolean autoGame; 
-	private GameBoard_algo gameboard_algo = new GameBoard_algo(this);
 	protected boolean cleanObjectsFromPreviousGame;
 	
 	public GameBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
-		gameboard_algo.initializeDataStructure();
+		gameboard = this;
+		initializeDataStructure();
 	}
 	
-	public GameBoard() {}
+
 
 	public List<Line> getLinesOfGameGraph() {
 		return graph_Game;
@@ -89,11 +89,11 @@ public class GameBoard {
 	}
 
 	public String getGameStat() {
-		return gameboard_algo.getGameStat();
+		return getGameStat();
 	}
 	
 	public void cleanBoard() {
-		gameboard_algo.cleanBoard();
+		_cleanBoard();
 	}
 	
 	public boolean isCleanOfOldGameNeeded() {
@@ -151,12 +151,10 @@ public class GameBoard {
 	}
 
 	public void removeItem(Game_object object_to_remove) {
-		gameboard_algo.removeItem(object_to_remove);
+		removeItem(object_to_remove);
 	}
 
-	public GameBoard_algo getGameAlgo() {
-		return gameboard_algo;
-	}
+
 	
 	public List<Game_object> getPacmans() {return pacmans;}
 	public List<Game_object> getGhosts() {return ghosts;}
@@ -173,6 +171,10 @@ public class GameBoard {
 
 	public boolean isAnimationOnProgress() {
 		return isRunning() && gui_algo.getGameboard().getGraph().nodeSize()==0;
+	}
+
+	public List<Game_object> addAllObjects() {
+		return _addAllObjects();
 	}
 
 }

@@ -15,7 +15,7 @@ import game.GameBoard;
 public class ObjectPopupMenu {
 
    private JPopupMenu popup;
-   private JMenuItem removeItem, alterWeight, alterPosition, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman, doNothing, addNewGhost;
+   private JMenuItem removeItem, alterWeight, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman, doNothing, addNewGhost;
    private Game_object objectThatIsBeingPressed;
    private GameBoard gameBoard;
    private MouseEvent mouseEvent;
@@ -32,7 +32,6 @@ public class ObjectPopupMenu {
    private void initializeMenu() {
 	   popup = new JPopupMenu();
 	   removeItem = new JMenuItem("Remove");
-	   alterPosition = new JMenuItem("Alter Position..."); //TODO
 	   alterEatingRadius = new JMenuItem("Alter Eating Radius...");
 	   doNothing = new JMenuItem("Close Menu");
 	   alterSpeed = new JMenuItem("Alter Velocity...");
@@ -63,7 +62,6 @@ public class ObjectPopupMenu {
    private void addRemoveAndAlterPosition() {
 	   popup.add(removeItem);
 	   popup.addSeparator();
-	   popup.add(alterPosition);	
 }
 
    public void setMenuOfFruit() {
@@ -97,20 +95,15 @@ public class ObjectPopupMenu {
 	   });
 	   
 	   alterSpeed.addActionListener((ActionEvent e) -> {
-		   gameBoard.getGameAlgo().alterSpeed((MoveableObject)objectThatIsBeingPressed);
-	   });
-	   
-	   alterPosition.addActionListener((ActionEvent e) -> {
-		   
-		   gameBoard.getGameAlgo().alterPosition(objectThatIsBeingPressed, mouseEvent);
+		   gameBoard.alterSpeed((MoveableObject)objectThatIsBeingPressed);
 	   });
 	   
 	   alterWeight.addActionListener((ActionEvent e) -> {
-		   gameBoard.getGameAlgo().alterWeight((Fruit)objectThatIsBeingPressed);
+		   gameBoard.alterWeight((Fruit)objectThatIsBeingPressed);
 	   });
 	   
 	   alterEatingRadius.addActionListener((ActionEvent e) -> {
-		   gameBoard.getGameAlgo().alterEatingRadius((MoveableObject)objectThatIsBeingPressed);
+		   gameBoard.alterEatingRadius((MoveableObject)objectThatIsBeingPressed);
 	   });   
 	   
    }

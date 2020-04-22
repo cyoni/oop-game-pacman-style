@@ -19,11 +19,8 @@ import algorithms.Line;
 
 public class GameBoard_algo {
 	
-	private GameBoard gameboard;
+	protected GameBoard gameboard;
 
-	public GameBoard_algo(GameBoard gameboard) {
-		this.gameboard = gameboard;
-	}
 
 	
 	public void initializeDataStructure() {
@@ -42,7 +39,7 @@ public class GameBoard_algo {
 		gameboard.cleanObjectsFromPreviousGame = false;
 	}
 	
-	public void cleanBoard() {
+	public void _cleanBoard() {
 		initializeDataStructure();
 		
 		Game_object.resetTotalObjects();
@@ -136,17 +133,20 @@ public class GameBoard_algo {
 			gameboard.cleanBoard();		
 	}
 
-
+	@Deprecated
 	public void alterPosition(Game_object object, MouseEvent mouseEvent) {
-		Gui_dialog.alert(mouseEvent.getX() + "," + mouseEvent.getY());
-/*		try {
-			double newRadius = Double.valueOf(str);
-			object.setLocation(newRadius);
-			System.out.println("OK");
-		}
-		catch(Exception e) {
-			System.out.println(str + " is not a number");
-		}*/
+
+	}
+	
+	protected List<Game_object> _addAllObjects() {
+		List<Game_object> game_objects = new ArrayList<>();
+		
+		if (gameboard.getPlayer()!=null) game_objects.add(gameboard.getPlayer());
+		game_objects.addAll(gameboard.getPacmans());
+		game_objects.addAll(gameboard.getGhosts());
+		game_objects.addAll(gameboard.getFruits());
+		
+		return game_objects;
 	}
 	
 }

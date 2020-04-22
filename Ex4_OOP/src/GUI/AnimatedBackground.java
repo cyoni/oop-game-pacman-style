@@ -24,8 +24,8 @@ public class AnimatedBackground {
 		getRandomPacmans();
 		getRandomGhosts();
 		gameboard.startGame();
-		gameboard.getGameAlgo().initializeAndStartPacmansThreads();
-		gameboard.getGameAlgo().initializeAndStartGhosts();
+		gameboard.initializeAndStartPacmansThreads();
+		gameboard.initializeAndStartGhosts();
 	}
 	
 	private void getRandomGhosts() {

@@ -1,7 +1,6 @@
 package game;
 
 import GUI.Gui_dialog;
-import GUI.MouseClickOnScreen;
 import GameObjects.Fruit;
 import GameObjects.Game_object;
 import GameObjects.Ghost;
@@ -9,6 +8,7 @@ import GameObjects.Pacman;
 import GameObjects.Player;
 import algorithms.NumberGenerator;
 import algorithms.Point2D;
+import mouse.MouseClickOnScreen;
 
 public class DropingItemsOnScreen extends Thread {
 

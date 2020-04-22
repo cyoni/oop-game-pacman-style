@@ -29,116 +29,15 @@ public class InitGame{
 
 
 	private Gui_algo gui_algo;
+	private InitializeGameGraph init_gameboard;
 	
 	public InitGame(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
+		this.init_gameboard = new InitializeGameGraph(gui_algo.getGameboard());
 	}
 	
-	
-	public void buildGraphGame() {
-		if (gui_algo.getGameboard().getPlayer() == null) return;
-		
-		Graph gameGraph = new Graph();
-		addNodesToGameGraph(gameGraph);
-		connectEdges(gameGraph);
-		gui_algo.gameboard.setGameGraph(gameGraph);
-		
-		// Prim
-		Graph primGraph = new Graph();
-		addFruitsToPrimGraph(gameGraph, primGraph);
-				
-		connectEdges(primGraph);
-		
-		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
-		printDistanceMatrix(mat);
-		
-		Prim prim = new Prim(gameGraph, mat);
-		Graph graph_MST = prim.getMST();
-		
-		// DFS
-		getPathByDFS(graph_MST, gameGraph);
-	}
-
-	private void printDistanceMatrix(double[][] mat) {
-		for (int i = 0; i < mat.length; i++) {
-			for (int j = 0; j < mat.length; j++) {
-				System.out.print(mat[i][j] + "\t");
-			}
-			System.out.println();
-		}		
-	}
-
-
-	private void getPathByDFS(Graph graph_MST, Graph gameGraph) {
-		DFS dfs = new DFS(graph_MST);
-		int firstNodeToStartFrom = gui_algo.gameboard.getPlayer().getId();
-		dfs.startDFS(firstNodeToStartFrom);
-		
-		Queue<Integer> path = dfs.getPath();
-
-		while(path.size() > 1) {
-			Point2D p1 = gameGraph.getNode(path.poll()).getLocation();
-			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
-			gui_algo.getGameboard().MST_graph.add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
-		}		
-	}
-
-
-	private void addFruitsToPrimGraph(Graph gameGraph, Graph primGraph) {
-		 for (Entry<Integer, node_data> nodes : gameGraph.getGraph().entrySet()) {
-			 node_data current_node = nodes.getValue();
-				if (current_node.getTag().equals(Fruit.getTag())) 
-					primGraph.addNode(current_node);
-		 }
-		primGraph.addNode(new Node(gui_algo.getGameboard().getPlayer().getId(), gui_algo.getGameboard().player.getLocation()));	
-	}
-
-	private void connectEdges(Graph graph) {
-		List<node_data> nodes = graph.getNodes();
-		for (int i=0; i<nodes.size(); i++) {
-			node_data currentNode = nodes.get(i);
-			for (int j =i+1; j < nodes.size(); j++) {
-				node_data j_node = nodes.get(j);
-				
-				Point2D p1 = currentNode.getLocation(); 
-				Point2D p2 = j_node.getLocation();
-
-				graph.connect(currentNode.getKey(), j_node.getKey(), Line.distance(p1, p2));	
-				gui_algo.gameboard.getLinesOfGameGraph().add(new Line(gui_algo.map.global2pixel(p1), gui_algo.map.global2pixel(p2)));
-			}
-		}
-	}
-
-
-	private void addNodesToGameGraph(Graph gameGraph) {
-		node_data node = new Node(gui_algo.getGameboard().player.getId(), gui_algo.getGameboard().player.getLocation());
-		node.setTag(Player.getTag());
-		gameGraph.addNode(node);
-		gui_algo.getGameboard().getMoveableObjects().add(gui_algo.getGameboard().getPlayer());
-		
-		for (int i=0; i < gui_algo.getGameboard().fruits.size(); i++) {
-			node = new Node(gui_algo.getGameboard().fruits.get(i).getId(), gui_algo.getGameboard().fruits.get(i).getLocation());
-			node.setTag(Fruit.getTag());
-			gameGraph.addNode(node);
-		}
-		for (int i=0; i < gui_algo.getGameboard().pacmans.size(); i++) {
-			gui_algo.getGameboard().getMoveableObjects().add((MoveableObject) gui_algo.getGameboard().getPacmans().get(i));
-			node = new Node(gui_algo.getGameboard().pacmans.get(i).getId(), gui_algo.getGameboard().pacmans.get(i).getLocation());
-			node.setTag(Pacman.getTag());
-			gameGraph.addNode(node);
-		}	
-		
-		for (int i=0; i < gui_algo.getGameboard().ghosts.size(); i++) {
-			gui_algo.getGameboard().getMoveableObjects().add((MoveableObject) gui_algo.getGameboard().getGhosts().get(i));
-			node = new Node(gui_algo.getGameboard().getGhosts().get(i).getId(), gui_algo.getGameboard().ghosts.get(i).getLocation());
-			node.setTag(Ghost.getTag());
-			gameGraph.addNode(node);
-		}
-	}
-
-
 	public void startGame() {
-		gui_algo.getGameboard().getGameAlgo().flushIfNeeded();
+		gui_algo.getGameboard().flushIfNeeded();
 		
 		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();		
 		if (gui_algo.getGameboard().getFruits().size() == 0) {
@@ -171,12 +70,12 @@ public class InitGame{
 
 	private void initializeAndStartPacmansThreads() {
 		gui_algo.getGameboard().getPacmanThreads().clear();
-		gui_algo.getGameboard().getGameAlgo().initializeAndStartPacmansThreads();
+		gui_algo.getGameboard().initializeAndStartPacmansThreads();
 	}
 	
 	private void initializeAndStartGhosts() {
 		gui_algo.getGameboard().getGhostsThreads().clear();
-		gui_algo.getGameboard().getGameAlgo().initializeAndStartGhosts();
+		gui_algo.getGameboard().initializeAndStartGhosts();
 	}
 
 	public void initGameboard(List<String> elements) {
@@ -208,13 +107,16 @@ public class InitGame{
 			gui_algo.setGameBoard(gameboard);
 		}
 	}
-
 	
 	public void initDroppingObjects() {
-    	gui_algo.getGameboard().getGameAlgo().flushIfNeeded();
+    	gui_algo.getGameboard().flushIfNeeded();
     	DropingItemsOnScreen dropping = new DropingItemsOnScreen();
     	dropping.selectToDropAll();
     	dropping.startThreadDroppingItems();		
+	}
+
+	public void buildGraphGame() {
+		init_gameboard.buildGraphGame();
 	}
 	
 }

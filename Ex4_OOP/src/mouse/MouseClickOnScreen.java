@@ -1,12 +1,15 @@
-package GUI;
+package mouse;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 
+import GUI.Gui_algo;
+import GUI.ObjectPopupMenu;
 import GameObjects.Fruit;
 import GameObjects.Pacman;
 import GameObjects.Player;
@@ -18,27 +21,31 @@ import algorithms.Point2D;
 import game.DropingItemsOnScreen;import game.GameBoard;
 import game.InitGame;
 
-public class MouseClickOnScreen implements MouseListener {
+public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	
 	private Gui_algo gui_algo;
 	private ObjectPopupMenu popup;
+	private DragFruitOnBoard dragObject;
 	
 	public MouseClickOnScreen(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
+		dragObject = new DragFruitOnBoard(gui_algo);
 		popup = new ObjectPopupMenu(gui_algo.getGameboard());
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
-		
 		Point2D localCoords =  new Point2D(pixelX, pixelY);
-		//System.out.println(pixelX + "," + pixelY);
+	
+		dragObject.setCurrentDraggedObject(null);
+		
 		
 		if (gui_algo.getGameboard().isAnimationOnProgress()) 
 			gui_algo.getGameboard().cleanBoard();
-	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e)==false) 
+	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && game_Running() == false) 
 			showGlobalMenu(e);
 		else if (game_Running() && ManualVersionIsOn())
 			getAndSetDegreeOfPlayer(localCoords);
@@ -46,8 +53,7 @@ public class MouseClickOnScreen implements MouseListener {
 			showPopupMenu(e);
 	    else if (game_Running() == false && isDroppingObjectsOnScreen())
 			dropItems(localCoords, e);
-
-			
+		
 	}
 
 	private void showGlobalMenu(MouseEvent e) {
@@ -151,7 +157,9 @@ public class MouseClickOnScreen implements MouseListener {
 		return (gui_algo.getGameboard().isRunning() && gui_algo.getGameboard().isAutoGame() == false);
 	}
 
-
+	
+	
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}
 
@@ -163,5 +171,21 @@ public class MouseClickOnScreen implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		
+		int pixelX = e.getX() - 20;
+		int pixelY = e.getY() - 65;
+		
+		if (gui_algo.getGameboard().isRunning() == false) {
+			Point2D localCoords =  new Point2D(pixelX, pixelY);
+			dragObject.drag(localCoords);
+		}
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {}
 
 }
