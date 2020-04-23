@@ -261,7 +261,7 @@ public class GameBoard {
 	
 	public void flushIfNeeded() {
 		if (isCleanOfOldGameNeeded() || 
-				isAnimationOnProgress() || getGraph().nodeSize() > 0) 
+				isAnimationOnProgress() /*|| getGraph().nodeSize() > 0*/) 
 			cleanBoard();		
 	}
 

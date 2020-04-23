@@ -42,6 +42,9 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	
 		dragObject.setCurrentDraggedObject(null);
 
+		gui_algo.getGameboard().flushIfNeeded(); 
+
+		
 		if (gui_algo.getGameboard().isAnimationOnProgress()) 
 			gui_algo.getGameboard().cleanBoard();
 	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && game_Running() == false) 

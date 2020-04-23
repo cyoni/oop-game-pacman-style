@@ -37,28 +37,27 @@ public class InitGame{
 	}
 	
 	public void startGame() {
-		gui_algo.getGameboard().flushIfNeeded();
-		
-		DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();		
-		if (gui_algo.getGameboard().getFruits().size() == 0) {
-			thread_drop.selectToDropAll();
-			thread_drop.startThreadDroppingItems();
-			return;
-		} else if (gui_algo.getGameboard().getPlayer() == null) {
-			DropingItemsOnScreen.global_dropping_player = true;
-			thread_drop.startThreadDroppingItems();
-			return;
-		} else if (gui_algo.getGameboard().getGraph().nodeSize() == 0) {
-			buildGraphGame();
+		if (gui_algo.getGameboard().isRunning() == false) {
+			
+			DropingItemsOnScreen thread_drop = new DropingItemsOnScreen();		
+			if (gui_algo.getGameboard().getFruits().size() == 0) {
+				return;
+			} else if (gui_algo.getGameboard().getPlayer() == null) {
+				DropingItemsOnScreen.global_dropping_player = true;
+				thread_drop.startThreadDroppingItems();
+				return;
+			} else if (gui_algo.getGameboard().getGraph().nodeSize() == 0) {
+				buildGraphGame();
+			}
+			
+			System.out.println("\nGAME STARTED");
+			gui_algo.getGameboard().startGame();;
+			
+			Eat_Thread eat_thread = new Eat_Thread(gui_algo.getGameboard()); // the thread that displaying the fruits on the screen
+			eat_thread.start();
+			
+			startMenualVersion();
 		}
-		
-		System.out.println("\nGAME STARTED");
-		gui_algo.getGameboard().startGame();;
-		
-		Eat_Thread eat_thread = new Eat_Thread(gui_algo.getGameboard()); // the thread that displaying the fruits on the screen
-		eat_thread.start();
-		
-		startMenualVersion();
 	}
 	
 	private void startMenualVersion() {
