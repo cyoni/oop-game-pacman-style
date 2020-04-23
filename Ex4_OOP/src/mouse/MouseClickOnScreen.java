@@ -49,8 +49,6 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 			gui_algo.getGameboard().cleanBoard();
 	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && game_Running() == false) 
 			showGlobalMenu(e);
-		else if (game_Running() && ManualVersionIsOn())
-			getAndSetDegreeOfPlayer(localCoords);
 		else if (game_Running() == false && isAnObjectBeingPressed(localCoords, e))
 			showPopupMenu(e);
 	    else if (game_Running() == false && isDroppingObjectsOnScreen())
@@ -162,8 +160,11 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
 		
-		if (gui_algo.getGameboard().isRunning() == false) {
-			Point2D localCoords =  new Point2D(pixelX, pixelY);
+		Point2D localCoords = new Point2D(pixelX, pixelY);
+		
+		if (game_Running() && ManualVersionIsOn())
+			getAndSetDegreeOfPlayer(localCoords);
+		 else if (gui_algo.getGameboard().isRunning() == false) {
 			dragObject.drag(localCoords);
 		}
 		
