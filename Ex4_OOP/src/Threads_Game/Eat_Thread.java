@@ -45,7 +45,7 @@ public class Eat_Thread extends Thread {
 
 	private boolean checkIfThisObjectIsCloseEnoughToFruit(MoveableObject currentMoveable_object, Pacman current_pacman) {
 		double distance = Line.distance(currentMoveable_object.getLocation(), current_pacman.getLocation());
-		if (distance <= currentMoveable_object.getEatingRadius()) {
+		if (distance <= (currentMoveable_object.getEatingRadius())) {
 			currentMoveable_object.increaseEatenFruits();
 			((Player)currentMoveable_object).eatPacman(current_pacman);
 			System.out.println("Pacman " + current_pacman.getId() + " was eaten.");
@@ -59,7 +59,8 @@ public class Eat_Thread extends Thread {
 		for (int i=0; i<fruits.size(); i++) {
 			Fruit current_fruit = (Fruit) fruits.get(i);
 			double distance = Line.distance(currentMoveable_object.getLocation(), current_fruit.getLocation());
-			if (distance <= currentMoveable_object.getEatingRadius()) {
+			System.out.println(currentMoveable_object.getEatingRadius() + ", " + distance);
+			if (distance <= (currentMoveable_object.getEatingRadius())) {
 				currentMoveable_object.increaseEatenFruits();
 				System.out.println("Fruit " + current_fruit.getId() + " was eaten.");
 				fruits.remove(current_fruit);

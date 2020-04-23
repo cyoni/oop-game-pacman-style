@@ -36,7 +36,7 @@ import algorithms.Prim;
 import algorithms.node_data;
 import mouse.MouseClickOnScreen;
 
-public class GameBoard extends GameBoard_algo {
+public class GameBoard {
 	protected List<Game_object> pacmans;
 	protected List<Game_object> ghosts;
 	protected List<Game_object> fruits;
@@ -54,11 +54,24 @@ public class GameBoard extends GameBoard_algo {
 	
 	public GameBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
-		gameboard = this;
 		initializeDataStructure();
 	}
 	
-
+	public void initializeDataStructure() {
+		pacmans = new ArrayList<>();
+		ghosts = new ArrayList<>();
+		fruits = new ArrayList<>();
+		moveableObjects = new ArrayList<>();
+		manageGhostThread = new ArrayList<>();
+		player = null;
+		game_running = false;
+		graph = new Graph();
+		graph_Game = new ArrayList<>();
+		MST_graph = new ArrayList<>();
+		managePacmanThread = new ArrayList<>();
+		autoGame = false;
+		cleanObjectsFromPreviousGame = false;
+	}
 
 	public List<Line> getLinesOfGameGraph() {
 		return graph_Game;
@@ -89,12 +102,22 @@ public class GameBoard extends GameBoard_algo {
 	}
 
 	public String getGameStat() {
-		return getGameStat();
+		String result = "";
+		for (int i = 0; i < moveableObjects.size(); i++) {
+			MoveableObject object = moveableObjects.get(i);
+			result+= object.getId() + " ate " + object.getNumEatenFruits() + " fruits.\n";
+		}
+		return result;
 	}
 	
 	public void cleanBoard() {
-		_cleanBoard();
+		initializeDataStructure();
+		Game_object.resetTotalObjects();
+		DropingItemsOnScreen.selectNone();
+		getGuiAlgo().repaint();
 	}
+	
+
 	
 	public boolean isCleanOfOldGameNeeded() {
 		return cleanObjectsFromPreviousGame;
@@ -151,10 +174,28 @@ public class GameBoard extends GameBoard_algo {
 	}
 
 	public void removeItem(Game_object object_to_remove) {
-		removeItem(object_to_remove);
+			if (object_to_remove instanceof Fruit) 
+				fruits.remove(object_to_remove);
+			 else if (object_to_remove instanceof Ghost) 
+				ghosts.remove(object_to_remove);
+			 else if (object_to_remove instanceof Pacman) 
+					pacmans.remove(object_to_remove);
+			 else if (object_to_remove instanceof Player) 
+					player = null;
+			getGuiAlgo().repaint();
+		}
+	
+	public void alterSpeed(MoveableObject object) {
+		String str = Gui_dialog.getInputDialog("Enter a new velocity...", object.getVelocity()+"");
+		try {
+			double newVelocity = Double.valueOf(str);
+			object.setVelocity(newVelocity);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
 	}
-
-
 	
 	public List<Game_object> getPacmans() {return pacmans;}
 	public List<Game_object> getGhosts() {return ghosts;}
@@ -173,8 +214,66 @@ public class GameBoard extends GameBoard_algo {
 		return isRunning() && gui_algo.getGameboard().getGraph().nodeSize()==0;
 	}
 
-	public List<Game_object> addAllObjects() {
-		return _addAllObjects();
+	public void alterWeight(Fruit object) {
+		String str = Gui_dialog.getInputDialog("Enter a new velocity...", object.getWeight() +"");
+		try {
+			double newWeight = Double.valueOf(str);
+			object.setWeight(newWeight);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
+		
 	}
 
+	public void alterEatingRadius(MoveableObject object) {
+
+		String str = Gui_dialog.getInputDialog("Enter a new eating radius...", object.getEatingRadius()/10 +"");
+		try {
+			double newRadius = Double.valueOf(str);
+			object.setEatingRadius(newRadius);
+			System.out.println("OK");
+		}
+		catch(Exception e) {
+			System.out.println(str + " is not a number");
+		}
+		
+	}
+	public void initializeAndStartPacmansThreads() {
+		for (int i=0; i<getPacmans().size(); i++) {
+			Game_object current_pacman = getPacmans().get(i);
+			ManagePacmanThread thread = new ManagePacmanThread(this, (Pacman)current_pacman);
+			addPacmanThread(thread);
+			thread.start();
+		}		
+	}
+
+
+	public void initializeAndStartGhosts() {
+		for (int i=0; i<getGhosts().size(); i++) {
+			Game_object current_ghost = getGhosts().get(i);
+			ManageGhostThread thread = new ManageGhostThread(this, (Ghost)current_ghost);
+			addGhostThread(thread);
+			thread.start();
+		}		
+	}
+	
+	public void flushIfNeeded() {
+		if (isCleanOfOldGameNeeded() || 
+				isAnimationOnProgress() || getGraph().nodeSize() > 0) 
+			cleanBoard();		
+	}
+
+	
+	public List<Game_object> addAllObjects() {
+		List<Game_object> game_objects = new ArrayList<>();
+		
+		if (getPlayer()!=null) game_objects.add(getPlayer());
+		game_objects.addAll(getPacmans());
+		game_objects.addAll(getGhosts());
+		game_objects.addAll(getFruits());
+		
+		return game_objects;
+	}
 }

@@ -41,8 +41,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		Point2D localCoords =  new Point2D(pixelX, pixelY);
 	
 		dragObject.setCurrentDraggedObject(null);
-		
-		
+
 		if (gui_algo.getGameboard().isAnimationOnProgress()) 
 			gui_algo.getGameboard().cleanBoard();
 	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && game_Running() == false) 
@@ -74,7 +73,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		return lookForMoveableObjects(globalPoint) || lookForFruits(globalPoint);
 	}
 
-
+	//need to be in gui_algo of game
 	private boolean lookForMoveableObjects(Point2D globalPoint) {
 		List<MoveableObject> moveable = new ArrayList<>();
 		for (int i=0;i<gui_algo.getGameboard().getPacmans().size(); i++)
@@ -115,31 +114,16 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 	private void dropItems(Point2D localCoords, MouseEvent e) {
 		if (!gui_algo.getGameboard().isRunning()) {
-			
-		Point2D mouseCoords = gui_algo.map.pixel2global(localCoords);
-		if (isLeftButtonPressed(e)) { 
-				if (DropingItemsOnScreen.global_dropping_apples) DropingItemsOnScreen.dropApple(gui_algo.getGameboard(), mouseCoords);	
-				else if (DropingItemsOnScreen.global_dropping_pacmans) DropingItemsOnScreen.dropPacman(gui_algo.getGameboard(), mouseCoords); 
-				else if (DropingItemsOnScreen.global_dropping_ghosts) DropingItemsOnScreen.dropGhost(gui_algo.getGameboard(), mouseCoords); 
-				else if (DropingItemsOnScreen.global_dropping_player) DropingItemsOnScreen.dropPlayer(gui_algo.getGameboard(), mouseCoords); 
-		}
-		else 
-			if (isWheelButtonPressed(e)) {
-				if (DropingItemsOnScreen.global_dropping_apples) {DropingItemsOnScreen.global_dropping_apples = false;}
-				else if (DropingItemsOnScreen.global_dropping_pacmans) {DropingItemsOnScreen.global_dropping_pacmans = false;} 
-				else if (DropingItemsOnScreen.global_dropping_ghosts) {DropingItemsOnScreen.global_dropping_ghosts = false;} 
-				else if (DropingItemsOnScreen.global_dropping_player) {
-						DropingItemsOnScreen.global_dropping_player = false;
-					 }
-		   } 
+			DropingItemsOnScreen drop = new DropingItemsOnScreen();
+			drop.dropItem(gui_algo, localCoords, e);
 	  }
 	}
 
-	private boolean isLeftButtonPressed(MouseEvent e) {
+	public static boolean isLeftButtonPressed(MouseEvent e) {
 		return e.getButton() == java.awt.event.MouseEvent.BUTTON1;
 	}
 
-	private boolean isWheelButtonPressed(MouseEvent e) {
+	public static boolean isWheelButtonPressed(MouseEvent e) {
 		return e.getButton() == java.awt.event.MouseEvent.BUTTON2;
 	}
 	
@@ -156,9 +140,6 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	private boolean ManualVersionIsOn() {
 		return (gui_algo.getGameboard().isRunning() && gui_algo.getGameboard().isAutoGame() == false);
 	}
-
-	
-	
 	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}
