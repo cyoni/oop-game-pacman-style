@@ -20,7 +20,7 @@ public class AnimatedBackground {
 	}
 	
 	public void start() {
-		gameboard.cleanBoard();
+		gameboard.setAnimation(true);
 		getRandomPacmans();
 		getRandomGhosts();
 		gameboard.startGame();
@@ -55,8 +55,5 @@ public class AnimatedBackground {
 	private int getRandomNumber(int Min, int Max) {
 		return (Min + (int)(Math.random() * ((Max - Min) + 1)));
 	}
-	
-	
-	
 	
 }
