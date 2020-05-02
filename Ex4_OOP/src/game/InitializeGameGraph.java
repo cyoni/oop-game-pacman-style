@@ -1,5 +1,8 @@
 package game;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Map.Entry;
@@ -11,11 +14,13 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import algorithms.DFS;
+import algorithms.Dijkstra;
 import algorithms.Graph;
 import algorithms.Line;
 import algorithms.Node;
 import algorithms.Point2D;
 import algorithms.Prim;
+import algorithms.edge_data;
 import algorithms.node_data;
 
 public class InitializeGameGraph {
@@ -28,6 +33,9 @@ public class InitializeGameGraph {
 	
 	public void buildGraphGame() {
 		if (gameboard.getPlayer() == null) return;
+		
+		gameboard.MST_graph.clear();
+		gameboard.graph_Game.clear();
 		Graph gameGraph = new Graph();
 		addNodesToGameGraph(gameGraph);
 		connectEdges(gameGraph);
@@ -35,15 +43,64 @@ public class InitializeGameGraph {
 		
 		// Prim
 		Graph primGraph = new Graph();
-		addFruitsToPrimGraph(gameGraph, primGraph);		
+		addPlayerToPrimGraph(gameGraph, primGraph);
+		addFruitsToPrimGraph(gameGraph, primGraph);
 		connectEdges(primGraph);
-		double[][] mat = primGraph.getMatrixGraph(gameGraph.nodeSize());
-		printDistanceMatrix(mat);
+		double[][] mat = primGraph.getMatrixGraph(/*gameGraph.nodeSize()*/);
+		//printDistanceMatrix(mat);
 		Prim prim = new Prim(gameGraph, mat);
-		Graph graph_MST = prim.getMST();
+		List<edge_data> graph_MST = prim.getMST();
 		
-		// DFS
-		getPathByDFS(graph_MST, gameGraph);
+		Queue<Integer> shortestEatingPath = createShortestEatingPath(graph_MST);
+		sendBestPathToGameboard(shortestEatingPath, gameGraph);
+		
+		/*
+		
+		double[][] mst_graph =  graph_MST.getMatrixGraph();
+		Dijkstra dijkstra = new Dijkstra(mst_graph);
+		dijkstra.startDijkstra(gameboard.getPlayer().getId());
+		
+		double[] distanceArray = dijkstra.getDistances();
+		Queue<Integer> shortestEatingPath = createShortestEatingPath(distanceArray);
+		
+		*/
+
+	}
+
+	private void sendBestPathToGameboard(Queue<Integer> path, Graph gameGraph) {
+		while(path.size() > 1) {
+			Point2D p1 = gameGraph.getNode(path.poll()).getLocation();
+			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
+			gameboard.MST_graph.add(new Line(gameboard.getMap().global2pixel(p1), gameboard.getMap().global2pixel(p2)));
+		}
+	}
+
+	private Queue<Integer> createShortestEatingPath(List<edge_data> edges_of_MST) {
+		int startingPoint = gameboard.getPlayer().getId();
+		Queue<Integer> path = new LinkedList<>();
+		path.add(startingPoint);
+		
+		for (int i = edges_of_MST.size()-1; i >= 0; i--) {
+			edge_data current_edge = edges_of_MST.get(i);
+			
+			if (path.contains(current_edge.getSrc())) {
+				path.add(current_edge.getDest());
+				System.out.print(current_edge.getDest()  + "->");
+			}
+			else {
+				path.add(current_edge.getSrc());
+				System.out.print(current_edge.getSrc()  + "->");
+				}
+
+		}
+		System.out.println();
+		return path;
+	}
+
+	private void addPlayerToPrimGraph(Graph gameGraph, Graph primGraph) {
+		 int id = gameboard.getPlayer().getId();
+	     Node node = new Node(id, gameboard.player.getLocation());
+	     primGraph.addNode(node);		
 	}
 
 	private void printDistanceMatrix(double[][] mat) {
@@ -55,7 +112,9 @@ public class InitializeGameGraph {
 		}		
 	}
 
-	private void getPathByDFS(Graph graph_MST, Graph gameGraph) {
+/*	private void getPathByDFS(Graph graph_MST, Graph gameGraph) {
+		System.out.println("MST PATH: " );
+		
 		DFS dfs = new DFS(graph_MST);
 		int firstNodeToStartFrom = gameboard.getPlayer().getId();
 		dfs.startDFS(firstNodeToStartFrom);
@@ -65,7 +124,7 @@ public class InitializeGameGraph {
 			Point2D p2 = gameGraph.getNode(path.peek()).getLocation();
 			gameboard.MST_graph.add(new Line(gameboard.getMap().global2pixel(p1), gameboard.getMap().global2pixel(p2)));
 		}		
-	}
+	}*/
 
 	private void addFruitsToPrimGraph(Graph gameGraph, Graph primGraph) {
 		 for (Entry<Integer, node_data> nodes : gameGraph.getGraph().entrySet()) {
@@ -73,9 +132,6 @@ public class InitializeGameGraph {
 				if (current_node.getTag().equals(Fruit.getTag())) 
 					primGraph.addNode(current_node);
 		 }
-		 int id = gameboard.getPlayer().getId();
-	     Node node = new Node(id, gameboard.player.getLocation());
-	     primGraph.addNode(node);	
 	}
 
 	private void connectEdges(Graph graph) {
