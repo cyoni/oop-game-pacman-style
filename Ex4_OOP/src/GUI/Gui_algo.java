@@ -52,7 +52,13 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
- *  
+ *  TODO:
+ *  implement TSP algo with targets. Input targets, output a path.
+ *  fix small bugs
+ *  add obstacles
+ *  add a statics line in the bottom
+ *  auto play
+ *  save results in local SQL. (enter your name.. enter your 3 last digits of your id.. )
  * @author Yoni
  *
  */
@@ -124,6 +130,8 @@ public class Gui_algo extends JPanel  {
         Graphics2D g2 = (Graphics2D) g;
         if (GameBoard.show_game_graph) {
         	List<Line> lines = gameboard.getLinesOfGameGraph();
+
+        	Screen.resetDistance();
 	        for (int i=0; i < lines.size(); i++) {
 	            Line currentLine = lines.get(i);
 		        drawDistanceLabels(g, currentLine);
@@ -133,9 +141,9 @@ public class Gui_algo extends JPanel  {
 	        }
         } 
         
-	    if (GameBoard.showMSTPath) {
+	    if (GameBoard.showShortestPath) {
+	    	Screen.resetDistance();
 	    	List<Line> lines = gameboard.getMST_Game();
-        	Screen.resetDistance();
 		    for (int i=0; i<lines.size(); i++) {
 		        Line currentLine = lines.get(i);
 		        drawDistanceLabels(g, currentLine);
@@ -143,6 +151,7 @@ public class Gui_algo extends JPanel  {
 		        g2.setColor(Color.GREEN);
 		        g2.draw(lin);
 	        }
+		    
 	    }		
 	}
 
@@ -161,7 +170,7 @@ public class Gui_algo extends JPanel  {
             
         if (x2 > x1) degrees = 180-degrees;
         
-        Font myFont = new Font("Arial", Font.BOLD, 11);    
+        Font myFont = new Font("Arial", Font.BOLD, 14);    
         g2.setColor(Color.WHITE);
         g2.setFont(myFont);
         Screen.sumDistance(distance);
