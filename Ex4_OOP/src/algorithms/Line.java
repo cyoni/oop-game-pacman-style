@@ -30,28 +30,14 @@ public class Line {
 		return p2;
 	}
 
-	@Deprecated
-	public static double distance2D(Point2D p1, Point2D p2) {
-		double x1, x2, y1, y2;
-		x1 = p1.x();
-		y1 = p1.y();
-		x2 = p2.x();
-		y2 = p2.y();
-		//System.out.println(p1 + "," + p2);
-		double dis = Math.sqrt(Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2));;
-
-		return dis;	
-	}
-	
 	// temporary location!
-	public synchronized static double getMouseDegree(GameBoard gameboard, Point2D global_pos_eater, Point2D global_pos_target) {
+	public static double getMouseDegree(GameBoard gameboard, Point2D global_pos_eater, Point2D global_pos_target) {
 		Point2D local_pos_eater = gameboard.getMap().global2pixel(global_pos_eater);
 		Point2D local_pos_target_object = gameboard.getMap().global2pixel(global_pos_target);
 		double radian = Math.atan2(local_pos_eater.y()-local_pos_target_object.y(), local_pos_eater.x()-local_pos_target_object.x());
 		double degree = Math.toDegrees(radian);
 		degree = degree + 360;
 		degree = 540 - degree;
-		System.out.println(degree  + "*");
 		return degree;
 }
 
@@ -65,6 +51,7 @@ public class Line {
 	     final double y = lt2 * d2r;
 	     return Math.acos( Math.sin(x) * Math.sin(y) + Math.cos(x) * Math.cos(y) * Math.cos(d2r * (ln1 - ln2))) * d2km;
 	}
+
 
 
 	
