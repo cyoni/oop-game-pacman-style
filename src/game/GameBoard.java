@@ -51,6 +51,9 @@ public class GameBoard {
 	protected List<ManageGhostThread> manageGhostThread;
 	protected boolean autoGame; 
 	protected boolean cleanObjectsFromPreviousGame;
+	public static boolean showShortestPath = false;
+	public static boolean show_game_graph = false;
+
 	
 	public GameBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;

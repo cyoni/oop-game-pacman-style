@@ -30,7 +30,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	public MouseClickOnScreen(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
 		dragObject = new DragFruitOnBoard(gui_algo);
-		popup = new ObjectPopupMenu(gui_algo.getGameboard());
+		popup = new ObjectPopupMenu(gui_algo);
 	}
 	
 	@Override
@@ -44,6 +44,8 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 		gui_algo.getGameboard().flushIfNeeded(); 
 
+		if (game_Running() && ManualVersionIsOn())
+			getAndSetDegreeOfPlayer(localCoords);
 		
 		if (gui_algo.getGameboard().isAnimationOnProgress()) 
 			gui_algo.getGameboard().cleanBoard();
@@ -162,9 +164,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		
 		Point2D localCoords = new Point2D(pixelX, pixelY);
 		
-		if (game_Running() && ManualVersionIsOn())
-			getAndSetDegreeOfPlayer(localCoords);
-		 else if (gui_algo.getGameboard().isRunning() == false) {
+		  if (gui_algo.getGameboard().isRunning() == false) {
 			dragObject.drag(localCoords);
 		}
 		

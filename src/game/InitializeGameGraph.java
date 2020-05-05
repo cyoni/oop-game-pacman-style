@@ -46,13 +46,13 @@ public class InitializeGameGraph {
 		addPlayerToPrimGraph(gameGraph, primGraph);
 		addFruitsToPrimGraph(gameGraph, primGraph);
 		connectEdges(primGraph);
-		double[][] mat = primGraph.getMatrixGraph(/*gameGraph.nodeSize()*/);
+	//	double[][] mat = primGraph.getMatrixGraph(/*gameGraph.nodeSize()*/);
 		//printDistanceMatrix(mat);
-		Prim prim = new Prim(gameGraph, mat);
-		List<edge_data> graph_MST = prim.getMST();
+	//	Prim prim = new Prim(gameGraph, mat);
+	//	List<edge_data> graph_MST = prim.getMST();
 		
-		Queue<Integer> shortestEatingPath = createShortestEatingPath(graph_MST);
-		sendBestPathToGameboard(shortestEatingPath, gameGraph);
+	//	Queue<Integer> shortestEatingPath = createShortestEatingPath(graph_MST);
+	//	sendBestPathToGameboard(shortestEatingPath, gameGraph);
 		
 		/*
 		

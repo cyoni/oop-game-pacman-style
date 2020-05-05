@@ -20,6 +20,7 @@ import javax.swing.JMenuItem;
 
 import FileFormat.CSVReaderAndWriter;
 import game.DropingItemsOnScreen;
+import game.GameBoard;
 import game.InitGame;
 
 public class Menu_Gui {
@@ -83,12 +84,12 @@ public class Menu_Gui {
         });
         
     	gameGraph.addActionListener((ActionEvent e) -> { 
-        	show_game_graph = gameGraph.isSelected();
+    		GameBoard.show_game_graph = gameGraph.isSelected();
         	gui_algo.repaint();
         });
         
     	mstPath.addActionListener((ActionEvent e) -> { 
-    		showMSTPath = mstPath.isSelected();
+    		GameBoard.showShortestPath = mstPath.isSelected();
     		gui_algo.repaint();
         });
     	

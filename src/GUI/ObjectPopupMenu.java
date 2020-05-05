@@ -10,19 +10,21 @@ import GameObjects.MoveableObject;
 import algorithms.Point2D;
 import game.DropingItemsOnScreen;
 import game.GameBoard;
+import game.InitGame;
 
  
 public class ObjectPopupMenu {
 
    private JPopupMenu popup;
-   private JMenuItem removeItem, alterWeight, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman, doNothing, addNewGhost;
+   private JMenuItem removeItem, alterWeight, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman, doNothing, addNewGhost, dropPlayer,startGame;
    private Game_object objectThatIsBeingPressed;
    private GameBoard gameBoard;
-   private MouseEvent mouseEvent;
    private Point2D mousePoint;
+private Gui_algo gui_algo;
    
-   public ObjectPopupMenu(GameBoard gameBoard) {
-	   this.gameBoard = gameBoard;
+   public ObjectPopupMenu(Gui_algo gui_algo) {
+	   this.gui_algo = gui_algo;
+	   this.gameBoard = gui_algo.getGameboard();
    }
    
    public void setObjectThatIsBeingPressed(Game_object objectThatIsBeingPressed) {
@@ -36,9 +38,12 @@ public class ObjectPopupMenu {
 	   doNothing = new JMenuItem("Close Menu");
 	   alterSpeed = new JMenuItem("Alter Velocity...");
 	   alterWeight = new JMenuItem("Alter Weight...");
+	   
 	   addNewFruit = new JMenuItem("Add a New Fruit...");
 	   addNewPacman = new JMenuItem("Add a New Pacman...");
 	   addNewGhost = new JMenuItem("Add a New Ghost...");
+	   dropPlayer = new JMenuItem("Set Player Here");
+	   startGame = new JMenuItem("Start Game");
 	   startMouseListenning();
    }
    
@@ -49,6 +54,9 @@ public class ObjectPopupMenu {
 	   popup.add(addNewFruit);
 	   popup.add(addNewPacman);
 	   popup.add(addNewGhost);
+	   popup.add(dropPlayer);
+	   popup.addSeparator();
+	   popup.add(startGame);
    }
    
    public void setMenuOfMoveableObject() {
@@ -77,6 +85,15 @@ public class ObjectPopupMenu {
    }
   
    private void startMouseListenning() {
+	   
+	   startGame.addActionListener((ActionEvent e) -> {
+	       	InitGame init = new InitGame(gui_algo);
+	       	init.startGame();
+	   });
+	   
+	   dropPlayer.addActionListener((ActionEvent e) -> {
+		   DropingItemsOnScreen.dropPlayer(gameBoard, mousePoint);
+	   });
 	   
 	   addNewGhost.addActionListener((ActionEvent e) -> {
 		   DropingItemsOnScreen.dropGhost(gameBoard, mousePoint);
@@ -109,7 +126,6 @@ public class ObjectPopupMenu {
    }
    
    public void showPopup(MouseEvent mouseEvent) {
-	   this.mouseEvent = mouseEvent;
 	   this.mousePoint =  gameBoard.getMap().pixel2global(new Point2D(mouseEvent.getX()+5, mouseEvent.getY()-40));
       if(mouseEvent.isPopupTrigger())
          popup.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());

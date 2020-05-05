@@ -20,7 +20,6 @@ public class AnimatedBackground {
 	}
 	
 	public void start() {
-		gameboard.setAnimation(true);
 		getRandomPacmans();
 		getRandomGhosts();
 		gameboard.startGame();
