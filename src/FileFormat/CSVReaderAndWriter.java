@@ -44,7 +44,7 @@ public class CSVReaderAndWriter {
 		 return elements;
 	}
 	
-	public String chooseFile() {
+	public String chooseFile() { // https://stackoverflow.com/questions/40255039/how-to-choose-file-in-java IS BETTER
  	    FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
 	    dialog.setMode(FileDialog.LOAD);
 	    dialog.setVisible(true);
