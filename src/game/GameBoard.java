@@ -19,8 +19,6 @@ import GIS.Map;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GameObjects.Rectangle;
-import Threads_Game.ManageGhostThread;
-import Threads_Game.ManagePacmanThread;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
 import GameObjects.MoveableObject;
@@ -35,6 +33,8 @@ import algorithms.Point2D;
 import algorithms.Prim;
 import algorithms.node_data;
 import mouse.MouseClickOnScreen;
+import threads.ManageGhostThread;
+import threads.ManagePacmanThread;
 
 public class GameBoard {
 	protected List<Game_object> pacmans;

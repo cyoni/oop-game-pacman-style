@@ -12,10 +12,6 @@ import GameObjects.Ghost;
 import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
-import Threads_Game.Eat_Thread;
-import Threads_Game.ManageGhostThread;
-import Threads_Game.ManagePacmanThread;
-import Threads_Game.MovementThread;
 import GameObjects.Game_object;
 import algorithms.DFS;
 import algorithms.Graph;
@@ -24,6 +20,10 @@ import algorithms.Node;
 import algorithms.Point2D;
 import algorithms.Prim;
 import algorithms.node_data;
+import threads.Eat_Thread;
+import threads.ManageGhostThread;
+import threads.ManagePacmanThread;
+import threads.MovementThread;
 
 public class InitGame{
 

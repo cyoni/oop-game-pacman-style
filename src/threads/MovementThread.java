@@ -1,4 +1,4 @@
-package Threads_Game;
+package threads;
 
 import GUI.Gui_algo;
 import GUI.Screen;

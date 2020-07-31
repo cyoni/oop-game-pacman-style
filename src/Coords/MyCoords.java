@@ -13,8 +13,6 @@ public class MyCoords{
 
 	public static final double EARTH_RADIUS = 6371000;
 	
-
-
 	
 	public double distance2D(Point2D p1, Point2D p2) {
 		double x1, x2, y1, y2;

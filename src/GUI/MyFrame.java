@@ -20,7 +20,7 @@ import algorithms.Point2D;
 
 
 /**
-* this class represents the GUI
+* 
 * @author Yoni 
 **/
 

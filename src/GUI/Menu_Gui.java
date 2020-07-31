@@ -26,7 +26,7 @@ import game.InitGame;
 public class Menu_Gui {
 	
     private JMenuItem loadFile, saveToCSV, exit, dropItems, startGame, cleanBoard,buildGraph;
-    private JMenuBar menuBar; // Window menu bar
+    private JMenuBar menuBar; 
 	private Gui_algo gui_algo;
 	private JCheckBoxMenuItem  gameGraph;
 	private JCheckBoxMenuItem mstPath;
@@ -124,7 +124,6 @@ public class Menu_Gui {
         });
     }
 	
-
 
 	private void loadFileAndRead() {
 		CSVReaderAndWriter reader = new CSVReaderAndWriter();
