@@ -29,6 +29,8 @@ public class ManagePacmanThread extends Thread {
 	
 	public synchronized void run() {
 		while (gameboard.isRunning() && gameboard.getPacmans().contains(pacman)) {
+			System.out.println(gameboard.isRunning() + "!!!!!" + gameboard.getPacmans().contains(pacman));
+
 			try {
 				sleep(200);
 				if (closestFruits_to_this_pacman.isEmpty() == false) {

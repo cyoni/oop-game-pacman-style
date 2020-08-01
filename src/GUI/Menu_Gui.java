@@ -25,13 +25,9 @@ import game.InitGame;
 
 public class Menu_Gui {
 	
-    private JMenuItem loadFile, saveToCSV, exit, dropItems, startGame, cleanBoard,buildGraph;
+    private JMenuItem loadFile, saveToCSV, exit, startGame, cleanBoard, stopGame, generateGame;
     private JMenuBar menuBar; 
 	private Gui_algo gui_algo;
-	private JCheckBoxMenuItem  gameGraph;
-	private JCheckBoxMenuItem mstPath;
-	private boolean show_game_graph;
-	private boolean showMSTPath;
 	
 	public Menu_Gui(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
@@ -41,57 +37,43 @@ public class Menu_Gui {
 
 	protected void setMenu() {
 		menuBar = new JMenuBar(); 
-		JMenu menu_File = new JMenu("File"); menu_File.setMnemonic(KeyEvent.VK_F);  
-	    JMenu menu_Game = new JMenu("Game"); menu_File.setMnemonic(KeyEvent.VK_G);  
-	    JMenu menu_Graph = new JMenu("Graph"); menu_File.setMnemonic(KeyEvent.VK_R);  
+		JMenu menu_File = new JMenu("File");
+	    JMenu menu_Game = new JMenu("Game");
+	    
         
-	    loadFile = new JMenuItem("Load a file...", KeyEvent.VK_O);
-	    saveToCSV = new JMenuItem("Save...", KeyEvent.VK_S); 
+	    loadFile = new JMenuItem("Load a game file...", KeyEvent.VK_O);
+	    saveToCSV = new JMenuItem("Export to a file...", KeyEvent.VK_S); 
 	    exit = new JMenuItem("Exit", KeyEvent.VK_E);
 	        
-	    dropItems = new JMenuItem("Drop items...");
 	    startGame = new JMenuItem("Start Game", KeyEvent.VK_G);
 	    cleanBoard = new JMenuItem("Clean Board");
+	    stopGame = new JMenuItem("Stop Game");
+	    generateGame = new JMenuItem("Generate New Game");
 	    
-	    buildGraph = new JMenuItem("Build Graph", KeyEvent.VK_H);
-	    gameGraph = new JCheckBoxMenuItem("Show Game Graph");
-	    mstPath = new JCheckBoxMenuItem("Show MST Path");
 
 	    menu_File.add(loadFile); 
 	    menu_File.add(saveToCSV);
 	    menu_File.addSeparator();
 	    menu_File.add(exit); 
 	        
-	    menu_Game.add(dropItems);
-	    menu_Game.addSeparator();
+
 	    menu_Game.add(startGame);
+	    menu_Game.addSeparator();
+	    menu_Game.add(stopGame);
+	    menu_Game.addSeparator();
+	    
+	    menu_Game.add(generateGame);
+
 	    menu_Game.add(cleanBoard);
 
-	    menu_Graph.add(buildGraph);
-	    menu_Graph.addSeparator();
-	    menu_Graph.add(gameGraph);
-	    menu_Graph.add(mstPath);
 
 	    menuBar.add(menu_File); 
 	    menuBar.add(menu_Game);
-	    menuBar.add(menu_Graph);
 	}
 
     private void startMouseListener() {
     
-    	buildGraph.addActionListener((ActionEvent e) -> { 
-    		gui_algo.buildGraph();
-        });
-        
-    	gameGraph.addActionListener((ActionEvent e) -> { 
-    		GameBoard.show_game_graph = gameGraph.isSelected();
-        	gui_algo.repaint();
-        });
-        
-    	mstPath.addActionListener((ActionEvent e) -> { 
-    		GameBoard.showShortestPath = mstPath.isSelected();
-    		gui_algo.repaint();
-        });
+
     	
         cleanBoard.addActionListener((ActionEvent e) -> { 
         	gui_algo.gameboard.cleanBoard();
@@ -102,10 +84,6 @@ public class Menu_Gui {
         	init.startGame();
         });
     	
-        dropItems.addActionListener((ActionEvent e) -> { 
-        	InitGame init = new InitGame(gui_algo);
-        	init.initDroppingObjects();
-        });
     	
         loadFile.addActionListener((ActionEvent e) -> { 
         	loadFileAndRead();
@@ -135,8 +113,6 @@ public class Menu_Gui {
 	public JMenuBar getMenu() {
 		return menuBar;
 	}
-	
-	public boolean getIsShow_Game_Graph_Selected() {return show_game_graph;}
-	public boolean getIsShow_MST_Graph_Selected() {return showMSTPath;}
+
 
 }

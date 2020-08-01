@@ -73,12 +73,7 @@ public class Graph implements IGraph, Serializable {
 		return nodes;
 	}
 
-	@Override
-	@Deprecated
-	public Collection<node_data> getV() {
-		return (Collection<node_data>) graph_dataStructure.values() ;
-	}
-
+	
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 		return edge_dataStructure.get(node_id);

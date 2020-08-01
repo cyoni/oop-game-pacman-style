@@ -16,7 +16,7 @@ public class MovementThread extends Thread {
 		this.moveableObject = hungryObject;
 	}
 	
-	public synchronized void run() {
+	public void run() {
 		while (gameBoard.isRunning()) {
 			try {sleep(10);} catch (InterruptedException e) {}
 			Point2D global_location = moveableObject.getLocation();

@@ -18,44 +18,43 @@ import GameObjects.MoveableObject;
 import algorithms.Line;
 import algorithms.NumberGenerator;
 import algorithms.Point2D;
-import game.DropingItemsOnScreen;import game.GameBoard;
+import game.DropingItemsOnScreen;
+import game.GameBoard;
 import game.InitGame;
 
 public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
-	
+
 	private Gui_algo gui_algo;
 	private ObjectPopupMenu popup;
 	private DragFruitOnBoard dragObject;
-	
+
 	public MouseClickOnScreen(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
 		dragObject = new DragFruitOnBoard(gui_algo);
 		popup = new ObjectPopupMenu(gui_algo);
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
-		Point2D localCoords =  new Point2D(pixelX, pixelY);
-	
+		Point2D localCoords = new Point2D(pixelX, pixelY);
+
 		dragObject.setCurrentDraggedObject(null);
+		gui_algo.getGameboard().flushIfNeeded();
 
-		gui_algo.getGameboard().flushIfNeeded(); 
-
-		if (game_Running() && ManualVersionIsOn())
+		if (isGameRunning() && isManualVersionOn()) {
 			getAndSetDegreeOfPlayer(localCoords);
-		
-		if (gui_algo.getGameboard().isAnimationOnProgress()) 
-			gui_algo.getGameboard().cleanBoard();
-	    else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && game_Running() == false) 
+		}
+
+		else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false
+				&& isGameRunning() == false)
 			showGlobalMenu(e);
-		else if (game_Running() == false && isAnObjectBeingPressed(localCoords, e))
+		else if (isGameRunning() == false && isAnObjectBeingPressed(localCoords, e))
 			showPopupMenu(e);
-	    else if (game_Running() == false && isDroppingObjectsOnScreen())
+		else if (isGameRunning() == false && isDroppingObjectsOnScreen())
 			dropItems(localCoords, e);
-		
 	}
 
 	private void showGlobalMenu(MouseEvent e) {
@@ -76,27 +75,26 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		return lookForMoveableObjects(globalPoint) || lookForFruits(globalPoint);
 	}
 
-	//need to be in gui_algo of game
+	// need to be in gui_algo of game
 	private boolean lookForMoveableObjects(Point2D globalPoint) {
 		List<MoveableObject> moveable = new ArrayList<>();
-		for (int i=0;i<gui_algo.getGameboard().getPacmans().size(); i++)
+		for (int i = 0; i < gui_algo.getGameboard().getPacmans().size(); i++)
 			moveable.add((MoveableObject) gui_algo.getGameboard().getPacmans().get(i));
 		if (gui_algo.getGameboard().getPlayer() != null)
 			moveable.add(gui_algo.getGameboard().getPlayer());
 
-		for (int i=0;i<gui_algo.getGameboard().getGhosts().size(); i++)
-			moveable.add((MoveableObject) gui_algo.getGameboard().getGhosts().get(i));
-		
+		// moveable.add((MoveableObject) gui_algo.getGameboard().getGhosts());
+
 		for (Game_object moveable_object : moveable) {
-		double distance = Line.distance(globalPoint, moveable_object.getLocation());
+			double distance = Line.distance(globalPoint, moveable_object.getLocation());
 			if (distance < 10) {
 				popup.setObjectThatIsBeingPressed(moveable_object);
 				popup.setMenuOfMoveableObject();
 				return true;
 			}
 		}
-		
-		 return false;
+
+		return false;
 	}
 
 	private boolean lookForFruits(Point2D globalPoint) {
@@ -107,11 +105,11 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 				popup.setMenuOfFruit();
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
 
-	private boolean game_Running() {
+	private boolean isGameRunning() {
 		return gui_algo.getGameboard().isRunning();
 	}
 
@@ -119,7 +117,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 		if (!gui_algo.getGameboard().isRunning()) {
 			DropingItemsOnScreen drop = new DropingItemsOnScreen();
 			drop.dropItem(gui_algo, localCoords, e);
-	  }
+		}
 	}
 
 	public static boolean isLeftButtonPressed(MouseEvent e) {
@@ -129,48 +127,54 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	public static boolean isWheelButtonPressed(MouseEvent e) {
 		return e.getButton() == java.awt.event.MouseEvent.BUTTON2;
 	}
-	
+
 	private boolean isRightButtonMousePressed(MouseEvent e) {
 		return e.getButton() == java.awt.event.MouseEvent.BUTTON3;
 	}
 
 	private void getAndSetDegreeOfPlayer(Point2D localCoords) {
 		Point2D global_coords_target = gui_algo.map.pixel2global(localCoords);
-		double degree = Line.getMouseDegree(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer().getLocation(), global_coords_target);
+		double degree = Line.getMouseDegree(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer().getLocation(),
+				global_coords_target);
 		gui_algo.getGameboard().getPlayer().setDegree(degree);
 	}
 
-	private boolean ManualVersionIsOn() {
+	private boolean isManualVersionOn() {
 		return (gui_algo.getGameboard().isRunning() && gui_algo.getGameboard().isAutoGame() == false);
 	}
-	
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {}
+	public void mouseEntered(MouseEvent arg0) {
+	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {
+	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {}
+	public void mousePressed(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
-		
+
 		Point2D localCoords = new Point2D(pixelX, pixelY);
-		
-		  if (gui_algo.getGameboard().isRunning() == false) {
+
+		if (gui_algo.getGameboard().isRunning() == false) {
 			dragObject.drag(localCoords);
 		}
-		
+
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {}
+	public void mouseMoved(MouseEvent arg0) {
+	}
 
 }

@@ -11,9 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-
 import javax.imageio.ImageIO;
-
 import Coords.MyCoords;
 import GIS.Map;
 import GUI.Gui_algo;
@@ -25,34 +23,29 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Game_object;
-import algorithms.DFS;
 import algorithms.Graph;
 import algorithms.Line;
 import algorithms.Node;
 import algorithms.Point2D;
-import algorithms.Prim;
 import algorithms.node_data;
 import mouse.MouseClickOnScreen;
 import threads.ManageGhostThread;
 import threads.ManagePacmanThread;
 
 public class GameBoard {
-	protected List<Game_object> pacmans;
-	protected List<Game_object> ghosts;
-	protected List<Game_object> fruits;
-	protected List<MoveableObject> moveableObjects;
+	
+	protected ArrayList<Game_object> pacmans;
+	protected Game_object ghosts;
+	protected ArrayList<Game_object> fruits;
+	protected ArrayList<MoveableObject> moveableObjects;
 	protected MoveableObject player;
 	private Gui_algo gui_algo;
 	protected boolean game_running;
 	protected Graph graph;
-	protected List<Line> graph_Game;
-	protected List<Line> MST_graph;
-	protected List<ManagePacmanThread> managePacmanThread;
-	protected List<ManageGhostThread> manageGhostThread;
+	protected ArrayList<ManagePacmanThread> managePacmanThread;
+	protected ArrayList<ManageGhostThread> manageGhostThread;
 	protected boolean autoGame; 
 	protected boolean cleanObjectsFromPreviousGame;
-	public static boolean showShortestPath = false;
-	public static boolean show_game_graph = false;
 
 	
 	public GameBoard(Gui_algo gui_algo) {
@@ -62,23 +55,17 @@ public class GameBoard {
 	
 	public void initializeDataStructure() {
 		pacmans = new ArrayList<>();
-		ghosts = new ArrayList<>();
 		fruits = new ArrayList<>();
 		moveableObjects = new ArrayList<>();
 		manageGhostThread = new ArrayList<>();
 		player = null;
 		game_running = false;
 		graph = new Graph();
-		graph_Game = new ArrayList<>();
-		MST_graph = new ArrayList<>();
 		managePacmanThread = new ArrayList<>();
 		autoGame = false;
 		cleanObjectsFromPreviousGame = false;
 	}
 
-	public List<Line> getLinesOfGameGraph() {
-		return graph_Game;
-	}
 	
 	public List<ManagePacmanThread> getPacmanThreads() {
 		return managePacmanThread;
@@ -86,10 +73,6 @@ public class GameBoard {
 	
 	public void addPacmanThread(ManagePacmanThread thread) {
 		managePacmanThread.add(thread);
-	}
-	
-	public List<Line> getMST_Game() {
-		return MST_graph;
 	}
 	
 	public Graph getGraph() {
@@ -142,9 +125,6 @@ public class GameBoard {
 		fruits.add(fruit);
 	}
 
-	public void addGhost(Ghost ghost) {
-		ghosts.add(ghost);
-	}
 
 	public void addPacman(Pacman pacman) {
 		pacmans.add(pacman);		
@@ -179,8 +159,6 @@ public class GameBoard {
 	public void removeItem(Game_object object_to_remove) {
 			if (object_to_remove instanceof Fruit) 
 				fruits.remove(object_to_remove);
-			 else if (object_to_remove instanceof Ghost) 
-				ghosts.remove(object_to_remove);
 			 else if (object_to_remove instanceof Pacman) 
 					pacmans.remove(object_to_remove);
 			 else if (object_to_remove instanceof Player) 
@@ -200,8 +178,8 @@ public class GameBoard {
 		}
 	}
 	
-	public List<Game_object> getPacmans() {return pacmans;}
-	public List<Game_object> getGhosts() {return ghosts;}
+	public ArrayList<Game_object> getPacmans() {return pacmans;}
+	public Game_object getGhosts() {return ghosts;}
 	public synchronized List<Game_object> getFruits() {return fruits;}
 	public synchronized MoveableObject getPlayer() { return player;}
 
@@ -213,9 +191,7 @@ public class GameBoard {
 		return manageGhostThread;
 	}
 
-	public boolean isAnimationOnProgress() {
-		return isRunning() && gui_algo.getGameboard().getGraph().nodeSize()==0;
-	}
+
 
 	public void alterWeight(Fruit object) {
 		String str = Gui_dialog.getInputDialog("Enter a new velocity...", object.getWeight() +"");
@@ -254,29 +230,32 @@ public class GameBoard {
 
 
 	public void initializeAndStartGhosts() {
-		for (int i=0; i<getGhosts().size(); i++) {
-			Game_object current_ghost = getGhosts().get(i);
-			ManageGhostThread thread = new ManageGhostThread(this, (Ghost)current_ghost);
-			addGhostThread(thread);
-			thread.start();
-		}		
+		ManageGhostThread thread = new ManageGhostThread(this, (Ghost)ghosts);
+		addGhostThread(thread);
+		thread.start();
 	}
 	
 	public void flushIfNeeded() {
-		if (isCleanOfOldGameNeeded() || 
-				isAnimationOnProgress() /*|| getGraph().nodeSize() > 0*/) 
-			cleanBoard();		
+		
+ 		if (isCleanOfOldGameNeeded()) {
+			cleanBoard();
+ 		}
 	}
 
 	
 	public List<Game_object> addAllObjects() {
 		List<Game_object> game_objects = new ArrayList<>();
 		
-		if (getPlayer()!=null) game_objects.add(getPlayer());
+		if (getPlayer()!=null) 
+			game_objects.add(getPlayer());
 		game_objects.addAll(getPacmans());
-		game_objects.addAll(getGhosts());
+		game_objects.add(ghosts);
 		game_objects.addAll(getFruits());
 		
 		return game_objects;
+	}
+
+	public void setMovableObjects(ArrayList<MoveableObject> moveable) {
+		moveableObjects.addAll(moveable);
 	}
 }

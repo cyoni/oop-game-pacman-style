@@ -1,10 +1,11 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Queue;
-
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GameObjects.Fruit;
@@ -13,12 +14,10 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Game_object;
-import algorithms.DFS;
 import algorithms.Graph;
 import algorithms.Line;
 import algorithms.Node;
 import algorithms.Point2D;
-import algorithms.Prim;
 import algorithms.node_data;
 import threads.Eat_Thread;
 import threads.ManageGhostThread;
@@ -29,11 +28,11 @@ public class InitGame{
 
 
 	private Gui_algo gui_algo;
-	private InitializeGameGraph init_gameboard;
+	//private InitializeGameGraph init_gameboard;
 	
 	public InitGame(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
-		this.init_gameboard = new InitializeGameGraph(gui_algo.getGameboard());
+	//	this.init_gameboard = new InitializeGameGraph(gui_algo.getGameboard());
 	}
 	
 	public void startGame() {
@@ -47,11 +46,15 @@ public class InitGame{
 				thread_drop.startThreadDroppingItems();
 				return;
 			} else if (gui_algo.getGameboard().getGraph().nodeSize() == 0) {
-				buildGraphGame();
+			//	buildGraphGame();
 			}
 			
+			//ManageGhostThread manageGhostThread = new ManageGhostThread()
+			
+			addMoveableItems();
+			
 			System.out.println("\nGAME STARTED");
-			gui_algo.getGameboard().startGame();;
+			gui_algo.getGameboard().startGame();
 			
 			Eat_Thread eat_thread = new Eat_Thread(gui_algo.getGameboard()); // the thread that displaying the fruits on the screen
 			eat_thread.start();
@@ -60,11 +63,30 @@ public class InitGame{
 		}
 	}
 	
+	private void addMoveableItems() {
+		ArrayList<MoveableObject> moveable = new ArrayList<>();
+
+		for (int i=0; i<gui_algo.getGameboard().getPacmans().size(); i++) {
+			moveable.add((MoveableObject) gui_algo.getGameboard().getPacmans().get(i));
+		}
+		
+		moveable.add(gui_algo.getGameboard().getPlayer());
+		
+		gui_algo.getGameboard().setMovableObjects(moveable);		
+	}
+
 	private void startMenualVersion() {
+				
+		for (int i=0; i<gui_algo.getGameboard().getPacmans().size(); i++) {
+			MovementThread movementThread_ = new MovementThread(gui_algo.getGameboard(), (MoveableObject) gui_algo.getGameboard().getPacmans().get(i));
+			movementThread_.start();
+		}
+		
 		MovementThread movementThread = new MovementThread(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer());
 		movementThread.start();
+		
 		initializeAndStartPacmansThreads();
-		initializeAndStartGhosts();
+		//initializeAndStartGhosts();
 	}
 
 	private void initializeAndStartPacmansThreads() {
@@ -73,8 +95,7 @@ public class InitGame{
 	}
 	
 	private void initializeAndStartGhosts() {
-		gui_algo.getGameboard().getGhostsThreads().clear();
-		gui_algo.getGameboard().initializeAndStartGhosts();
+
 	}
 
 	public void initGameboard(List<String> elements) {
@@ -114,8 +135,5 @@ public class InitGame{
     	dropping.startThreadDroppingItems();		
 	}
 
-	public void buildGraphGame() {
-		init_gameboard.buildGraphGame();
-	}
 	
 }

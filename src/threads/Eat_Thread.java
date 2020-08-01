@@ -13,11 +13,10 @@ public class Eat_Thread extends Thread {
 	
 	private GameBoard gameboard;
 	private List<Game_object> fruits;
-	private List<MoveableObject> moveable_objects;
+	private List<MoveableObject> moveable_objects = new ArrayList<>();;
 	
 	public Eat_Thread(GameBoard gameboard) {
 		this.gameboard = gameboard;
-		moveable_objects = new ArrayList<>();
 		moveable_objects = gameboard.getMoveableObjects();
 		fruits = gameboard.getFruits();
 	}

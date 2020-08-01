@@ -44,14 +44,8 @@ public interface IGraph {
 	 * Note: this method should run in O(1) time.
 	 * @return Collection<node_data>
 	 */
-	public Collection<node_data> getV();
-	/**
-	 * This method return a pointer (shallow copy) for the
-	 * collection representing all the edges getting out of 
-	 * the given node (all the edges starting (source) at the given node). 
-	 * Note: this method should run in O(1) time.
-	 * @return Collection<edge_data>
-	 */
+
+	
 	public Collection<edge_data> getE(int node_id);
 	
 	/**
