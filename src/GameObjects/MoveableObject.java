@@ -2,7 +2,7 @@ package GameObjects;
 
 import algorithms.Point2D;
 
-public class MoveableObject extends Game_object implements IMoveable{
+public class MoveableObject extends GameObject implements IMoveable{
 
 	protected double velocity = 1; // default
 	private double degree = 0; // default

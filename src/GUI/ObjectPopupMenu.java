@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import GameObjects.Fruit;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import GameObjects.MoveableObject;
 import algorithms.Point2D;
 import game.DropingItemsOnScreen;
@@ -17,7 +17,7 @@ public class ObjectPopupMenu {
 
    private JPopupMenu popup;
    private JMenuItem removeItem, alterWeight, alterEatingRadius, alterSpeed, addNewFruit, addNewPacman, doNothing, addNewGhost, dropPlayer,startGame;
-   private Game_object objectThatIsBeingPressed;
+   private GameObject objectThatIsBeingPressed;
    private GameBoard gameBoard;
    private Point2D mousePoint;
 private Gui_algo gui_algo;
@@ -27,7 +27,7 @@ private Gui_algo gui_algo;
 	   this.gameBoard = gui_algo.getGameboard();
    }
    
-   public void setObjectThatIsBeingPressed(Game_object objectThatIsBeingPressed) {
+   public void setObjectThatIsBeingPressed(GameObject objectThatIsBeingPressed) {
 	   this.objectThatIsBeingPressed = objectThatIsBeingPressed;
    }
    

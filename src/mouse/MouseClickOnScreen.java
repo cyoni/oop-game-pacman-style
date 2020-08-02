@@ -13,7 +13,7 @@ import GUI.ObjectPopupMenu;
 import GameObjects.Fruit;
 import GameObjects.Pacman;
 import GameObjects.Player;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import GameObjects.MoveableObject;
 import algorithms.Line;
 import algorithms.NumberGenerator;
@@ -39,6 +39,10 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
+		
+		System.out.println(pixelX + "," + pixelY);
+		
+		
 		Point2D localCoords = new Point2D(pixelX, pixelY);
 
 		dragObject.setCurrentDraggedObject(null);
@@ -85,7 +89,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 		// moveable.add((MoveableObject) gui_algo.getGameboard().getGhosts());
 
-		for (Game_object moveable_object : moveable) {
+		for (GameObject moveable_object : moveable) {
 			double distance = Line.distance(globalPoint, moveable_object.getLocation());
 			if (distance < 10) {
 				popup.setObjectThatIsBeingPressed(moveable_object);
@@ -98,7 +102,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	}
 
 	private boolean lookForFruits(Point2D globalPoint) {
-		for (Game_object fruit : gui_algo.getGameboard().getFruits()) {
+		for (GameObject fruit : gui_algo.getGameboard().getFruits()) {
 			double distance = Line.distance(globalPoint, fruit.getLocation());
 			if (distance < 10) {
 				popup.setObjectThatIsBeingPressed(fruit);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GUI.Gui_algo;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import GameObjects.MoveableObject;
 import algorithms.Line;
 import algorithms.Point2D;
@@ -13,7 +13,7 @@ import algorithms.Point2D;
 public class DragFruitOnBoard {
 
 	private Gui_algo gui_algo;
-	Game_object object_to_drag;
+	GameObject object_to_drag;
 
 	public DragFruitOnBoard(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
@@ -32,21 +32,19 @@ public class DragFruitOnBoard {
 	}
 
 	private void lookForObject(Point2D globalPoint) {
-
-			List<Game_object> game_objects = new ArrayList<>();
-			
-			List<Game_object> allObjects = gui_algo.getGameboard().addAllObjects();
-			game_objects.addAll(allObjects);
-			
-			for (Game_object current_object : game_objects) {
-			double distance = Line.distance(globalPoint, current_object.getLocation());
-				if (distance < 10) {
-					setCurrentDraggedObject(current_object);
-				}
-			}	
+		/*
+		 * List<GameObject> game_objects = new ArrayList<>();
+		 * 
+		 * List<GameObject> allObjects = gui_algo.getGameboard().addAllObjects();
+		 * game_objects.addAll(allObjects);
+		 * 
+		 * for (GameObject current_object : game_objects) { double distance =
+		 * Line.distance(globalPoint, current_object.getLocation()); if (distance < 10)
+		 * { setCurrentDraggedObject(current_object); } }
+		 */
 	}
 
-	public void setCurrentDraggedObject(Game_object object) {
+	public void setCurrentDraggedObject(GameObject object) {
 		this.object_to_drag = object;
 	}
 

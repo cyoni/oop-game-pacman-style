@@ -12,7 +12,7 @@ import GUI.Gui_algo;
 public class Eat_Thread extends Thread {
 	
 	private GameBoard gameboard;
-	private List<Game_object> fruits;
+	private List<GameObject> fruits;
 	private List<MoveableObject> moveable_objects = new ArrayList<>();;
 	
 	public Eat_Thread(GameBoard gameboard) {
@@ -58,7 +58,7 @@ public class Eat_Thread extends Thread {
 		for (int i=0; i<fruits.size(); i++) {
 			Fruit current_fruit = (Fruit) fruits.get(i);
 			double distance = Line.distance(currentMoveable_object.getLocation(), current_fruit.getLocation());
-			System.out.println(currentMoveable_object.getEatingRadius() + ", " + distance);
+
 			if (distance <= (currentMoveable_object.getEatingRadius())) {
 				currentMoveable_object.increaseEatenFruits();
 				System.out.println("Fruit " + current_fruit.getId() + " was eaten.");

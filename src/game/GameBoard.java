@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Container;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import javax.imageio.ImageIO;
+
 import Coords.MyCoords;
 import GIS.Map;
 import GUI.Gui_algo;
@@ -22,7 +24,7 @@ import GameObjects.Ghost;
 import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import algorithms.Graph;
 import algorithms.Line;
 import algorithms.Node;
@@ -34,10 +36,11 @@ import threads.ManagePacmanThread;
 
 public class GameBoard {
 	
-	protected ArrayList<Game_object> pacmans;
-	protected Game_object ghosts;
-	protected ArrayList<Game_object> fruits;
+	protected ArrayList<GameObject> pacmans;
+	protected ArrayList<GameObject> fruits;
+	private ArrayList<Rectangle> blocks;
 	protected ArrayList<MoveableObject> moveableObjects;
+	protected GameObject ghosts;
 	protected MoveableObject player;
 	private Gui_algo gui_algo;
 	protected boolean game_running;
@@ -58,6 +61,7 @@ public class GameBoard {
 		fruits = new ArrayList<>();
 		moveableObjects = new ArrayList<>();
 		manageGhostThread = new ArrayList<>();
+		blocks = new ArrayList<>();
 		player = null;
 		game_running = false;
 		graph = new Graph();
@@ -98,7 +102,7 @@ public class GameBoard {
 	
 	public void cleanBoard() {
 		initializeDataStructure();
-		Game_object.resetTotalObjects();
+		GameObject.resetTotalObjects();
 		DropingItemsOnScreen.selectNone();
 		getGuiAlgo().repaint();
 	}
@@ -156,7 +160,7 @@ public class GameBoard {
 		game_running = true;
 	}
 
-	public void removeItem(Game_object object_to_remove) {
+	public void removeItem(GameObject object_to_remove) {
 			if (object_to_remove instanceof Fruit) 
 				fruits.remove(object_to_remove);
 			 else if (object_to_remove instanceof Pacman) 
@@ -178,9 +182,9 @@ public class GameBoard {
 		}
 	}
 	
-	public ArrayList<Game_object> getPacmans() {return pacmans;}
-	public Game_object getGhosts() {return ghosts;}
-	public synchronized List<Game_object> getFruits() {return fruits;}
+	public ArrayList<GameObject> getPacmans() {return pacmans;}
+	public GameObject getGhosts() {return ghosts;}
+	public synchronized List<GameObject> getFruits() {return fruits;}
 	public synchronized MoveableObject getPlayer() { return player;}
 
 	public void addGhostThread(ManageGhostThread thread) {
@@ -221,7 +225,7 @@ public class GameBoard {
 	}
 	public void initializeAndStartPacmansThreads() {
 		for (int i=0; i<getPacmans().size(); i++) {
-			Game_object current_pacman = getPacmans().get(i);
+			GameObject current_pacman = getPacmans().get(i);
 			ManagePacmanThread thread = new ManagePacmanThread(this, (Pacman)current_pacman);
 			addPacmanThread(thread);
 			thread.start();
@@ -243,8 +247,8 @@ public class GameBoard {
 	}
 
 	
-	public List<Game_object> addAllObjects() {
-		List<Game_object> game_objects = new ArrayList<>();
+	public List<GameObject> addAllObjects() {
+		List<GameObject> game_objects = new ArrayList<>();
 		
 		if (getPlayer()!=null) 
 			game_objects.add(getPlayer());
@@ -257,5 +261,61 @@ public class GameBoard {
 
 	public void setMovableObjects(ArrayList<MoveableObject> moveable) {
 		moveableObjects.addAll(moveable);
+	}
+
+	public void addBlock(Rectangle rectangle) {
+		blocks.add(rectangle);		
+	}
+
+	public List<Rectangle> getBlocks() {
+		return blocks;
+	}
+
+	public boolean isCloseToBlock(MoveableObject object, Point2D local_location) {
+		Point2D object_location = object.getLocation();
+		
+		for (int i=0; i<blocks.size(); i++) {
+			Rectangle block = blocks.get(i);
+			
+			Line line1 = new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_down_left()));
+	//		Line line2 = new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_up_right()));
+	//		Line line3 = new Line(Map.global2pixel(block.getP_up_right()), Map.global2pixel(block.getP_down_right()));
+	//		Line line4 = new Line(Map.global2pixel(block.getP_down_left()), Map.global2pixel(block.getP_down_right()));
+			
+			System.out.println(line1);
+		//	System.out.println(line2);
+		//	System.out.println(line3);
+		//	System.out.println(line4);
+			
+			if (local_location.x() > line1.getP1().x() && local_location.x() < line1.getP2().x()) {
+				System.out.println(Math.abs(local_location.y() - line1.getP1().y()));
+				return (Math.abs(local_location.y() - line1.getP1().y())) < 5;
+				
+				
+			} /*
+				 * else if (local_location.x() > line2.getP1().x() && local_location.x() <
+				 * line2.getP2().x()) { System.out.println(Math.abs(local_location.x() -
+				 * line2.getP1().y())); return (Math.abs(local_location.y() -
+				 * line2.getP1().y())) < 5;
+				 * 
+				 * 
+				 * } else if (local_location.x() > line3.getP1().x() && local_location.x() <
+				 * line3.getP2().x()) { System.out.println(Math.abs(local_location.x() -
+				 * line3.getP1().y())); return (Math.abs(local_location.y() -
+				 * line3.getP1().y())) < 5;
+				 * 
+				 * 
+				 * 
+				 * } else if (local_location.x() > line4.getP1().x() && local_location.x() <
+				 * line4.getP2().x()) { System.out.println(Math.abs(local_location.x() -
+				 * line4.getP1().y()));
+				 * 
+				 * return (Math.abs(local_location.y() - line4.getP1().y())) < 5; }
+				 */
+			
+		}
+		System.out.println();
+		
+		return false;
 	}
 }

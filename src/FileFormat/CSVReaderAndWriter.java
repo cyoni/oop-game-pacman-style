@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 
 import GIS.Map;
 import GUI.Gui_algo;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import game.GameBoard;
 
 public class CSVReaderAndWriter {
@@ -56,16 +56,16 @@ public class CSVReaderAndWriter {
 	public void writeToCSV(GameBoard gameboard, String file_name) throws IOException {
 		FileWriter writer  = new FileWriter(file_name);
 		
-		List<Game_object> fruits = gameboard.getFruits();
-		List<Game_object> pacmans = gameboard.getPacmans();
+		List<GameObject> fruits = gameboard.getFruits();
+		List<GameObject> pacmans = gameboard.getPacmans();
 
 		int fruits_num = fruits.size();
 		int pacmans_num = pacmans.size();
 		
 		writer.write("Type, ID, Lat, Lon, Alt, Speed/Weight, Radius [Fruits: "+ fruits_num +", Pacmans: "+ pacmans_num +"]\n");
 		
-		Iterator<Game_object> iter = fruits.iterator();
-		Game_object curr;
+		Iterator<GameObject> iter = fruits.iterator();
+		GameObject curr;
 		
 		while(iter.hasNext()) {
 			curr = iter.next(); 

@@ -13,7 +13,8 @@ import GameObjects.Ghost;
 import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
-import GameObjects.Game_object;
+import GameObjects.Rectangle;
+import GameObjects.GameObject;
 import algorithms.Graph;
 import algorithms.Line;
 import algorithms.Node;
@@ -112,15 +113,17 @@ public class InitGame{
 				System.out.println(elements.get(i));
 				
 				if (type.equals("F")) {
-					gameboard.addFruit(new Fruit(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight));}
+					gameboard.addFruit(new Fruit(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight));}
 				//else if (type.equals("G"))
 				//	gameboard.addGhost(new Ghost(id, new Point2D(lat, lon), Double.parseDouble(data[5])));
 				else if (type.equals("P")) {
 					double eatingRadius = Double.parseDouble(data[5]);
-					gameboard.addPacman(new Pacman(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
+					gameboard.addPacman(new Pacman(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				} else if (type.equals("M")) {
 					double eatingRadius = Double.parseDouble(data[5]);
-					gameboard.setPlayer(new Player(Game_object.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
+					gameboard.setPlayer(new Player(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
+				} else if (type.equals("B")) {
+					gameboard.addBlock(new Rectangle(new Point2D(lon, lat), new Point2D(Double.parseDouble(data[6]), Double.parseDouble(data[5]))));
 				}
 			}
 

@@ -10,7 +10,7 @@ public class ObjectEatsFruit extends MoveableObject {
 	}
 	
 	
-	public boolean eat(Game_object something) {
+	public boolean eat(GameObject something) {
 		return (something instanceof Fruit);
 	}
 

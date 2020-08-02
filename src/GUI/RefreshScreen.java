@@ -3,7 +3,7 @@ package GUI;
 import java.awt.Graphics;
 import java.util.Queue;
 
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 
 public class RefreshScreen extends Thread {
 	

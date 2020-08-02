@@ -11,7 +11,7 @@ import game.GameBoard;
  * @author Yoni
  *
  */
-public class Fruit extends Game_object {
+public class Fruit extends GameObject {
 
 	public static String picture = "fruit.png";
 	

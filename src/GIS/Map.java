@@ -18,8 +18,8 @@ public class Map {
 	MyCoords mc;
 
 	
-	protected Point2D DownLeftP = new Point2D( 35.202403,32.101923,0);
-	protected Point2D UpRightP = new Point2D( 35.212438,32.105959,0);
+	protected static Point2D DownLeftP = new Point2D( 35.202403,32.101923,0);
+	protected static Point2D UpRightP = new Point2D( 35.212438,32.105959,0);
 	
 	public Map(JFrame jframe) {
 		nw = new Point2D( 32.105394,  35.202532, 0);
@@ -28,7 +28,7 @@ public class Map {
 		se = new Point2D( 32.101899,  35.212496, 0);
 		mc=new MyCoords();
 	}
-	public Point2D global2pixel(Point2D Global) {
+	public static  Point2D global2pixel(Point2D Global) {
 		
 		double RatioGlobalX = (Global.x()-DownLeftP.x())/getGlobalDiffX();
 		double RatioGlobalY = (UpRightP.y()-Global.y())/getGlobalDiffY();
@@ -48,13 +48,13 @@ public class Map {
 	/** 
 	 * @return the width of the pic in degree 
 	 */
-	public double getGlobalDiffX() {
+	public static double getGlobalDiffX() {
 		return UpRightP.x()-DownLeftP.x();
 	}
 	/** 
 	 * @return the hight of the pic in degree 
 	 */
-	public double getGlobalDiffY() {
+	public static double getGlobalDiffY() {
 		return UpRightP.y()-DownLeftP.y();
 	}
 	

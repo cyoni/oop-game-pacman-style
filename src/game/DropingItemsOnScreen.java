@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GameObjects.Fruit;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import GameObjects.Ghost;
 import GameObjects.Pacman;
 import GameObjects.Player;
@@ -99,16 +99,16 @@ public class DropingItemsOnScreen extends Thread {
 	
 	public static void dropApple(GameBoard gameBoard, Point2D mouseCoords) {
 		int randomWeight =  NumberGenerator.getRandomNumber(10, 50);
-		Fruit fruit = new Fruit(Game_object.GLOBAL_ID++, mouseCoords, randomWeight);
+		Fruit fruit = new Fruit(GameObject.GLOBAL_ID++, mouseCoords, randomWeight);
 		gameBoard.getFruits().add(fruit);
-		System.out.println(Game_object.GLOBAL_ID + "# id of the apple " + fruit.getLocation());
+		System.out.println(GameObject.GLOBAL_ID + "# id of the apple " + fruit.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 	
 	public static void dropPlayer(GameBoard gameBoard, Point2D mouseCoords) {
 		int id;
 		if (gameBoard.getPlayer() == null)
-		  id = Game_object.GLOBAL_ID++;
+		  id = GameObject.GLOBAL_ID++;
 		else id = gameBoard.getPlayer().getId();
 		
 		Player player = new Player(id, mouseCoords, 1, 2);
@@ -118,16 +118,16 @@ public class DropingItemsOnScreen extends Thread {
 	}
 	
 	public static void dropPacman(GameBoard gameBoard, Point2D mouseCoords) {
-		Pacman pacman = new Pacman(Game_object.GLOBAL_ID++, mouseCoords, 1, 2);
+		Pacman pacman = new Pacman(GameObject.GLOBAL_ID++, mouseCoords, 1, 2);
 		gameBoard.getPacmans().add(pacman);
-		System.out.println(Game_object.GLOBAL_ID + " #id of pacman " + pacman.getLocation());
+		System.out.println(GameObject.GLOBAL_ID + " #id of pacman " + pacman.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 	
 	public static void dropGhost(GameBoard gameBoard, Point2D mouseCoords) {
-		Ghost ghost = new Ghost(Game_object.GLOBAL_ID++, mouseCoords, 1, 2);
+		Ghost ghost = new Ghost(GameObject.GLOBAL_ID++, mouseCoords, 1, 2);
 		gameBoard.getGhosts().add(ghost);
-		System.out.println(Game_object.GLOBAL_ID + " #id of ghost " + ghost.getLocation());
+		System.out.println(GameObject.GLOBAL_ID + " #id of ghost " + ghost.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}
 

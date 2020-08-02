@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import Coords.MyCoords;
 import GUI.Gui_dialog;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 
 public class FruitManager extends Thread{
 
@@ -24,9 +24,9 @@ public class FruitManager extends Thread{
 			try {
 				sleep(300);
 			} catch (InterruptedException e) {}
-			 Iterator<Game_object> fruit_iter = gameboard.getFruits().iterator();
+			 Iterator<GameObject> fruit_iter = gameboard.getFruits().iterator();
 			while(fruit_iter.hasNext()) {
-				Game_object fruit = fruit_iter.next();
+				GameObject fruit = fruit_iter.next();
 				double distance = mc.distance2D(gameboard.getPlayer().getLocation(), fruit.getLocation() );
 				//System.out.println("player->apple " + gameboard.getPlayer().getLocation() +"," +  fruit.getLocation() + ". " + distance);
 				if (distance < 21 + 3) {

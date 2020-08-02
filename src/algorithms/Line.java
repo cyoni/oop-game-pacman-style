@@ -1,6 +1,6 @@
 package algorithms;
 
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import game.GameBoard;
 
 public class Line {
@@ -21,6 +21,8 @@ public class Line {
 		p2.setY(p2.y()+20);
 		
 	}
+	
+	
 
 	public Point2D getP1() {
 		return p1;
@@ -28,6 +30,10 @@ public class Line {
 
 	public Point2D getP2() {
 		return p2;
+	}
+	
+	public String toString() {
+		return p1.toString() + ", " + p2.toString();
 	}
 
 	// temporary location!

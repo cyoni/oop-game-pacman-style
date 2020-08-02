@@ -21,6 +21,8 @@ public class Rectangle{
 		p_down_right = p2;
 		p_down_left = new Point2D(p1.x(), p_down_right.y());
 		p_up_right = new Point2D(p_down_right.x(), p_up_left.y());
+		
+		System.out.println(Map.global2pixel(p1) + "," + Map.global2pixel(p2));
 	}
 	
 	public Rectangle(Rectangle rectangles) {

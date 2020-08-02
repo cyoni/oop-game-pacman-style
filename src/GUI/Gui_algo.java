@@ -38,7 +38,7 @@ import GameObjects.MoveableObject;
 import GameObjects.Pacman;
 import GameObjects.Player;
 import GameObjects.Rectangle;
-import GameObjects.Game_object;
+import GameObjects.GameObject;
 import algorithms.Line;
 import algorithms.Point2D;
 import game.DropingItemsOnScreen;
@@ -83,16 +83,21 @@ public class Gui_algo extends JPanel {
 		super.paintComponent(graphics);
 		graphics.drawImage(images.getBackground(), 0, 0, Screen.WIDTH, Screen.HEIGHT, this); // set background
 		if (gameboard != null) {
-			List<Game_object> fruits = gameboard.getFruits();
+			List<GameObject> fruits = gameboard.getFruits();
+			List<GameObject> pacmans = gameboard.getPacmans();
+			List<Rectangle> blocks = gameboard.getBlocks();
+
 			draw(graphics, fruits, images.getFruit_image());
-			List<Game_object> pacmans = gameboard.getPacmans();
 			draw(graphics, pacmans, images.getPacman_image());
+			draw(graphics, blocks);
+			
+			
 		//	List<Game_object> ghosts = new ArrayList<>();
 			//ghosts.add(gameboard.getGhosts())
 		//	draw(graphics, ghosts, images.getGhost_image());
 
 			if (gameboard.getPlayer() != null) {
-				List<Game_object> list = new ArrayList<>();
+				List<GameObject> list = new ArrayList<>();
 				list.add(gameboard.getPlayer());
 				draw(graphics, list, images.getPlayer_image());
 			}
@@ -123,47 +128,26 @@ public class Gui_algo extends JPanel {
 		drawLabel(g2, (Screen.WIDTH / 2) - 100, Screen.HEIGHT - 20, 0, Screen.getScreenLabel());
 	}
 
-	/*
-	 * private void drawGraph(Graphics g) { Graphics2D g2 = (Graphics2D) g; if
-	 * (GameBoard.show_game_graph) { List<Line> lines =
-	 * gameboard.getLinesOfGameGraph();
-	 * 
-	 * Screen.resetDistance(); for (int i = 0; i < lines.size(); i++) { Line
-	 * currentLine = lines.get(i); drawDistanceLabels(g, currentLine); Line2D lin =
-	 * new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(),
-	 * currentLine.getP2().x(), currentLine.getP2().y()); g2.setColor(Color.yellow);
-	 * g2.draw(lin); } }
-	 * 
-	 * if (GameBoard.showShortestPath) { Screen.resetDistance(); List<Line> lines =
-	 * gameboard.getMST_Game(); for (int i = 0; i < lines.size(); i++) { Line
-	 * currentLine = lines.get(i); drawDistanceLabels(g, currentLine); Line2D lin =
-	 * new Line2D.Double(currentLine.getP1().x(), currentLine.getP1().y(),
-	 * currentLine.getP2().x(), currentLine.getP2().y()); g2.setColor(Color.GREEN);
-	 * g2.draw(lin); }
-	 * 
-	 * } }
-	 */
 
-	/*
-	 * private void drawDistanceLabels(Graphics g, Line line) { Graphics2D g2 =
-	 * (Graphics2D) g; Point2D p1 = line.getP1(); Point2D p2 = line.getP2(); double
-	 * distance = Line.distance(map.pixel2global(p1), map.pixel2global(p2)); //
-	 * IMPORTANT: to // optimize!!!!!!!!!!!!!!!! distance = Double.parseDouble(new
-	 * DecimalFormat("##.#").format(distance)); double y1 = (int) p1.y(); double x1
-	 * = (int) p1.x(); double y2 = (int) p2.y(); double x2 = (int) p2.x(); double
-	 * rad = Math.atan2(y1 - y2, x1 - x2); double degrees = Math.toDegrees(rad);
-	 * 
-	 * if (x2 > x1) degrees = 180 - degrees;
-	 * 
-	 * Font myFont = new Font("Arial", Font.BOLD, 14); g2.setColor(Color.WHITE);
-	 * g2.setFont(myFont); Screen.sumDistance(distance); drawLabel(g2, (x1 + x2) /
-	 * 2, (y1 + y2) / 2, degrees, distance + ""); }
-	 */
+	private void draw(Graphics graphics, List<Rectangle> blocks) {
 
-	private void draw(Graphics graphics, List<Game_object> obj, Image picture) {
+		for (int i=0; i<blocks.size(); i++) {
+			
+	        graphics.setColor(Color.blue);
+	        Point2D p1 = map.global2pixel(blocks.get(i).getP_up_left());
+	        Point2D p2 = map.global2pixel(blocks.get(i).getP_down_right());
+
+	        double width = Math.abs(p2.x()-p1.x());
+	        double height = Math.abs(p2.y()-p1.y());
+	        
+	        graphics.fillRect((int)p1.x(), (int)p1.y(), (int)width,(int)height);
+
+		}
+	}
+
+	private void draw(Graphics graphics, List<GameObject> obj, Image picture) {
 		for (int i = 0; i < obj.size(); i++) {
-			Game_object item = obj.get(i);
-			System.out.println(obj.get(0).getLocation() + "#############");
+			GameObject item = obj.get(i);
 			Point2D point = map.global2pixel(item.getLocation());
 			graphics.drawImage(picture, (int) (point.x()), (int) (point.y()), item.getObjectSize(),
 					item.getObjectSize(), null);
@@ -199,10 +183,7 @@ public class Gui_algo extends JPanel {
 		csvWriter.writeToCSV(gameboard, file_name);
 	}
 
-	/*
-	 * public void startBackgroundAnimation() { AnimatedBackground animation = new
-	 * AnimatedBackground(this); animation.start(); }
-	 */
+
 
 
 }

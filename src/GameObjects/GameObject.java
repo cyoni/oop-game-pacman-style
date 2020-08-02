@@ -3,14 +3,14 @@ package GameObjects;
 import algorithms.Point2D;
 
 
-public class Game_object {
+public class GameObject {
 	public String picture;
 	public static int GLOBAL_ID = 0;
 	private int local_id;
 	private Point2D location;
 	private int objectSize;
 
-	public Game_object(int id, Point2D location) {
+	public GameObject(int id, Point2D location) {
 		this.local_id = id;
 		this.location = location;
 	}
