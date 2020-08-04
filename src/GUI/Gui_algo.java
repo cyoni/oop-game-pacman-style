@@ -132,16 +132,12 @@ public class Gui_algo extends JPanel {
 	private void draw(Graphics graphics, List<Rectangle> blocks) {
 
 		for (int i=0; i<blocks.size(); i++) {
-			
 	        graphics.setColor(Color.blue);
-	        Point2D p1 = map.global2pixel(blocks.get(i).getP_up_left());
-	        Point2D p2 = map.global2pixel(blocks.get(i).getP_down_right());
-
+	        Point2D p1 = Map.global2pixel(blocks.get(i).getP_up_left());
+	        Point2D p2 = Map.global2pixel(blocks.get(i).getP_down_right());
 	        double width = Math.abs(p2.x()-p1.x());
 	        double height = Math.abs(p2.y()-p1.y());
-	        
 	        graphics.fillRect((int)p1.x(), (int)p1.y(), (int)width,(int)height);
-
 		}
 	}
 

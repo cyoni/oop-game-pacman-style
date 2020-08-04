@@ -35,7 +35,6 @@ public class MyFrame {
 	public MyFrame() throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		Gui_algo gui_algo = new Gui_algo(); 
-//		gui_algo.startBackgroundAnimation();
 	}
 
 
