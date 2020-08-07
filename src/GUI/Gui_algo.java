@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import Coords.MyCoords;
 import FileFormat.CSVReaderAndWriter;
 import GIS.Background;
-import GIS.LineIntersect;
 import GIS.Map;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
@@ -86,7 +85,12 @@ public class Gui_algo extends JPanel {
 			List<GameObject> fruits = gameboard.getFruits();
 			List<GameObject> pacmans = gameboard.getPacmans();
 			List<Rectangle> blocks = gameboard.getBlocks();
+			List<GameObject> ghost = new ArrayList<>();
+			
+			if (gameboard.getGhost() != null)
+				ghost.add(gameboard.getGhost());
 
+			draw(graphics, ghost, images.getGhost_image());
 			draw(graphics, fruits, images.getFruit_image());
 			draw(graphics, pacmans, images.getPacman_image());
 			draw(graphics, blocks);
@@ -144,7 +148,9 @@ public class Gui_algo extends JPanel {
 	private void draw(Graphics graphics, List<GameObject> obj, Image picture) {
 		for (int i = 0; i < obj.size(); i++) {
 			GameObject item = obj.get(i);
-			Point2D point = map.global2pixel(item.getLocation());
+			Point2D point = Map.global2pixel(item.getLocation());
+			
+		
 			graphics.drawImage(picture, (int) (point.x()), (int) (point.y()), item.getObjectSize(),
 					item.getObjectSize(), null);
 		}
