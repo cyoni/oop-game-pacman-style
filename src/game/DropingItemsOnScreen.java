@@ -126,7 +126,7 @@ public class DropingItemsOnScreen extends Thread {
 	
 	public static void dropGhost(GameBoard gameBoard, Point2D mouseCoords) {
 		Ghost ghost = new Ghost(GameObject.GLOBAL_ID++, mouseCoords, 1, 2);
-		gameBoard.getGhosts().add(ghost);
+		gameBoard.addGhost(ghost);
 		System.out.println(GameObject.GLOBAL_ID + " #id of ghost " + ghost.getLocation());
 		gameBoard.getGuiAlgo().repaint();
 	}

@@ -50,7 +50,6 @@ public class InitGame{
 			//	buildGraphGame();
 			}
 			
-			//ManageGhostThread manageGhostThread = new ManageGhostThread()
 			
 			addMoveableItems();
 			
@@ -87,7 +86,11 @@ public class InitGame{
 		movementThread.start();
 		
 		initializeAndStartPacmansThreads();
-		//initializeAndStartGhosts();
+		initializeAndStartGhosts();
+	}
+
+	private void initializeAndStartGhosts() {
+		gui_algo.getGameboard().initializeAndStartGhostThread();		
 	}
 
 	private void initializeAndStartPacmansThreads() {
@@ -95,9 +98,6 @@ public class InitGame{
 		gui_algo.getGameboard().initializeAndStartPacmansThreads();
 	}
 	
-	private void initializeAndStartGhosts() {
-
-	}
 
 	public void initGameboard(List<String> elements) {
 		if (!elements.isEmpty()) {
@@ -114,8 +114,9 @@ public class InitGame{
 				
 				if (type.equals("F")) {
 					gameboard.addFruit(new Fruit(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight));}
-				//else if (type.equals("G"))
-				//	gameboard.addGhost(new Ghost(id, new Point2D(lat, lon), Double.parseDouble(data[5])));
+				else if (type.equals("G")) {
+					double eatingRadius = Double.parseDouble(data[5]);
+					gameboard.addGhost(new Ghost(GameObject.GLOBAL_ID++, new Point2D(lon, lat), Double.parseDouble(data[5]), eatingRadius));}
 				else if (type.equals("P")) {
 					double eatingRadius = Double.parseDouble(data[5]);
 					gameboard.addPacman(new Pacman(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
@@ -123,7 +124,7 @@ public class InitGame{
 					double eatingRadius = Double.parseDouble(data[5]);
 					gameboard.setPlayer(new Player(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				} else if (type.equals("B")) {
-					gameboard.addBlock(new Rectangle(new Point2D(lon, lat), new Point2D(Double.parseDouble(data[6]), Double.parseDouble(data[5]))));
+					gameboard.addBlock(new Rectangle(new Point2D(lon, Double.parseDouble(data[5])), new Point2D(Double.parseDouble(data[6]), lat)));
 				}
 			}
 

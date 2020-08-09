@@ -36,11 +36,12 @@ import threads.ManagePacmanThread;
 
 public class GameBoard {
 	
+	private static boolean generateGame = false;
 	protected ArrayList<GameObject> pacmans;
 	protected ArrayList<GameObject> fruits;
 	private ArrayList<Rectangle> blocks;
 	protected ArrayList<MoveableObject> moveableObjects;
-	protected GameObject ghosts;
+	protected GameObject ghost;
 	protected MoveableObject player;
 	private Gui_algo gui_algo;
 	protected boolean game_running;
@@ -49,6 +50,7 @@ public class GameBoard {
 	protected ArrayList<ManageGhostThread> manageGhostThread;
 	protected boolean autoGame; 
 	protected boolean cleanObjectsFromPreviousGame;
+	private static String gameStatus = "";
 
 	
 	public GameBoard(Gui_algo gui_algo) {
@@ -182,10 +184,21 @@ public class GameBoard {
 		}
 	}
 	
-	public ArrayList<GameObject> getPacmans() {return pacmans;}
-	public GameObject getGhosts() {return ghosts;}
-	public synchronized List<GameObject> getFruits() {return fruits;}
-	public synchronized MoveableObject getPlayer() { return player;}
+	public ArrayList<GameObject> getPacmans() {
+		return pacmans;
+	}
+	
+	public GameObject getGhost() {
+		return ghost;
+	}
+	
+	public List<GameObject> getFruits() { // synchronized ?!
+		return fruits;
+	}
+	
+	public MoveableObject getPlayer() { // synchronized ?!
+		return player;
+	}
 
 	public void addGhostThread(ManageGhostThread thread) {
 		manageGhostThread.add(thread);
@@ -232,12 +245,15 @@ public class GameBoard {
 		}		
 	}
 
-
-	public void initializeAndStartGhosts() {
-		ManageGhostThread thread = new ManageGhostThread(this, (Ghost)ghosts);
-		addGhostThread(thread);
-		thread.start();
+	
+	public void initializeAndStartGhostThread() {
+		if (ghost != null) {
+			ManageGhostThread thread = new ManageGhostThread(this, (Ghost)ghost);
+			addGhostThread(thread);
+			thread.start();
+		}
 	}
+	
 	
 	public void flushIfNeeded() {
 		
@@ -253,7 +269,7 @@ public class GameBoard {
 		if (getPlayer()!=null) 
 			game_objects.add(getPlayer());
 		game_objects.addAll(getPacmans());
-		game_objects.add(ghosts);
+		game_objects.add(ghost);
 		game_objects.addAll(getFruits());
 		
 		return game_objects;
@@ -272,50 +288,76 @@ public class GameBoard {
 	}
 
 	public boolean isCloseToBlock(MoveableObject object, Point2D local_location) {
-		Point2D object_location = object.getLocation();
+		Point2D object_location = Map.global2pixel(object.getLocation());
+		
 		
 		for (int i=0; i<blocks.size(); i++) {
 			Rectangle block = blocks.get(i);
 			
-			Line line1 = new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_down_left()));
-	//		Line line2 = new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_up_right()));
-	//		Line line3 = new Line(Map.global2pixel(block.getP_up_right()), Map.global2pixel(block.getP_down_right()));
-	//		Line line4 = new Line(Map.global2pixel(block.getP_down_left()), Map.global2pixel(block.getP_down_right()));
+			for (int j=0; j<4 ; j++) {
+				Line line = getLine(block, j);
 			
-			System.out.println(line1);
-		//	System.out.println(line2);
-		//	System.out.println(line3);
-		//	System.out.println(line4);
-			
-			if (local_location.x() > line1.getP1().x() && local_location.x() < line1.getP2().x()) {
-				System.out.println(Math.abs(local_location.y() - line1.getP1().y()));
-				return (Math.abs(local_location.y() - line1.getP1().y())) < 5;
-				
-				
-			} /*
-				 * else if (local_location.x() > line2.getP1().x() && local_location.x() <
-				 * line2.getP2().x()) { System.out.println(Math.abs(local_location.x() -
-				 * line2.getP1().y())); return (Math.abs(local_location.y() -
-				 * line2.getP1().y())) < 5;
-				 * 
-				 * 
-				 * } else if (local_location.x() > line3.getP1().x() && local_location.x() <
-				 * line3.getP2().x()) { System.out.println(Math.abs(local_location.x() -
-				 * line3.getP1().y())); return (Math.abs(local_location.y() -
-				 * line3.getP1().y())) < 5;
-				 * 
-				 * 
-				 * 
-				 * } else if (local_location.x() > line4.getP1().x() && local_location.x() <
-				 * line4.getP2().x()) { System.out.println(Math.abs(local_location.x() -
-				 * line4.getP1().y()));
-				 * 
-				 * return (Math.abs(local_location.y() - line4.getP1().y())) < 5; }
-				 */
+			double dis = Line.distBetweenPointAndLine(object_location.x(), object_location.y(), line.getP1().x(), line.getP1().y(), line.getP2().x(), line.getP2().y());
+						
+			if (dis <= 1 && betweenTheLine(object_location, line)){
+				return true;
+			}
+				 
+			}
 			
 		}
-		System.out.println();
 		
 		return false;
 	}
+
+	private Line getLine(Rectangle block, int i) {
+
+		switch (i) {
+			case 0:
+				return new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_down_left()));
+			case 1:
+				return new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_up_right()));
+			case 2:
+				return new Line(Map.global2pixel(block.getP_up_right()), Map.global2pixel(block.getP_down_right()));
+			case 3:
+				return  new Line(Map.global2pixel(block.getP_down_left()), Map.global2pixel(block.getP_down_right()));
+		}
+		return null;
+	}
+
+	private boolean betweenTheLine(Point2D object_location, Line line) {
+		
+		if (line.getP1().x() == line.getP2().x()) {
+			double max = Math.max(line.getP1().y(), line.getP2().y());
+			double min = Math.min(line.getP2().y(), line.getP1().y());
+			return (object_location.y() > min && object_location.y() < max); 
+		}
+		else {
+			double max = Math.max(line.getP1().x(), line.getP2().x());
+			double min = Math.min(line.getP2().x(), line.getP1().x());
+			return (object_location.x() > min && object_location.x() < max); 
+		}
+	}
+
+	public void addGhost(Ghost ghost) {
+		this.ghost = ghost;
+	}
+
+	public static void setGenerateGame(boolean state) {
+		generateGame  = state;
+	}
+
+	public static boolean isGenerateGame() {
+		return generateGame;
+	}
+
+	public void updateLabelStatus() {
+		gameStatus = "Score: " + player.getScore() + ", Fruits eaten: " + player.getNumEatenFruits() + ", Pacmans eaten: " + player.getNumEatenPacmans() + ", Hit times: " + player.getNumHitsByGhosts();
+	}
+	
+	public String getGameStatus() {
+		return gameStatus;
+	}
+	
+
 }
