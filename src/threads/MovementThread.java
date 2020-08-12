@@ -1,5 +1,6 @@
 package threads;
 
+import GIS.Map;
 import GUI.Gui_algo;
 import GUI.Screen;
 import GameObjects.MoveableObject;
@@ -21,7 +22,7 @@ public class MovementThread extends Thread {
 		while (gameBoard.isRunning()) {
 			try {sleep(10);} catch (InterruptedException e) {}
 			Point2D global_location = moveableObject.getLocation();
-			Point2D local_location = gameBoard.getMap().global2pixel(global_location);
+			Point2D local_location = Map.global2pixel(global_location);
 			
 			if ( (moveableObject instanceof Player && closeToBlock(moveableObject, local_location))) {
 				moveableObject.setDegree((-1)*moveableObject.getDegree());

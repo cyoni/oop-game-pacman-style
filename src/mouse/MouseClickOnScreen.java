@@ -37,23 +37,24 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
-		int pixelX = e.getX() - 20;
-		int pixelY = e.getY() - 65;
+		int pixelX = e.getX();// - 20;
+		int pixelY = e.getY();// - 65;
 		
-		System.out.println(pixelX + "," + pixelY);
+		System.out.println(e.getX() + "," + e.getY());
 		
 		
 		Point2D localCoords = new Point2D(pixelX, pixelY);
 
 		dragObject.setCurrentDraggedObject(null);
-		gui_algo.getGameboard().flushIfNeeded();
+
+	//	gui_algo.getGameboard().flushIfNeeded();
+		
+		System.out.println(isAnObjectBeingPressed(localCoords, e));
 
 		if (isGameRunning() && isManualVersionOn()) {
 			getAndSetDegreeOfPlayer(localCoords);
 		}
-
-		else if (isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false
-				&& isGameRunning() == false)
+		else if (GameBoard.isGenerateGame() && isRightButtonMousePressed(e) && isAnObjectBeingPressed(localCoords, e) == false && isGameRunning() == false)
 			showGlobalMenu(e);
 		else if (isGameRunning() == false && isAnObjectBeingPressed(localCoords, e))
 			showPopupMenu(e);
@@ -76,21 +77,28 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 	private boolean isAnObjectBeingPressed(Point2D localCoords, MouseEvent e) {
 		Point2D globalPoint = gui_algo.map.pixel2global(new Point2D(localCoords.x(), localCoords.y()));
+		System.out.println(globalPoint + "$$$");
 		return lookForMoveableObjects(globalPoint) || lookForFruits(globalPoint);
 	}
 
 	// need to be in gui_algo of game
 	private boolean lookForMoveableObjects(Point2D globalPoint) {
 		List<MoveableObject> moveable = new ArrayList<>();
+		
 		for (int i = 0; i < gui_algo.getGameboard().getPacmans().size(); i++)
 			moveable.add((MoveableObject) gui_algo.getGameboard().getPacmans().get(i));
+		
 		if (gui_algo.getGameboard().getPlayer() != null)
 			moveable.add(gui_algo.getGameboard().getPlayer());
 
-		// moveable.add((MoveableObject) gui_algo.getGameboard().getGhosts());
+		if (gui_algo.getGameboard().getGhost() != null)
+			moveable.add((MoveableObject) gui_algo.getGameboard().getGhost());
 
 		for (GameObject moveable_object : moveable) {
 			double distance = Line.distance(globalPoint, moveable_object.getLocation());
+			
+
+			
 			if (distance < 10) {
 				popup.setObjectThatIsBeingPressed(moveable_object);
 				popup.setMenuOfMoveableObject();
@@ -165,7 +173,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-
+		
 		int pixelX = e.getX() - 20;
 		int pixelY = e.getY() - 65;
 

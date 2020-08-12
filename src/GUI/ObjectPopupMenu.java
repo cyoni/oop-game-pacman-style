@@ -39,10 +39,10 @@ private Gui_algo gui_algo;
 	   alterSpeed = new JMenuItem("Alter Velocity...");
 	   alterWeight = new JMenuItem("Alter Weight...");
 	   
-	   addNewFruit = new JMenuItem("Add a New Fruit...");
-	   addNewPacman = new JMenuItem("Add a New Pacman...");
-	   addNewGhost = new JMenuItem("Add a New Ghost...");
+	   addNewFruit = new JMenuItem("Drop a New Fruit...");
+	   addNewPacman = new JMenuItem("Drop a New Pacman...");
 	   dropPlayer = new JMenuItem("Set Player Here");
+	   addNewGhost = new JMenuItem("Set Ghost here");
 	   startGame = new JMenuItem("Start Game");
 	   startMouseListenning();
    }
@@ -53,8 +53,8 @@ private Gui_algo gui_algo;
 	   popup.addSeparator();
 	   popup.add(addNewFruit);
 	   popup.add(addNewPacman);
-	   popup.add(addNewGhost);
 	   popup.add(dropPlayer);
+	   popup.add(addNewGhost);
 	   popup.addSeparator();
 	   popup.add(startGame);
    }

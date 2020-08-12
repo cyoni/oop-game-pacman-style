@@ -73,7 +73,12 @@ public class Menu_Gui {
 
     private void startMouseListener() {
     
-
+    	generateGame.addActionListener((ActionEvent e) -> { 
+    		boolean state = GameBoard.isGenerateGame();
+    		if (state) 
+    			gui_algo.gameboard.cleanBoard();
+    		GameBoard.setGenerateGame(!state);
+        });
     	
         cleanBoard.addActionListener((ActionEvent e) -> { 
         	gui_algo.gameboard.cleanBoard();

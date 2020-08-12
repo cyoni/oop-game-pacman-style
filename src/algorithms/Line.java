@@ -22,7 +22,34 @@ public class Line {
 		
 	}
 	
-	
+	public static double distBetweenPointAndLine(double x, double y, double x1, double y1, double x2, double y2) {
+	    // A - the standalone point (x, y)
+	    // B - start point of the line segment (x1, y1)
+	    // C - end point of the line segment (x2, y2)
+	    // D - the crossing point between line from A to BC
+
+		double AB = distBetween(x, y, x1, y1);
+		double BC = distBetween(x1, y1, x2, y2);
+		double AC = distBetween(x, y, x2, y2);
+
+	    // Heron's formula
+		double s = (AB + BC + AC) / 2;
+		double area =  Math.sqrt(s * (s - AB) * (s - BC) * (s - AC));
+
+	    // but also area == (BC * AD) / 2
+	    // BC * AD == 2 * area
+	    // AD == (2 * area) / BC
+	    // TODO: check if BC == 0
+		double AD = (2 * area) / BC;
+	    return AD;
+	}
+
+	private static double distBetween(double x, double y, double x1, double y1) {
+		double xx = x1 - x;
+		double yy = y1 - y;
+
+	    return  Math.sqrt(xx * xx + yy * yy);
+	}
 
 	public Point2D getP1() {
 		return p1;

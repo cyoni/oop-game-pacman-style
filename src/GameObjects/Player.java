@@ -24,7 +24,7 @@ public class Player extends MoveableObject{
 	}
 	
 	public void eatPacman(Pacman pacman) {
-		addToScore(pacman.getWeight());
+		addToScore((int) pacman.getWeight());
 		eatenPacmans++;
 	}
 	

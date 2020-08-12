@@ -56,7 +56,6 @@ import javax.swing.ImageIcon;
  *
  */
 
-
 public class Gui_algo extends JPanel {
 
 	boolean updateScreen = false;
@@ -95,11 +94,12 @@ public class Gui_algo extends JPanel {
 			draw(graphics, pacmans, images.getPacman_image());
 			draw(graphics, blocks);
 			
+			if (gameboard.isRunning()) {
+				gameboard.updateLabelStatus();
+			}
 			
-		//	List<Game_object> ghosts = new ArrayList<>();
-			//ghosts.add(gameboard.getGhosts())
-		//	draw(graphics, ghosts, images.getGhost_image());
-
+			displayStatusLabel(graphics);	
+	
 			if (gameboard.getPlayer() != null) {
 				List<GameObject> list = new ArrayList<>();
 				list.add(gameboard.getPlayer());
@@ -108,30 +108,23 @@ public class Gui_algo extends JPanel {
 		}
 	}
 
+	private void displayStatusLabel(Graphics graphics) {			
+		Graphics2D g2 = (Graphics2D) graphics;
+		Font myFont = new Font("Arial", Font.BOLD, 25);
+		g2.setColor(Color.green);
+		g2.setFont(myFont);
+		drawLabel(g2, 200, 30, 0, gameboard.getGameStatus());
+	}
+
 	public static void drawLabel(Graphics2D g2d, double x, double y, double angle, String text) {
-		/*
-		 * g2d.translate((float) x, (float) y); g2d.rotate(Math.toRadians(angle));
-		 * g2d.drawString(text, 0, 0); g2d.rotate(-Math.toRadians(angle));
-		 * g2d.translate(-(float) x, -(float) y);
-		 */
+		 g2d.translate((float) x, (float) y); g2d.rotate(Math.toRadians(angle));
+		 g2d.drawString(text, 0, 0); g2d.rotate(-Math.toRadians(angle));
+		 g2d.translate(-(float) x, -(float) y);
 	}
 
 	public synchronized void paint(Graphics g) {
 		super.paint(g);
-
-	//	drawGraph(g);
-		drawBottomLabel(g);
-
 	}
-
-	private void drawBottomLabel(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		Font myFont = new Font("Arial", Font.BOLD, 25);
-		g2.setColor(Color.green);
-		g2.setFont(myFont);
-		drawLabel(g2, (Screen.WIDTH / 2) - 100, Screen.HEIGHT - 20, 0, Screen.getScreenLabel());
-	}
-
 
 	private void draw(Graphics graphics, List<Rectangle> blocks) {
 
