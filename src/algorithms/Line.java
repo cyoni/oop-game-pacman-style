@@ -1,5 +1,6 @@
 package algorithms;
 
+import GIS.Map;
 import GameObjects.GameObject;
 import game.GameBoard;
 
@@ -65,8 +66,8 @@ public class Line {
 
 	// temporary location!
 	public static double getMouseDegree(GameBoard gameboard, Point2D global_pos_eater, Point2D global_pos_target) {
-		Point2D local_pos_eater = gameboard.getMap().global2pixel(global_pos_eater);
-		Point2D local_pos_target_object = gameboard.getMap().global2pixel(global_pos_target);
+		Point2D local_pos_eater = Map.convertGlobalPointToPixelPoint(global_pos_eater);
+		Point2D local_pos_target_object = Map.convertGlobalPointToPixelPoint(global_pos_target);
 		double radian = Math.atan2(local_pos_eater.y()-local_pos_target_object.y(), local_pos_eater.x()-local_pos_target_object.x());
 		double degree = Math.toDegrees(radian);
 		degree = degree + 360;
