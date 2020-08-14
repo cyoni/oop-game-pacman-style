@@ -115,9 +115,6 @@ public class GameBoard {
 		return cleanObjectsFromPreviousGame;
 	}
 	
-	public Map getMap() {
-		return gui_algo.map;
-	}
 	
 	public boolean isRunning() {
 		return game_running;
@@ -288,44 +285,51 @@ public class GameBoard {
 	}
 
 	public boolean isCloseToBlock(MoveableObject object, Point2D local_location) {
-		Point2D object_location = Map.global2pixel(object.getLocation());
+		Point2D object_location = Map.convertGlobalPointToPixelPoint(object.getLocation());
 		
-		
-		for (int i=0; i<blocks.size(); i++) {
+		for (int i=0; i < blocks.size(); i++) {
 			Rectangle block = blocks.get(i);
 			
-			for (int j=0; j<4 ; j++) {
-				Line line = getLine(block, j);
-			
-			double dis = Line.distBetweenPointAndLine(object_location.x(), object_location.y(), line.getP1().x(), line.getP1().y(), line.getP2().x(), line.getP2().y());
-						
-			if (dis <= 1 && betweenTheLine(object_location, line)){
-				return true;
+			for (int j=0; j < 4; j++) {
+				Line line = getLine(block, j);	
+				double dis = Line.distBetweenPointAndLine(object_location.x(), object_location.y(), line.getP1().x(), line.getP1().y(), line.getP2().x(), line.getP2().y());
+				
+				
+				boolean between = isBetweenTheLine(object_location, line);
+				if (j == 1) {
+					//System.out.println(line.getP1() + "," + line.getP2() + "!!!!!");
+				//	System.out.println(dis + "###");
+				//	System.out.println(between + "," + dis);
+				}
+				if (dis <= 1 && between) {
+					
+					if (line.getP1().x() == line.getP2().x()) 
+						object.setDegree(180-object.getDegree());
+					else
+						object.setDegree(-object.getDegree());
+					
+					return false;
+				}
 			}
-				 
-			}
-			
 		}
-		
 		return false;
 	}
 
 	private Line getLine(Rectangle block, int i) {
-
 		switch (i) {
 			case 0:
-				return new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_down_left()));
+				return new Line(Map.convertGlobalPointToPixelPoint(block.getP_up_left()), Map.convertGlobalPointToPixelPoint(block.getP_down_left()));
 			case 1:
-				return new Line(Map.global2pixel(block.getP_up_left()), Map.global2pixel(block.getP_up_right()));
+				return new Line(Map.convertGlobalPointToPixelPoint(block.getP_up_left()), Map.convertGlobalPointToPixelPoint(block.getP_up_right()));
 			case 2:
-				return new Line(Map.global2pixel(block.getP_up_right()), Map.global2pixel(block.getP_down_right()));
+				return new Line(Map.convertGlobalPointToPixelPoint(block.getP_up_right()), Map.convertGlobalPointToPixelPoint(block.getP_down_right()));
 			case 3:
-				return  new Line(Map.global2pixel(block.getP_down_left()), Map.global2pixel(block.getP_down_right()));
+				return new Line(Map.convertGlobalPointToPixelPoint(block.getP_down_left()), Map.convertGlobalPointToPixelPoint(block.getP_down_right()));
 		}
 		return null;
 	}
 
-	private boolean betweenTheLine(Point2D object_location, Line line) {
+	private boolean isBetweenTheLine(Point2D object_location, Line line) {
 		
 		if (line.getP1().x() == line.getP2().x()) {
 			double max = Math.max(line.getP1().y(), line.getP2().y());

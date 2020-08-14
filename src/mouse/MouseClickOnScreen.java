@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import GIS.Map;
 import GUI.Gui_algo;
 import GUI.ObjectPopupMenu;
 import GameObjects.Fruit;
@@ -76,8 +77,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	}
 
 	private boolean isAnObjectBeingPressed(Point2D localCoords, MouseEvent e) {
-		Point2D globalPoint = gui_algo.map.pixel2global(new Point2D(localCoords.x(), localCoords.y()));
-		System.out.println(globalPoint + "$$$");
+		Point2D globalPoint = Map.convertPixelToglobal(new Point2D(localCoords.x(), localCoords.y()));
 		return lookForMoveableObjects(globalPoint) || lookForFruits(globalPoint);
 	}
 
@@ -145,7 +145,7 @@ public class MouseClickOnScreen implements MouseListener, MouseMotionListener {
 	}
 
 	private void getAndSetDegreeOfPlayer(Point2D localCoords) {
-		Point2D global_coords_target = gui_algo.map.pixel2global(localCoords);
+		Point2D global_coords_target = Map.convertPixelToglobal(localCoords);
 		double degree = Line.getMouseDegree(gui_algo.getGameboard(), gui_algo.getGameboard().getPlayer().getLocation(),
 				global_coords_target);
 		gui_algo.getGameboard().getPlayer().setDegree(degree);

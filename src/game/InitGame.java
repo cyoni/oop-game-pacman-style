@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Queue;
+
+import GIS.Map;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
+import GUI.Screen;
 import GameObjects.Fruit;
 import GameObjects.Ghost;
 import GameObjects.MoveableObject;
@@ -27,13 +30,10 @@ import threads.MovementThread;
 
 public class InitGame{
 
-
 	private Gui_algo gui_algo;
-	//private InitializeGameGraph init_gameboard;
 	
 	public InitGame(Gui_algo gui_algo) {
 		this.gui_algo = gui_algo;
-	//	this.init_gameboard = new InitializeGameGraph(gui_algo.getGameboard());
 	}
 	
 	public void startGame() {
@@ -43,13 +43,8 @@ public class InitGame{
 			if (gui_algo.getGameboard().getFruits().size() == 0) {
 				return;
 			} else if (gui_algo.getGameboard().getPlayer() == null) {
-				DropingItemsOnScreen.global_dropping_player = true;
-				thread_drop.startThreadDroppingItems();
-				return;
-			} else if (gui_algo.getGameboard().getGraph().nodeSize() == 0) {
-			//	buildGraphGame();
-			}
-			
+				dropPlayerInCenter();
+			} 
 			
 			addMoveableItems();
 			
@@ -63,6 +58,12 @@ public class InitGame{
 		}
 	}
 	
+	private void dropPlayerInCenter() {
+		Point2D location = new Point2D(Screen.WIDTH/2, Screen.HEIGHT/2);
+		location = Map.convertPixelToglobal(location);
+		gui_algo.gameboard.setPlayer(new Player(GameObject.GLOBAL_ID++, location, 1, 2));
+	}
+
 	private void addMoveableItems() {
 		ArrayList<MoveableObject> moveable = new ArrayList<>();
 
@@ -124,10 +125,10 @@ public class InitGame{
 					double eatingRadius = Double.parseDouble(data[5]);
 					gameboard.setPlayer(new Player(GameObject.GLOBAL_ID++, new Point2D(lon, lat), velocity_or_weight, eatingRadius));
 				} else if (type.equals("B")) {
-					gameboard.addBlock(new Rectangle(new Point2D(lon, Double.parseDouble(data[5])), new Point2D(Double.parseDouble(data[6]), lat)));
+					gameboard.addBlock(new Rectangle(new Point2D(Double.parseDouble(data[6]),Double.parseDouble(data[5])) , new Point2D(lon, Double.parseDouble(data[2]))));
 				}
 			}
-
+//new Point2D(lon, Double.parseDouble(data[5])), new Point2D(Double.parseDouble(data[6]), lat)
 			gui_algo.setGameBoard(gameboard);
 		}
 	}

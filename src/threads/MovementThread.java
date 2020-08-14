@@ -21,27 +21,35 @@ public class MovementThread extends Thread {
 	public void run() {
 		while (gameBoard.isRunning()) {
 			try {sleep(10);} catch (InterruptedException e) {}
+			
 			Point2D global_location = moveableObject.getLocation();
-			Point2D local_location = Map.global2pixel(global_location);
+			Point2D local_location = Map.convertGlobalPointToPixelPoint(global_location);
 			
-			if ( (moveableObject instanceof Player && closeToBlock(moveableObject, local_location))) {
-				moveableObject.setDegree((-1)*moveableObject.getDegree());
-				moveableObject.setDegree(180-moveableObject.getDegree());
-			}
+			handleWhenPlayerIsCloseToBlock(local_location);
+			moveObject(local_location);
 			
-			
-			double degree_to_radian = Math.toRadians(moveableObject.getDegree());
-			double x = local_location.x() + moveableObject.getVelocity() * Math.cos(degree_to_radian);
-			double y = local_location.y() - moveableObject.getVelocity() * Math.sin(degree_to_radian);
-			correctObjectIfItsOutOfBounds(x, y);
-			Point2D new_location = gameBoard.getMap().pixel2global(new Point2D(x, y));
-			moveableObject.setLocation(new_location);
 			gameBoard.getGuiAlgo().repaint();
 			
 		}
 	}
 
-	private boolean closeToBlock(MoveableObject object, Point2D local_location) {
+	private void moveObject(Point2D local_location) {
+		double degree_to_radian = Math.toRadians(moveableObject.getDegree());
+		double x = local_location.x() + moveableObject.getVelocity() * Math.cos(degree_to_radian);
+		double y = local_location.y() - moveableObject.getVelocity() * Math.sin(degree_to_radian);
+		correctObjectIfItsOutOfBounds(x, y);
+		Point2D new_location = Map.convertPixelToglobal(new Point2D(x, y));
+		moveableObject.setLocation(new_location);		
+	}
+
+	private void handleWhenPlayerIsCloseToBlock(Point2D local_location) {
+		if ((moveableObject instanceof Player && isCloseToBlock(moveableObject, local_location))) {
+			System.out.println("yes");
+			moveableObject.setDegree(180-moveableObject.getDegree());
+		}		
+	}
+
+	private boolean isCloseToBlock(MoveableObject object, Point2D local_location) {
 		return gameBoard.isCloseToBlock(object, local_location);
 	}
 

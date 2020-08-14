@@ -78,7 +78,12 @@ public class CSVReaderAndWriter {
 			writer.write(curr.toString() + "\n");
 		}
 		
-		writer.write(gameboard.getPlayer().toString()+"\n");
+		if (gameboard.getGhost() != null)
+			writer.write(gameboard.getGhost().toString()+"\n");
+		
+		if (gameboard.getPlayer() != null)
+			writer.write(gameboard.getPlayer().toString()+"\n");
+		
 		writer.close();
 		System.out.println("OK");
 	}

@@ -2,6 +2,7 @@ package game;
 
 import java.awt.event.MouseEvent;
 
+import GIS.Map;
 import GUI.Gui_algo;
 import GUI.Gui_dialog;
 import GameObjects.Fruit;
@@ -132,7 +133,7 @@ public class DropingItemsOnScreen extends Thread {
 	}
 
 	public void dropItem(Gui_algo gui_algo, Point2D localCoords, MouseEvent e) {
-		Point2D mouseCoords = gui_algo.map.pixel2global(localCoords);
+		Point2D mouseCoords = Map.convertPixelToglobal(localCoords);
 		if (MouseClickOnScreen.isLeftButtonPressed(e)) { 
 				if (DropingItemsOnScreen.global_dropping_apples) DropingItemsOnScreen.dropApple(gui_algo.getGameboard(), mouseCoords);	
 				else if (DropingItemsOnScreen.global_dropping_pacmans) DropingItemsOnScreen.dropPacman(gui_algo.getGameboard(), mouseCoords); 

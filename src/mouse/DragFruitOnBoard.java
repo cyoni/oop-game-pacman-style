@@ -1,13 +1,8 @@
 package mouse;
 
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
+import GIS.Map;
 import GUI.Gui_algo;
 import GameObjects.GameObject;
-import GameObjects.MoveableObject;
-import algorithms.Line;
 import algorithms.Point2D;
 
 public class DragFruitOnBoard {
@@ -20,7 +15,7 @@ public class DragFruitOnBoard {
 	}
 
 	public void drag(Point2D localCoords) {
-		Point2D global_point = gui_algo.map.pixel2global(localCoords);
+		Point2D global_point = Map.convertPixelToglobal(localCoords);
 		
 		if (object_to_drag == null)
 			lookForObject(global_point);

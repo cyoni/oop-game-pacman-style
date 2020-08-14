@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 
+import GIS.Map;
 import GameObjects.Fruit;
 import GameObjects.GameObject;
 import GameObjects.MoveableObject;
@@ -20,7 +21,7 @@ public class ObjectPopupMenu {
    private GameObject objectThatIsBeingPressed;
    private GameBoard gameBoard;
    private Point2D mousePoint;
-private Gui_algo gui_algo;
+   private Gui_algo gui_algo;
    
    public ObjectPopupMenu(Gui_algo gui_algo) {
 	   this.gui_algo = gui_algo;
@@ -126,7 +127,7 @@ private Gui_algo gui_algo;
    }
    
    public void showPopup(MouseEvent mouseEvent) {
-	   this.mousePoint =  gameBoard.getMap().pixel2global(new Point2D(mouseEvent.getX()+5, mouseEvent.getY()-40));
+	   this.mousePoint = Map.convertPixelToglobal(new Point2D(mouseEvent.getX()+5, mouseEvent.getY()-40));
       if(mouseEvent.isPopupTrigger())
          popup.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
    }
