@@ -11,18 +11,18 @@ import game.GameBoard;
 
 public class Rectangle{
 
-	private Point2D p_up_left;
-	private Point2D p_up_right;
-	private Point2D p_down_left;
-	private Point2D p_down_right;
+	private Point2D p_up_left, p_up_right, p_down_left, p_down_right;
 	
 	public Rectangle(Point2D p1, Point2D p2) {
-		p_up_left = p1;
-		p_down_right = p2;
-		p_down_left = new Point2D(p1.x(), p_down_right.y());
-		p_up_right = new Point2D(p_down_right.x(), p_up_left.y());
+		p_up_right = p1;
+		p_down_left = p2;
+		p_up_left = new Point2D(p2.x(), p1.y());
+		p_down_right = new Point2D(p1.x(), p2.y());
 		
-		System.out.println(Map.global2pixel(p1) + "," + Map.global2pixel(p2));
+		/*
+		 * p_up_left = p1; p_down_right = p2; p_down_left = new Point2D(p1.x(),
+		 * p_down_right.y()); p_up_right = new Point2D(p_down_right.x(), p_up_left.y());
+		 */
 	}
 	
 	public Rectangle(Rectangle rectangles) {
